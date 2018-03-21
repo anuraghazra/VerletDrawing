@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VerletDrawing</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta content="Description" keyword="Verlet, VerletDrawing">
+	
+	<!-- Stylesheets -->
+	<link href="./src/css/style.css" media="all" rel="stylesheet" type="text/css">
+	<link href="./src/lib/icomoon/style.css" media="all" rel="stylesheet" type="text/css">
+	<link href="./src/css/inputStyles.css" media="all" rel="stylesheet" type="text/css">
+	
+	<!--Scripts-->
+	<script>
+		var isIE = /*@cc_on!@*/false;
+		if(isIE) {
+			alert('Really? You\'re Kidding Me. Upgrade To A Newer Browser');
+			window.open('http://chrome.google.com','_blank');			
+		};
+	</script>
+
+
+	<!--External Scripts-->
+	<script async src="../Verlet.js/src/verlet.js"></script>
+	<script src="./src/js/uiUtils.js"></script>
+	<script async src="./src/js/dragdraw.js"></script>
+	<script async src="./src/js/fs.js"></script>
+	<script async src="./src/js/exportsystem.js"></script>
+	<script async src="./src/js/livePreviews.js"></script>
+	<script async src="./src/js/userInterface.js"></script>
+	<script async src="./src/js/main.js"></script>
+
+
+</head>
+<body>
+<div class="container">
+
+	<div class="toolbar">
+
+		<div class="woo-slider" id="woo"></div>
+
+		<div class="title">Verlet <font style="color:lightskyblue">Drawing</font></div>
+
+		
+		<!-- Save -->
+
+
+		<div class="titleinfo-hover">
+			<div class="dd-button" data-name="Save Model">
+				<div class="icon">
+					<i class="icon-save"></i>
+					
+					<div class="dropdown-content">
+						<p>Save The Art</p>
+						<input type="text" id="filename" placeholder="File Name">
+						<button id="export">Save</button>
+					</div>
+				
+				</div>
+
+				<div class="firstmenu">
+					<div class="toolbar-name-file">
+						<span>File Menu</span>
+					</div>
+				</div>
+
+			</div>
+
+
+			<!-- load -->
+
+
+			<div class="dd-button" data-name="Load Model">
+				<div class="icon">
+					<i class="icon-download"></i>
+					
+					<div class="dropdown-content">
+						<span>Load Your Art</span>
+						<input type="file" id="loadPoints" accept=".json">
+						<div class="fileinfo" id="fileinfo">
+							<p>File Name : </p>
+							<p>File Size : </p>
+						</div>
+						<button id="loadmodelpoint" disabled>Load Points</button>
+					</div>
+					
+				</div>
+			</div>
+
+			
+			<!-- Settings -->
+
+
+			<div class="dd-button" data-name="Settings">
+				<div class="icon">
+					<i class="icon-cog2"></i>
+					<div class="dropdown-content" id="context-link">
+						
+						<span>Tweak Settings</span>
+						<hr>
+
+						<div class="sliders">
+							
+							<div class="slider-container">
+								<p class="optText">Gravity</p>
+								<input type="range" step="0.1" min="-1" max="1" value="0" style="float:left" id="gravity">
+								<span class="rangeVal">0</span>
+							</div>
+
+							<div class="slider-container">
+								<p class="optText">Bounce</p>
+								<input type="range" step="0.01" min="-1" max="1" value="0.9" style="float:left" id="bounce">
+								<span class="rangeVal">0.9</span>
+							</div>
+							
+							<div class="slider-container">
+								<p class="optText">Friction</p>
+								<input type="range" step="0.01" min="0" max="1" value="0.99" style="float:left" id="friction">
+								<span class="rangeVal">1</span>
+							</div>
+							
+							<div class="slider-container">
+								<p class="optText">Stiffness</p>
+								<input type="range" step="0.01" min="0" max="1" value="1" style="float:left" id="stiffness">
+								<span class="rangeVal">1</span>
+							</div>
+
+						</div><!--/sliders-->
+
+						<div class="slider-container phy">
+							<p class="optText" style="margin-bottom: 5px">Physics Accuracy</p>
+							<input type="range" id="Iterrations" value="20" min="1" max="500">
+							<span class="rangeVal rangePhy">20</span>
+						</div>
+
+						<p>Render Options</p>
+
+							<ul class="rendersettings-icons">
+
+								<li id="li-dots">
+										<input type="checkbox" id="dots" checked>
+										<label for="dots">
+												<i class="noEvent icon-flickr2" ></i>
+										</label>
+								</li>
+
+								<li id="li-lines">
+									<input type="checkbox" id="lines" checked>
+									<label for="lines">
+											<i class="noEvent icon-flow-line"></i>
+									</label>
+								</li>
+
+								<li id="li-pointIndex">
+									<input type="checkbox" id="pointIndex">
+									<label for="pointIndex">
+											<i class="noEvent icon-format_color_text"></i>										
+									</label>
+								</li>
+
+								<li id="li-shapes">
+									<input type="checkbox" id="shapes" checked>
+									<label for="shapes">
+											<i class="noEvent icon-palette"></i>										
+									</label>
+								</li>
+
+								<li id="li-hiddenlines">
+									<input type="checkbox" id="hiddenlines">
+									<label for="hiddenlines">
+											<i class="noEvent icon-linear_scale"></i>										
+									</label>
+								</li>
+
+								<li id="li-gridguid">
+									<input type="checkbox" id="gridguid">
+									<label for="gridguid">
+										<i class="noEvent icon-th-small"></i>											
+									</label>
+								</li>
+
+							</ul>
+
+						<div class="slider-container" style="width: 100%;">
+							<input type="range" step="5" min="15" max="100" value="35" style="float:left" id="gridgap">
+							<span class="rangeVal" style="margin-top: 20px;">35</span>
+						</div>
+
+					</div>
+				</div>
+			</div> <!-- /dd-button -->
+		</div>	<!-- /titleinfo -->
+		<div class="dd-split"></div>
+
+		
+		<!-- Box Triangle -->
+
+
+		<div class="titleinfo-hover">
+			<div class="dd-button" data-name="Create Box">
+				<div class="icon">
+					<i class="icon-object-ungroup"></i>
+					<div class="dropdown-content">
+						<span>Create Simple</span>
+						<hr>
+
+						<select id="selectcreate">
+							<option value="box">Rectangle</option>
+							<option value="tri">Triangle</option>
+						</select>
+
+						<p>X , Y</p>
+						<input type="number" style="width: 48%" id="boxX" value="100">
+						<input type="number" style="width: 48%" id="boxY" value="100">
+						
+						<p>Width , Height</p>
+						<input type="number" style="width: 48%" id="boxW" value="50">
+						<input type="number" style="width: 48%" id="boxH" value="50">
+						
+						<div class="check-container">
+							<div class="checks">
+								<input type="checkbox" id="drawBox">
+								<label for="drawBox"><span>Draw</span></label>
+							</div>
+						</div>
+						
+						<button id="createBox">Creat</button>
+					</div>
+				</div>
+
+				<div class="firstmenu">
+					<div class="toolbar-name-creative">
+						<span>Creative Menu</span>
+					</div>
+				</div>
+
+			</div>
+
+
+			<!-- Beam Triangle -->
+
+
+			<div class="dd-button" data-name="Create Beam">
+				<div class="icon">
+					<i class="icon-view_module" style="font-size:27px;line-height: 20px"></i>
+					
+					<div class="dropdown-content">
+						<span>Create Beam</span>
+						<hr>
+						
+						<p>X , Y</p>
+						<input type="number" style="width: 48%" id="beamX" value="100">
+						<input type="number" style="width: 48%" id="beamY" value="100">
+						
+						<p>Width , Height</p>
+						<input type="number" style="width: 48%" id="beamW" value="50">
+						<input type="number" style="width: 48%" id="beamH" value="50">
+						
+						<p>Segments</p>
+						<input type="number" style="width: 100%" id="beamSegs" value="8">
+						<button id="createbeam">Creat Beam</button>
+					</div>
+
+				</div>
+			</div>
+
+
+			<!-- Hexagon -->
+
+
+			<div class="dd-button" data-name="Create Hexagon">
+				<div class="icon">
+					<i class="icon-connectdevelop"></i>
+					
+					<div class="dropdown-content">
+						<span>Create Hexagon</span>
+						<hr>
+						
+						<p>X , Y</p>
+						<input type="number" style="width: 48%" id="hexaX" value="100">
+						<input type="number" style="width: 48%" id="hexaY" value="100">
+						
+						<p>Sides , radius</p>
+						<input min="1" type="number" style="width: 48%" id="hexaSides" value="8">
+						<input min="1" type="number" style="width: 48%" id="hexaRadius" value="50">
+						
+						<p>Slice1 , Slice2</p>
+						<input min="1" type="number" style="width: 48%" id="hexaSlice1" value="1">
+						<input min="1" type="number" style="width: 48%" id="hexaSlice2" value="2">
+						
+			
+						<!-- <p>Center</p> -->
+			
+						<div class="check-container">
+							<div class="checks">
+								<input type="checkbox" id="hexaCenter">
+								<label for="hexaCenter">
+										<span>Center Dot</span>
+								</label>
+								<input type="checkbox" id="drawhexa">
+								<label for="drawhexa">
+									<span>Draw</span>
+								</label>
+							</div>
+						</div>
+
+						<button id="createhexa">Create Hexagon</button>
+						<div class="live-preview">
+							<canvas id="hexagon-live"></canvas>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Rope -->
+
+
+			<div class="dd-button" data-name="Create Rope">
+				<div class="icon">
+					<i class="icon-gesture"></i>
+					
+					<div class="dropdown-content">
+						<span>Create Rope</span>
+						<hr>
+					
+						<p>X , Y</p>
+						<input type="number" style="width: 48%" id="ropeX" value="50">
+						<input type="number" style="width: 48%" id="ropeY" value="50">
+					
+						<p>Gap ,  Segments</p>
+						<input type="number" style="width: 48%" id="ropeGap" value="10">
+						<input type="number" style="width: 48%" id="ropeSegs" value="15">
+					
+						<div class="check-container">
+							<div class="checks">
+								<input type="checkbox" id="drawRope">
+								<label for="drawRope">
+									<span>Draw</span>
+								</label>
+							</div>
+						</div>
+
+						<button id="createrope">Creat Rope</button>
+					
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Cloth -->
+
+
+			<div class="dd-button" data-name="Create Cloth">
+				<div class="icon">
+					<i class="icon-grid"></i>
+					
+					<div class="dropdown-content">
+						<span>Create Cloth</span>
+						<hr>
+						
+						<p>X , Y</p>
+						<input type="number" style="width: 48%" id="clothX" value="50">
+						<input type="number" style="width: 48%" id="clothY" value="50">
+						
+						<p>gap ,  segments</p>
+						<input type="number" style="width: 48%" id="clothGap" value="15">
+						<input type="number" style="width: 48%" id="clothSegs" value="15">
+						
+						<p>Pinning Ratio</p>
+						<input type="number" style="width: 100%" id="clothPinRatio" value="2">
+						<button id="createcloth">Creat Cloth</button>
+					</div>
+				
+				</div>
+			</div>
+
+
+			<!-- Map -->
+
+
+			<div class="dd-button" data-name="Create Map">
+				<div class="icon">
+					<i class="icon-braille"></i>
+					
+					<div class="dropdown-content pushleft">
+						<span>Charecter Map</span>
+						<hr>
+						
+						<p>X , Y</p>
+						<input type="number" style="width: 48%" id="mapX" value="100">
+						<input type="number" style="width: 48%" id="mapY" value="100">
+						
+						<p>SizeX , SizeY</p>
+						<input type="number" style="width: 48%" id="mapSizeX" value="15">
+						<input type="number" style="width: 48%" id="mapSizeY" value="10">
+						
+						<div class="mapcontainer">
+							<textarea id="mapData">********,&NewLine;*      *,&NewLine;********</textarea>
+						</div>
+						<button id="createmap">Create Map</button>
+						
+						<div class="live-preview">
+							<canvas id="map-live"></canvas>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div><!-- /titleinfo -->
+		<div class="dd-split"></div>
+
+
+		<!-- Shape Color -->
+
+		
+		<div class="dd-button" data-name="Shape Color">
+			<div class="icon" id="red" class="red">
+				<i class="icon-palette"></i>
+				
+				<div class="dropdown-content pushleft">
+					<span>Shape Color</span>
+					<hr>
+					<input type="color" id="shapecolor" value='#ee6666'>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Pinned -->
+
+		<div class="dd-button" id="pin-point" data-tooltip="Pin Dots">
+			<div class="icon">
+				<i class="icon-dot-circle-o"></i>
+			</div>
+		</div>
+
+		<!-- Hidden Line -->
+
+		<div class="dd-button" id="line-hidden" data-tooltip="Hide Lines">
+			<div class="icon">
+				<i class="icon-linegraph"></i>
+			</div>
+		</div>
+
+		<!-- Auto Join -->
+
+		<div class="dd-button" data-tooltip="Auto Join Lines" id="auto-join">
+			<div class="icon">
+				<i class="icon-link2"></i>
+			</div>
+		</div>
+
+		<!-- FullScreen -->
+		<div class="dd-split"></div>
+		<div class="dd-button" data-name="FullScreen" style="float: right" id="fullscreen" onClick="initUI.fullSrc()">
+			<div class="icon">
+				<i class="icon-fullscreen"></i>
+			</div>
+		</div>
+
+	</div><!-- /Toolbar -->
+
+
+
+
+	<!-- Drop in workspace -->
+	<section id="ctrlSaveModal">
+		<p style="color:white;position:absolute; top : -33px; padding : 5px; background-color : #191919">Save Your Art</p>
+		<input type="text" id="ctrlSaveName" placeholder="File Name">
+	</section>
+
+	<input type="file" accept=".json" id="overlaydrag" style="position : absolute;height: 90vh;display : none; opacity : 0">
+
+
+	<!-- Canvas	-->
+	<canvas id="c"></canvas>
+	<!-- /CanvasEnd	-->
+
+
+	<div class="debugpanel" id="debugpanel">
+		<!-- <i class="icon-terminal" style="font-size:18px;margin:5px 5px 0px 5px"></i> -->
+		<p id="debug-out"></p>
+		<p id="statusbar" style="float:right;margin-right: 20px">Status Bar</p>
+	</div>
+
+	
+	
+	
+	<!-- <br> -->
+	<div class="tooltips">
+
+		<!-- Tooltip for shapecolor -->
+		<div class="tooltip-info" id="colorIndicator"></div>
+
+		<!-- Radial Context Menu -->
+		<div class="radialMenu hideRadialMenu">
+
+
+			<!-- Renders -->
+
+			<i class="noEvent icon-flickr2" style="color : 67f345" 
+				 data-uid="Render dots" 
+				 data-link="#dots"
+				 id="context-dots">
+			</i>
+			<i class="noEvent icon-flow-line" style="color : 67f345" 
+				 data-uid="Render Lines" 
+				 data-link="#lines"
+				 id="context-lines">
+			</i>
+
+			<i class="noEvent icon-format_color_text button-active" 
+				 data-uid="Render index"
+				 data-link="#pointIndex"
+				 id="context-pointIndex">
+			</i>
+			<i class="noEvent icon-palette" style="color : 67f345" 
+				 data-uid="Render shapes"
+				 data-link="#shapes"
+				 id="context-shapes">
+			</i>
+			<i class="noEvent icon-linear_scale button-active" 
+				 data-uid="Render Hidden lines"
+				 data-link="#hiddenlines"
+				 id="context-hiddenlines">
+			</i>
+			<i class="noEvent icon-th-small button-active" 
+				 data-uid="Render grid"
+				 data-link="#gridguid"
+				 id="context-gridguid">
+			</i>
+
+
+			<!-- Tools -->
+
+			<i class="noEvent icon-dot-circle-o" 
+				 data-uid="Pin Dots" 
+				 data-link="#pin-point"
+				 id="context-pin-point"
+				 data-type="tool">
+			</i>
+			<i class="noEvent icon-linegraph" 
+				 data-uid="Hide Lines" 
+				 data-link="#line-hidden"
+				 id="context-line-hidden" 
+				 data-type="tool">
+			</i>
+			<i class="noEvent icon-link2" 
+				 data-uid="Auto Join" 
+				 data-link="#auto-join" 
+				 id="context-auto-join" 
+				 data-type="tool">
+			</i>
+
+		</div>
+		<div class="radialMenuCenter noEvent">Render dots</div>
+
+
+		<!-- Hexagon floating menu -->
+		<div class="floating-content" id="floating-content">
+			<div class="dragger"></div>
+				<span>Create Hexagon</span>
+				<hr>
+				<p>Sides, Slice1 , Slice2</p>
+				<div class="input-container">
+					<input min="1" type="number" id="hexaSides" value="8">
+					<input min="1" type="number" id="hexaSlice1" value="1">
+					<input min="1" type="number" id="hexaSlice2" value="2">
+				</div>
+	
+				<!-- <p>Center</p> -->
+	
+				<div class="check-container">
+					<div class="checks">
+						<input type="checkbox" id="float-hexaCenter">
+						<label for="float-hexaCenter">
+								<span>Center Dot</span>
+						</label>
+					</div>
+				</div>
+
+		</div>
+
+	</div><!-- tooltip -->
+
+
+
+
+</div>
+</body>
+</html>
