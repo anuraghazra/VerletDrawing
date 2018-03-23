@@ -86,7 +86,7 @@ function initUI() {
 	//tooltips
 	const tooltipOffset = {
 		x : - 80,
-		y : 30
+		y : 22
 	}
 	uiu.tooltip({
 		parent : '#pin-point',

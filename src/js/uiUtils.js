@@ -632,7 +632,8 @@ const uiu = (function () {
 				'position' : 'absolute',
 				'opacity' : '0',
 				'pointer-events' : 'none',
-				'transition' : '0.2s opacity'
+				'transition' : '0.2s opacity',
+				'z-index' : '5'
 			});
 
 			setOn({
@@ -802,13 +803,13 @@ const uiu = (function () {
     }
 
     dragger.addEventListener('mousedown',(e) => {
+			e.stopPropagation();
       isDown = true;
       origin.x = e.offsetX;
 			origin.y = e.offsetY;
-			e.stopPropagation();
-    });
+		},false);
     dragger.addEventListener('mouseup',(e) => isDown = false);
-    dragger.addEventListener('mouseleave',(e) => isDown = false);
+    parent.addEventListener('mouseleave',(e) => isDown = false);
 		
     parent.addEventListener('mousemove',throttle((e) => {
 			e.stopPropagation();
@@ -820,15 +821,16 @@ const uiu = (function () {
         let isOutOfX = (pos.x < 0);
         let isOutOfY = (pos.y < 0);
         let isOutOfOtherX = ( (pos.x + childBounds.x) > parentBounds.x);
-        let isOutOfOtherY = ( (pos.y + childBounds.y) > parentBounds.y);
-        if (!isOutOfX && !isOutOfOtherX) {
-          child.style.left = pos.x - childBounds.left + 'px';
-        } 
-        if (!isOutOfY && !isOutOfOtherY) {
-          child.style.top = pos.y - childBounds.top + 'px';
-        }
-      }
-    },30))
+				let isOutOfOtherY = ( (pos.y + childBounds.y) > parentBounds.y);
+				if (!isOutOfX && !isOutOfOtherX) {
+					child.style.left = pos.x - childBounds.left + 'px';
+				} 
+				if (!isOutOfY && !isOutOfOtherY) {
+					child.style.top = pos.y - childBounds.top + 'px';
+				}
+			}			
+			// console.log(isDown)	
+    },0),false)
 
 	}
 

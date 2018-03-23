@@ -527,18 +527,18 @@ ul.rendersettings-icons > li:hover {
 	padding: 10px;
 	border-bottom: 4px solid lightskyblue;
 	border: 1px solid white;
-	word-break: break-all;
-	word-wrap: break-word;
-	z-index : 10;
+	transition : 0.2s opacity;
 }
 .floating-content {
 	padding-top: 25px;
+}
+.floating-content p,span,hr {
+	pointer-events: none;
 }
 .floating-content p {
 	font-size: 14px;
 	color : white;
 	margin-bottom: 10px;
-	pointer-events: none;
 }
 .floating-content .dragger {
 	cursor: move;

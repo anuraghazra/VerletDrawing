@@ -48,9 +48,12 @@ function verletDrawing() {
 			forms 					= [],
 			trig 						= [],
 			tmpCir 					= [],
+			tmpLine 			  = [],
 			formsArray 			= [],
 			handleArray 		= [],
-			tmpHandleArray 	= [];
+			tmpHandleArray 	= [],
+			AutojoinArr 		= [];
+			
 
 	/**
 	 * ========= Redo And Undo System =========
@@ -63,7 +66,7 @@ function verletDrawing() {
 	};
 
 	//UndoRedo setps and settings
-	const MAX_UNDO_REDO_STEPS = 200;
+	const MAX_UNDO_REDO_STEPS = Infinity;
 	const UNDO_REDO_JUMP = 1;
 	let zCount = 0;
 	let yCount = 0;
@@ -91,7 +94,7 @@ function verletDrawing() {
 					let ff = forms[f].id;
 					let col = [forms[f].color];
 					let kk = ff.concat(col);
-					newForms.push(kk)
+					newForms.push(kk);
 				}
 				undoArray.push([newPoints,newCons,newForms]);
 			} else {
@@ -443,6 +446,27 @@ function verletDrawing() {
 			ctx.closePath();
 		}
 	}
+	//drawTmpCir
+	function drawTmpCir(arr) {
+		if(arr.length > 0) {
+			for (let i = 0; i < arr.length; i++) {
+				verlet.Draw.arc(arr[i].x,arr[i].y,5,'gray',1,true);
+			}
+		}
+	}
+	function drawTmpLine(arr) {
+		// tmpLine
+		if(arr.length > 0) {
+			verlet.ctx.beginPath();
+			verlet.ctx.strokeStyle = 'white';
+			verlet.ctx.moveTo(arr[0].x,arr[0].y);
+			for (let i = 0; i < arr.length; i++) {
+				verlet.ctx.lineTo(arr[i].x,arr[i].y);
+			}
+			verlet.ctx.stroke();
+			verlet.ctx.closePath();
+		}
+	}
 
 	//FPS
 	let lastframe;
@@ -513,7 +537,7 @@ function verletDrawing() {
 			uiu.toggleStyle(document.body,'pointer-events','all','none');
 		})
 	}
-	toggleModal(false)
+	toggleModal(false);
 	function ctrlSave(e) {
 		e.preventDefault();
 			toggleModal(true);
@@ -534,6 +558,7 @@ function verletDrawing() {
 		document.body.addEventListener('keyup', removekeyhandling);
 
 		function keyhandling(e) {
+			// console.log(e.which)
 			switch (e.which) {
 				case 16://Shift
 					canvas.addEventListener('mousedown', getPoint);
@@ -600,6 +625,9 @@ function verletDrawing() {
 					});
 					canvas.style.cursor = 'alias';
 					break;
+					
+				case 65:
+					canvas.addEventListener('mousedown', pushAutoJoinArr);
 			}
 		}
 
@@ -628,6 +656,7 @@ function verletDrawing() {
 							points[i].color = null;
 						}
 					}
+					tmpLine = [];
 					break;
 				case 67://C
 					canvas.removeEventListener('mousedown', definePoints);
@@ -645,6 +674,9 @@ function verletDrawing() {
 						points[i].color = null;
 					}
 					// updateUndoRedo();
+					case 65:
+					createAutoJoin();
+					canvas.removeEventListener('mousedown', pushAutoJoinArr);
 			}
 		}
 
@@ -684,6 +716,8 @@ function verletDrawing() {
 					if (points[i].color !== 'crimson') {
 						points[i].color = 'greenyellow';
 					}
+					
+					// tmpLine.push({x : points[i].x,y :  points[i].y})
 				}
 			}
 			let modTwo = 0;
@@ -696,6 +730,9 @@ function verletDrawing() {
 				}
 			}
 			handleArray.pop();
+
+			// console.log(tmpHandleForTmpLine)
+
 			updateUndoRedo();
 		}
 		/* Get Points For Making Shapes */
@@ -713,6 +750,23 @@ function verletDrawing() {
 			verlet.shape(formsArray, forms, points);
 			formsArray = [];
 			updateUndoRedo();
+		}
+
+
+		// Auto Create And JOIN
+		function pushAutoJoinArr(e) {
+			tmpCir.push({x : e.offsetX,y : e.offsetY});
+			tmpLine.push({x : e.offsetX,y : e.offsetY});
+			AutojoinArr.push([e.offsetX,e.offsetY]);
+		}
+		function createAutoJoin(e) {
+			verlet.Poly.line({
+				data : AutojoinArr,
+				joinEnd : true
+			},points,constrains);
+			AutojoinArr = [];
+			tmpCir = [];
+			tmpLine = [];
 		}
 	}
 	initCore();
@@ -879,13 +933,13 @@ function verletDrawing() {
 		child : '#floating-content',
 		dragger : '.dragger'
 	})
+	// TODO : FIX DRAGGING AND HEXAGON CREATION
 	uiu.onkey('h',function() {
 		hexa.draw.checked = true;
 		canvas.style.cursor = 'crosshair';
-		let fContent = document.getElementById('floating-content');
+		let fContent = _('floating-content');
 		fContent.style.opacity = 1;
 		fContent.style.pointerEvents = 'all';
-
 	});
 	uiu.on('keyup',document,function() {
 		let fContent = document.getElementById('floating-content');
@@ -982,13 +1036,10 @@ function verletDrawing() {
 		});
 
 		drawGrid();
+		/* Temp Circles and lines */
+		drawTmpCir(tmpCir);
+		drawTmpLine(tmpLine);
 
-		/* Temp Circles */
-		if(tmpCir.length > 0) {
-			for (let i = 0; i < tmpCir.length; i++) {
-				verlet.Draw.arc(tmpCir[i].x,tmpCir[i].y,5,'gray',1,true);
-			}
-		}
 		getFps = getFrameRate();
 
 		requestAnimationFrame(animate);
