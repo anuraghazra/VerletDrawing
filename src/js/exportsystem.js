@@ -40,27 +40,28 @@ function exportModel(dots,cons,shapes,unnamed) {
 	
 	let time = new Date().toLocaleString();
 	let name = unnamed;
-	//Compilation For Verlet.create And Verlet.clamp
 
-	//TODO : INFO IN SAVE FILES
 	let info = {
 		file : unnamed,
+		type : 'text/json',
 		dateCreated : time,
-		type : 'JSON(invalid)',
 		generator : 'VerletDrawing',
-		author : 'Anurag Hazra <hazru.anurag@gmail.com>',
+		author : 'Anurag Hazra',
+		email : 'hazru.anurag@gmail.com',
 		poweredBy : 'Verlet.js',
-		repo : 'wwww.github.com/anuraghazra/verlet.js'
+		repo : 'wwww.github.com/anuraghazra/verlet.js',
+		license : 'MIT'
 	}
 
-	const strInfo = JSON.stringify(info);
-	const strP = JSON.stringify(tmpP);
-	const strC = JSON.stringify(pushInMe);
-	const strS = JSON.stringify(tmpS);
+	//Compilation For Verlet.create And Verlet.clamp
+	
+	const strInfo = info;
+	const strP = tmpP;
+	const strC = pushInMe;
+	const strS = tmpS;
 
-	console.log(JSON.stringify([strP,strC,strS]))
-
-	let compiled = strP + ' || ' + strC + ' || ' + strS;
+	let compiled = JSON.stringify([strInfo,strP,strC,strS]);
+	
 	// regExp for triming floating integers for 
 	// low file size
 	compiled = compiled.replace(/\.\d{5,}\,/img,',');
@@ -91,15 +92,17 @@ function loadFile(fid,dots,cons,shapes,verlet) {
 	let data = fs.read(fid);
 	dots.splice(0,dots.length);
 	cons.splice(0,cons.length);
+
 	data[0].onload = function() {
-		let result = data[0].result.split(' || ');
-		let arrDots = JSON.parse(result[0]); //Points
-		let arrCons = JSON.parse(result[1]); //Constrains
+		let result = JSON.parse(data[0].result);
+		console.log(result)
+		let arrDots = result[1]; //Points
+		let arrCons = result[2]; //Constrains
 		verlet.create(arrDots,dots);
 		verlet.clamp(arrCons,cons,dots);
 
-		if(result[2]) { //Backward Save File Compat // Forms
-			let arrForms = JSON.parse(result[2]);
+		if(result[3].length > 1) { //Backward Save File Compat // Forms
+			let arrForms = result[3];
 			for (let i = 0; i < arrForms.length; i++) {
 				verlet.shape(arrForms[i],shapes,dots);
 			}
