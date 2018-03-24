@@ -418,6 +418,11 @@ function verletDrawing() {
 		mouse.y = e.offsetY;
 	});
 
+	function distance(p1x, p1y, p2x, p2y) {
+		let dx = p1x - p2x;
+		let dy = p1y - p2y;
+		return Math.sqrt(dx*dx + dy*dy);
+	}
 	function colDetect(x,y,circle) {
 		let dx = x - circle.x;
 		let dy = y - circle.y;
@@ -628,6 +633,7 @@ function verletDrawing() {
 					
 				case 65:
 					canvas.addEventListener('mousedown', pushAutoJoinArr);
+					canvas.style.cursor = 'crosshair';					
 			}
 		}
 
@@ -677,6 +683,7 @@ function verletDrawing() {
 					case 65:
 					createAutoJoin();
 					canvas.removeEventListener('mousedown', pushAutoJoinArr);
+					canvas.style.cursor = 'pointer';			
 			}
 		}
 
@@ -755,15 +762,27 @@ function verletDrawing() {
 
 		// Auto Create And JOIN
 		function pushAutoJoinArr(e) {
+			//push to arrays
 			tmpCir.push({x : e.offsetX,y : e.offsetY});
 			tmpLine.push({x : e.offsetX,y : e.offsetY});
 			AutojoinArr.push([e.offsetX,e.offsetY]);
 		}
 		function createAutoJoin(e) {
-			verlet.Poly.line({
-				data : AutojoinArr,
-				joinEnd : true
-			},points,constrains);
+			if(AutojoinArr.length > 1) {
+				let first = AutojoinArr[0];
+				let last = AutojoinArr[AutojoinArr.length-1]
+				let join = false;
+				//join if last and first point is touching
+				if(distance(first[0],first[1],last[0],last[1]) < 10) {
+					join = true;
+					AutojoinArr.splice(AutojoinArr.length-1,1);
+				}
+				verlet.Poly.line({
+					data : AutojoinArr,
+					joinEnd : join
+				},points,constrains);
+			}
+			//reset arrays
 			AutojoinArr = [];
 			tmpCir = [];
 			tmpLine = [];

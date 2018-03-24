@@ -57,11 +57,13 @@ function exportModel(dots,cons,shapes,unnamed) {
 	const strP = JSON.stringify(tmpP);
 	const strC = JSON.stringify(pushInMe);
 	const strS = JSON.stringify(tmpS);
+
+	console.log(JSON.stringify([strP,strC,strS]))
+
 	let compiled = strP + ' || ' + strC + ' || ' + strS;
 	// regExp for triming floating integers for 
 	// low file size
 	compiled = compiled.replace(/\.\d{5,}\,/img,',');
-	console.log(compiled)
 
 	if(typeof unnamed === 'string') {
 		name = unnamed + '.json';
