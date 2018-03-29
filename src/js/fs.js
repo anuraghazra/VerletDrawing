@@ -11,9 +11,9 @@ const fs = (function(){
 		return [fsys,f];
 	};
 	function create(opt) {
-		let content = opt.content || 'doIt.js FileSystem And Blobs',
+		let content = opt.content || '',
 			type = opt.type || 'text/plain',
-			name = opt.name || 'doItJS',
+			name = opt.name || 'unnamed',
 			blob = new Blob([content],{type : type}),
 			url = window.URL.createObjectURL(blob),
 			lnk = document.createElement('a');

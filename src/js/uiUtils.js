@@ -183,8 +183,11 @@ const uiu = (function () {
 
 	//multikey handler
 	function onkey(keyStr,callback,elm) {
-		if (typeof elm === 'string') elm = uiu.query(elm);        
+		if (typeof elm === 'string') elm = uiu.query(elm);     
+		if (!elm) {elm = document};
+
 		keyStr = keyStr.toUpperCase();
+
 		let keys = {
 			///WINDOWS///
 			'13' : 'ENTER',
@@ -231,6 +234,7 @@ const uiu = (function () {
 
 		let isSingle;
 		let keyArray;
+		let type = 'down';
 		if(keyStr.indexOf('+') !== -1) {
 			keyArray = keyStr.split('+');
 			isSingle = false;
@@ -242,7 +246,7 @@ const uiu = (function () {
 		let isReadyToCall = false;
 		let mulKeys = [];
 
-		setOn('keydown',elm || document.body,function(e) {
+		setOn('key'+type, elm, function(e) {
 			let evtKey = e.which || e.keyCode || 0;
 
 			if(!isSingle) {
@@ -280,12 +284,13 @@ const uiu = (function () {
 				callback(e);
 			}
 		});
-		setOn('keyup',elm || document.body,function() {
+		elm.addEventListener('keyup',function(e) {
 			if(!isSingle) {
-				mulKeys.pop();
+			  mulKeys.pop();
 			}
 		});
 	}
+	
 
 	//toogleStyles
 	function toggleStyle(elm, stl, prop1, prop2, once) {
@@ -609,6 +614,7 @@ const uiu = (function () {
 		let parent = option.parent;
 		let offset = option.offset || {x : 5, y: 10};
 		let append = option.appendTo;
+		
 		if (typeof parent === 'string') parent = uiu.query(parent);
 		if (typeof append === 'string') append = uiu.query(append);
 		
@@ -631,17 +637,25 @@ const uiu = (function () {
 				'min-width' : '90px',
 				'position' : 'absolute',
 				'opacity' : '0',
+				'transform' : 'scale(0.6)',
 				'pointer-events' : 'none',
-				'transition' : '0.2s opacity',
+				'transition' : '0.2s',
+				'transition-property' : 'opacity, transform',
 				'z-index' : '5'
 			});
 
 			setOn({
 				'mouseover' : function() {
-					setStyle(tooltip,{'opacity' : option.opacity || 1});
+					setStyle(tooltip,{
+						'opacity' : option.opacity || 1,
+						'transform' : 'scale(1)'
+					});
 				},
 				'mouseleave' : function() {
-					setStyle(tooltip,{'opacity' : '0'});
+					setStyle(tooltip,{
+						'opacity' : '0',
+				    'transform' : 'scale(0.6)',
+					});
 				}
 			},parent);
 
@@ -673,7 +687,7 @@ const uiu = (function () {
 			setStyle(close,{
 				'position' : 'absolute',
 				'right' : '-15px',
-				'top' : '-15px',
+				'top' : '-0px',
 				'text-align' : 'center',
 				'width' : '25px',
 				'height' : '25px',
@@ -776,8 +790,12 @@ const uiu = (function () {
 		
 	}
 
+	function _clamp(val,max,min) {
+		return Math.min(Math.max(val,max),min);
+	}
+
 	//draggable
-	function draggable(option) {
+	function draggable(option,callback) {
 		let parent = option.parent;
 		let child = option.child;
 		let dragger = option.dragger;
@@ -790,17 +808,14 @@ const uiu = (function () {
 
     let isDown = false;
     let origin = {};
-    let pos = {};
-    let parentBounds = {
-      x : parent.offsetWidth,
-      y : parent.offsetHeight,
-    }
-    let childBounds = {
-      top : parent.offsetTop,
-      left : parent.offsetLeft,
-      x : child.offsetWidth,
-      y : child.offsetHeight,
-    }
+		let pos = {};
+		
+		let adjust = {
+			width : parent.offsetWidth - child.offsetWidth,
+			height : parent.offsetHeight - child.offsetHeight,
+			x : parent.offsetLeft,
+			y : parent.offsetTop,
+		}
 
     dragger.addEventListener('mousedown',(e) => {
 			e.stopPropagation();
@@ -808,29 +823,25 @@ const uiu = (function () {
       origin.x = e.offsetX;
 			origin.y = e.offsetY;
 		},false);
+
     dragger.addEventListener('mouseup',(e) => isDown = false);
-    parent.addEventListener('mouseleave',(e) => isDown = false);
+		document.body.addEventListener('mouseup',(e) => isDown = false);
+		document.body.addEventListener('mouseleave',(e) => isDown = false);
 		
-    parent.addEventListener('mousemove',throttle((e) => {
+    document.body.addEventListener('mousemove',throttle((e) => {
 			e.stopPropagation();
 			if(isDown) {
-        pos = {
-          x : e.pageX - origin.x,
-          y : e.pageY - origin.y
-        };
-        let isOutOfX = (pos.x < 0);
-        let isOutOfY = (pos.y < 0);
-        let isOutOfOtherX = ( (pos.x + childBounds.x) > parentBounds.x);
-				let isOutOfOtherY = ( (pos.y + childBounds.y) > parentBounds.y);
-				if (!isOutOfX && !isOutOfOtherX) {
-					child.style.left = pos.x - childBounds.left + 'px';
-				} 
-				if (!isOutOfY && !isOutOfOtherY) {
-					child.style.top = pos.y - childBounds.top + 'px';
+				pos = {
+					x : _clamp(e.pageX - origin.x - adjust.x, 0, adjust.width),
+					y : _clamp(e.pageY - origin.y - adjust.y, 0, adjust.height)
+				};
+				child.style.left = pos.x + 'px';
+				child.style.top = pos.y + 'px';
+				if(callback) {
+					callback(pos)
 				}
-			}			
-			// console.log(isDown)	
-    },0),false)
+			}
+    },10),false);
 
 	}
 

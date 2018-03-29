@@ -12,7 +12,13 @@
 	<link href="./src/lib/icomoon/style.css" media="all" rel="stylesheet" type="text/css">
 	<link href="./src/css/inputStyles.css" media="all" rel="stylesheet" type="text/css">
 	
-	<!--Scripts-->
+	<!--[if lte IE 10]>
+		<style>
+			 body { display: none }
+		</style>
+	<![endif]-->
+	
+	<!--is IE-->
 	<script>
 		var isIE = /*@cc_on!@*/false;
 		if(isIE) {
@@ -23,6 +29,16 @@
 
 
 	<!--External Scripts-->
+	<!-- ORDER
+    1. verlet.js
+    2. uiUtils.js
+    3. dragdraw.js
+    4. fs.js
+    5. exportsystem.js
+    6. livePreviews.js
+    7. userInterface.js
+    8. main.js
+	-->
 	<script async src="../Verlet.js/src/verlet.js"></script>
 	<script src="./src/js/uiUtils.js"></script>
 	<script async src="./src/js/dragdraw.js"></script>
@@ -78,7 +94,7 @@
 					
 					<div class="dropdown-content">
 						<span>Load Your Art</span>
-						<input type="file" id="loadPoints" accept=".json">
+						<input type="file" id="loadPoints" accept=".vdart">
 						<div class="fileinfo" id="fileinfo">
 							<p>File Name : </p>
 							<p>File Size : </p>
@@ -386,7 +402,7 @@
 				<div class="icon">
 					<i class="icon-braille"></i>
 					
-					<div class="dropdown-content pushleft">
+					<div class="dropdown-content">
 						<span>Charecter Map</span>
 						<hr>
 						
@@ -413,22 +429,6 @@
 		</div><!-- /titleinfo -->
 		<div class="dd-split"></div>
 
-
-		<!-- Shape Color -->
-
-		
-		<div class="dd-button" data-name="Shape Color">
-			<div class="icon" id="red" class="red">
-				<i class="icon-palette"></i>
-				
-				<div class="dropdown-content pushleft">
-					<span>Shape Color</span>
-					<hr>
-					<input type="color" id="shapecolor" value='#ee6666'>
-				</div>
-
-			</div>
-		</div>
 
 		<!-- Pinned -->
 
@@ -468,10 +468,12 @@
 
 
 	<!-- Drop in workspace -->
-	<section id="ctrlSaveModal">
-		<p style="color:white;position:absolute; top : -33px; padding : 5px; background-color : #191919">Save Your Art</p>
-		<input type="text" id="ctrlSaveName" placeholder="File Name">
-	</section>
+	<fieldset id="ctrlSaveModal">
+		<legend style="color : white">
+				Save Your Art
+		</legend>
+   	<input type="text" id="ctrlSaveName" placeholder="File Name">
+	</fieldset>
 
 	<input type="file" accept=".json" id="overlaydrag" style="position : absolute;height: 90vh;display : none; opacity : 0">
 
@@ -585,9 +587,15 @@
 
 		</div>
 
+		<!-- Shape Color -->
+		<div class="floating-content" id="floating-content-shape">		
+			<div class="dragger shape"></div>
+			<span>Shape Color</span>
+			<hr>
+			<input type="color" id="shapecolor" value='#ee6666'>
+		</div>
+
 	</div><!-- tooltip -->
-
-
 
 
 </div>

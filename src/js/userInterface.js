@@ -9,7 +9,7 @@ function initUI() {
 		parent : '.toolbar',
 		childs : '.dd-button',
 		content : '.dropdown-content',
-		timer : 2000,
+		timer : 250000,
 		dispatch : '#c',
 		dispatchEvt : 'mousedown',
 		effect : 'fadeSlide',
@@ -184,7 +184,7 @@ function initUI() {
 	uiu.setOn('change',file,function() {
 		let filedata = this.files[0];
 		fileinfo.innerHTML = '<p>File Name : ' + filedata.name + '</p>' +
-							 '<p>File Size : ' + Math.ceil(filedata.size / 1024) + 'kb</p>'
+							 			'<p>File Size : ' + Math.ceil(filedata.size / 1024) + 'kb</p>'
 	})
 
 	//debug panle
@@ -210,11 +210,139 @@ function initUI() {
 	}
 	
 	
+
+	/* Pinning Constrains And Line Visisbility */
+	let states = {
+		'pin-point' : false,
+		'line-hidden' : false,
+		'auto-join' : false
+	}
+
+	//context menu
+	function initContextMenu() {
+
+		//show hide context menu
+		let childs = uiu.query('.radialMenu > i',true);
+		uiu.setOn('mousedown','#c',function(e) {
+
+			if(e.which === 3) {
+				uiu.setStyle('.radialMenuCenter',{
+					'left' : e.offsetX - 30 + 'px',
+					'top' : e.offsetY - 31 + 'px',
+				})
+				uiu.radialMenu({
+					parent : '.radialMenu',
+					x : e.offsetX,
+					y : e.offsetY,
+					radius : 75
+				},function() {
+					for (let i = 0; i < childs.length; i++) {
+						uiu.removeClass(childs[i],'noEvent');
+					}
+					//toggle states
+					uiu.linkDOM('.radialMenuCenter',this,function(elm1,elm2){
+						uiu.removeClass(elm1,'noEvent');
+						uiu.removeClass(elm2,'hideRadialMenu');
+					});
+				})
+			}
+			if(e.which === 1) {
+				//toggle states
+				uiu.linkDOM('.radialMenuCenter','.radialMenu',function(elm1,elm2){
+					uiu.addClass(elm1,'noEvent');
+					uiu.addClass(elm2,'hideRadialMenu');
+				});
+				for (let i = 0; i < childs.length; i++) {
+					uiu.addClass(childs[i],'noEvent');
+				}
+			}
+		});
+
+		//Show Info
+		uiu.eventDelegate({
+			parent : '.radialMenu',
+			find : 'i',
+		},function(target) {
+			let attr = target.dataset.uid;
+			let menu = uiu.query('.radialMenuCenter');
+			menu.innerHTML = attr;
+		});
+
+		//toolbar option link
+		uiu.eventDelegate({
+			on : 'mousedown',
+			parent : '.toolbar',
+			find : '[data-tooltip]',
+			noOverwrite : true
+		},function(target) {
+			let maintarget = target.closest('[data-tooltip]')
+			let linkid = maintarget.getAttribute('id');
+
+			uiu.linkDOM(maintarget,'#context-'+linkid,function(e1,e2) {
+				uiu.toggleClass(e1,'button-active');
+				uiu.toggleClass(e2,'button-active');
+
+				//toggle states false||true
+				let stid = linkid.replace('#','');
+				states[stid] = states[stid] ? false : true;
+			});
+
+		});
+
+		//main click handler and DOMLink
+		uiu.eventDelegate({
+			on : 'mousedown',
+			parent : '.radialMenu',
+			find : 'i',
+			noOverwrite : true
+		},function(target) {
+			let linkid = target.dataset.link;
+			let type = target.dataset.type;
+
+			if(type === 'tool') {
+				uiu.linkDOM(target,linkid,function(e1,e2) {
+					uiu.toggleClass(e1,'button-active');
+					uiu.toggleClass(e2,'button-active');
+
+					//toggle states false||true
+					let stid = linkid.replace('#','');
+					states[stid] = states[stid] ? false : true;
+				})
+			} else {
+				uiu.linkDOM(target,linkid,function(e1,e2) {
+					uiu.toggleClass(e1,'button-active');
+
+					//toggle checkbox
+					let checkbox = uiu.query(linkid);
+					checkbox.checked = (checkbox.checked) ? false : true
+
+				});
+			}
+		});
+
+		//checkboxDOMLink
+		uiu.eventDelegate({
+			on : 'change',
+			parent : '#context-link',
+			find : 'input[type="checkbox"]',
+			noOverwrite : true
+		},function(target) {
+			let linkid = target.getAttribute('id');
+
+			uiu.linkDOM(target,'#context-'+linkid,function(e1,e2) {
+				uiu.toggleClass(e2,'button-active');
+			})
+		});
+
+	}
+	initContextMenu();
+
 	/*
 		Return To Global namespace 
 	*/
 	initUI.debug = debug;
 	initUI.fullSrc = fullSrc;
+	initUI.states = states;
 }
 
 initUI();

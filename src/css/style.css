@@ -1,5 +1,9 @@
 @charset "utf-8";
-/* Verlet Drawing CSS */
+
+/*--------------------*\
+	Verlet Drawing CSS
+\*--------------------*/
+
 @font-face {
 	src : url('../lib/fonts/Snickles-webfont.ttf');
 	font-family:  'Snickles';
@@ -11,12 +15,12 @@
 	user-select: none;
 }
 
-.nouse {
-	font-size: 100px;
-	background-color: red;
-}
 
-/*Electron titile window*/
+
+/*-----------------------*\
+	Electron titile window
+\*-----------------------*/
+
 .elc-window {
 	margin: 0;
 	width: 100%;
@@ -42,7 +46,11 @@
 	color : tomato;
 }
 
-/* basic tags */
+
+/*--------------------*\
+			BASIC TAGS
+\*--------------------*/
+
 html {
 	border: 1px solid white;
 	margin:0;
@@ -65,7 +73,16 @@ canvas::selection {
 	background-color : transparent;
 }
 
-/* main container */
+.show {
+	pointer-events: all !important;
+	opacity: 1 !important;
+}
+
+
+/*--------------------*\
+		MAIN CONTAINERS
+\*--------------------*/
+
 .container {
 	/* overflow: hidden; */
 	width: 100%;
@@ -102,7 +119,9 @@ canvas::selection {
 	z-index: 2;
 }
 
-/* CHECK BOXES */
+/*--------------------*\
+			CHECKBOXES
+\*--------------------*/
 .check-container {
 	display: flex;
 	width: 100%;
@@ -119,7 +138,7 @@ canvas::selection {
 	font-size : 12px;
 }
 
-/* split buttons */
+/* vr */
 .dd-split {
 	width: 1px;
 	height: 40px;
@@ -129,7 +148,12 @@ canvas::selection {
 	float: left;
 }
 
-/* main dropdown styles */
+
+
+/*--------------------*\
+		DROPDOWN STYLES
+\*--------------------*/
+
 .icon {
 	position: relative;
 	width : 100%;
@@ -138,6 +162,7 @@ canvas::selection {
 	font-size: 18px;
 	transition: 0.2s;
 	pointer-events: none;
+	cursor: default;	
 }
 .dd-button {
 	width: 3.5%;
@@ -148,16 +173,14 @@ canvas::selection {
 	-webkit-transition: 0.1s;
 	transition: 0.1s;
 	border-bottom : 1px solid white;
+	cursor: pointer;
 }
 .dd-button:hover {
 	background-color: white;
 	-webkit-transition: 0.1s;
 	transition: 0.1s;
 }
-.dd-button {
-	cursor: pointer;
-}
-.dd-button:hover > .icon {
+.dd-button:hover .icon {
 	color : lightskyblue;
 }
 .dropdown-content {
@@ -169,23 +192,10 @@ canvas::selection {
 	transition: 0.3s;
 	background-color: rgba(25,25,25,0.8);
 	width: 260px; 
-	height: auto;
 	padding: 10px;
-	/* top: 32px; */
-	/* margin-left: 2px; */
 	border-bottom: 4px solid lightskyblue;
 	border-left: 1px solid white;
 	border-right: 1px solid white;
-	/* outline: 2px solid white; */
-	/* margin-top: -30px; */
-	word-break: break-all;
-	word-wrap: break-word;
-}
-.dropdown-content > * {
-	/* border-radius: 2px;	 */
-}
-.pushleft {
-	right : 0;
 }
 .dropdown-content input,button {
 	font-size : 14px;
@@ -193,77 +203,24 @@ canvas::selection {
 	width: 100%;
 	transition: 0.2s;
 }
-.dropdown-content input:focus,button:focus {
-	/* box-shadow: 0 0 5px lightskyblue inset; */
-}
 .dropdown-content p,span {
 	font-size : 14px;
 	line-height: 7px;
 	color : white !important;
 	width: 100%;
 }
-.fileinfo {
-	margin: 0;
-	width: 100%;
-	height: auto;
-	padding:1px;
-	padding-left:5px;
-	border: 1px solid white;
-	border-bottom-color: lightskyblue;
-	border-bottom-width: 2px;
-	text-align: left;
+/*shift last element to little bit left*/ 
+.pushleft {
+	width: 200px;
+	left : 0px !important;
 }
-.fileinfo p {
-	font-size: 12px;
-}
-.button-active {
-	color : orangered !important;
-}
-.button-active .icon {
-	color : orangered !important;
-	/* border-bottom : 2px solid lightskyblue; */
-}
-.live-preview {
-	width: 100%;
-	padding: 2px;
-	margin-top: 5px;
-	outline: 1px solid white;
-	overflow: auto;
-}
-#hexagon-live {
-	margin-left: 15%;
-	width: 70%;
-}
-.mapcontainer {
-	width: 100%;
-	height: auto;
-	/* padding: 10px; */
-	margin: 3px;
-}
-.mapcontainer textarea {
-	float: left;
-	width: 98%;
-	resize: vertical;
-	padding : 15px;
-}
-.debugpanel {
-	border: 1px solid gray;
-	padding: 0px;
-	padding-left: 5px;
-	float: left;
-	font-size: 14px;
-	width: 100%;
-	height: auto;
-	border-bottom: 1px solid gray;
-	border-left: 1px solid gray;
-	border-right: 1px solid gray;
-	word-break: break-all;
-	-webkit-transition : 0.2s;
-	transition : 0.2s;
-}
-.debugpanel p {
-	display: inline-block;
-}
+
+
+
+/*------------------------*\
+					SLIDERS
+\*------------------------*/
+
 .sliders {
 	display: flex;
 	width: 100%;
@@ -272,6 +229,7 @@ canvas::selection {
 	font-size: 11px;
 	margin-left: 0;
 	margin-right: 0;
+	margin-top: 0;
 	padding: 0;
 }
 .slider-container {
@@ -299,7 +257,158 @@ canvas::selection {
 	width: 100%;
 }
 
-/* slidedown popup */
+
+
+/*------------------------*\
+		SETTINGS CHECKBOXES
+\*------------------------*/
+
+.green {
+	color : #67f345; 
+}
+ul.rendersettings-icons input[type=checkbox] {
+  opacity: 0;
+	pointer-events: none;
+	display: none;
+}
+ul.rendersettings-icons label {
+	display: block;
+	width: 100%;
+	padding: 5px;
+	height: 100%;
+}
+
+input:not(:checked) + label[for=dots],
+input:not(:checked) + label[for=lines],
+input:not(:checked) + label[for=shapes],
+input:not(:checked) + label[for=hiddenlines],
+input:not(:checked) + label[for=gridguid],
+input:not(:checked) + label[for=lines],
+input:not(:checked) + label[for=pointIndex] {
+	color : orangered;
+}
+input:checked + label[for=dots],
+input:checked + label[for=lines],
+input:checked + label[for=shapes],
+input:checked + label[for=hiddenlines],
+input:checked + label[for=gridguid],
+input:checked + label[for=lines],
+input:checked + label[for=pointIndex] {
+	color : #3fc71d;
+}
+ul.rendersettings-icons {
+	list-style-type: none;
+	display: flex;
+	justify-content: center; 
+	border: 1px solid white;
+	padding : 0px !important;
+}
+ul.rendersettings-icons > li:last-child {
+	border-right: none;
+}
+ul.rendersettings-icons > li {
+	text-align: center;
+	flex: 1;
+	cursor: pointer;
+	border-right: 1px solid white;
+}
+ul.rendersettings-icons > li, input, label { 
+	cursor: pointer;
+}
+ul.rendersettings-icons > li:hover { 
+	background-color: white;
+}
+
+
+
+/*--------------------*\
+			FILE INFO
+\*--------------------*/
+
+.fileinfo {
+	margin: 0;
+	width: 100%;
+	height: auto;
+	padding:1px;
+	padding-left:5px;
+	border: 1px solid white;
+	border-bottom-color: lightskyblue;
+	border-bottom-width: 2px;
+	text-align: left;
+}
+.fileinfo p {
+	font-size: 12px;
+}
+.button-active {
+	color : orangered !important;
+}
+.button-active .icon {
+	color : orangered !important;
+	/* border-bottom : 2px solid lightskyblue; */
+}
+
+
+
+
+/*--------------------*\
+		LIVE PREVIEWS
+\*--------------------*/
+
+.live-preview {
+	width: 100%;
+	padding: 2px;
+	margin-top: 5px;
+	outline: 1px solid white;
+	overflow: auto;
+}
+#hexagon-live {
+	margin-left: 15%;
+	width: 70%;
+}
+.mapcontainer {
+	width: 100%;
+	height: auto;
+	/* padding: 10px; */
+	margin: 3px;
+}
+.mapcontainer textarea {
+	float: left;
+	width: 98%;
+	resize: vertical;
+	padding : 15px;
+}
+
+
+
+/*--------------------*\
+			DEBUG PANEL
+\*--------------------*/
+
+.debugpanel {
+	border: 1px solid gray;
+	padding: 0px;
+	padding-left: 5px;
+	float: left;
+	font-size: 14px;
+	width: 100%;
+	height: auto;
+	border-bottom: 1px solid gray;
+	border-left: 1px solid gray;
+	border-right: 1px solid gray;
+	word-break: break-all;
+	-webkit-transition : 0.2s;
+	transition : 0.2s;
+}
+.debugpanel p {
+	display: inline-block;
+}
+
+
+
+/*--------------------*\
+			SLIDE POPUP
+\*--------------------*/
+
 .firstmenu {
 	position: relative;
 	transition : 0.2s;
@@ -333,7 +442,11 @@ canvas::selection {
 }
 
 
-/* Tooltips */
+
+/*--------------------*\
+				TOOLTIPS
+\*--------------------*/
+
 .tooltips {
 	position: relative;
 	width: 100%;
@@ -342,6 +455,7 @@ canvas::selection {
 	left: 0;
 	/* top: 45px; */
 	pointer-events: none;
+	opacity: 1;
 }
 #colorIndicator{
 	pointer-events: none;
@@ -361,7 +475,6 @@ canvas::selection {
 	padding: 10px;
 	color:white;
 }
-
 .uiuTooltip {
 	min-width: 200px !important;
 	padding: 5px;
@@ -369,24 +482,15 @@ canvas::selection {
 	background-color: white;
 	font-size: 14px;
 	color: #333;
-}
-
-.helpModal {
-	width: 100%;
-	margin: 0 auto;
-	height: 300px;
-	padding: 10px;
-	background-color: rgba(255,255,255,1);
-	color : lightskyblue;
+	box-shadow: 0px 0px 15px 5px rgb(0, 0, 0, 0.5);
 }
 
 
-/* context menu */
-.tooltips {
-	width: 100%;
-	opacity: 1;
-	/* overflow: hidden; */
-}
+
+/*--------------------*\
+			CONTEXT MENU
+\*--------------------*/
+
 .radialMenu {
 	position: relative;
 	transition: 0.2s;
@@ -439,11 +543,15 @@ canvas::selection {
 }
 
 
+
+/*--------------------*\
+			SAVE MODAL
+\*--------------------*/
 #ctrlSaveModal {
 	position: relative;
 	width: 25%;
 	top: -100%;
-	height: 100px;
+	height: auto;
 	padding: 8px;
 	/* background-color : #252525; */
 	border: 1px solid white;
@@ -452,64 +560,9 @@ canvas::selection {
 	opacity: 0;
 }
 #ctrlSaveModal > input {
-	padding: 10px;
-	margin-top: 23px;
-	left: 0;
-	/* position: absolute; */
-	bottom: 35%;
-}
-.green {
-	color : #67f345;  
-}
-ul.rendersettings-icons input[type=checkbox] {
-  opacity: 0;
-  margin: 0;
-	width: 0;
-	padding: 0;
-	pointer-events: none;
-	display: none;
+	margin-top: 0px;
 }
 
-input:not(:checked) + label[for=dots],
-input:not(:checked) + label[for=lines],
-input:not(:checked) + label[for=shapes],
-input:not(:checked) + label[for=hiddenlines],
-input:not(:checked) + label[for=gridguid],
-input:not(:checked) + label[for=lines],
-input:not(:checked) + label[for=pointIndex] {
-	color : orangered;
-}
-input:checked + label[for=dots],
-input:checked + label[for=lines],
-input:checked + label[for=shapes],
-input:checked + label[for=hiddenlines],
-input:checked + label[for=gridguid],
-input:checked + label[for=lines],
-input:checked + label[for=pointIndex] {
-	color : #67f345;
-}
-ul.rendersettings-icons {
-	list-style-type: none;
-	display: flex;
-	margin: 0;
-	padding: 10px;
-	border: 1px solid white;
-}
-ul.rendersettings-icons > li {
-	margin: 2px;
-	border-radius: 5px;
-	text-align: center;
-	padding: 5px;
-	flex: 1;
-	cursor: pointer;
-	border: 1px solid white;
-}
-ul.rendersettings-icons > li > * { 
-	cursor: pointer;
-}
-ul.rendersettings-icons > li:hover { 
-	background-color: white;
-}
 
 
 /*--------------------*\
@@ -519,6 +572,8 @@ ul.rendersettings-icons > li:hover {
 .floating-content {
 	width: 200px;
 	position: absolute;
+	left : calc(98% - 200px);
+	top : 5%;
 	pointer-events: none;
 	border-radius: 0px 0px 10px 10px;
 	opacity: 0;
@@ -528,8 +583,6 @@ ul.rendersettings-icons > li:hover {
 	border-bottom: 4px solid lightskyblue;
 	border: 1px solid white;
 	transition : 0.2s opacity;
-}
-.floating-content {
 	padding-top: 25px;
 }
 .floating-content p,span,hr {
@@ -560,7 +613,11 @@ ul.rendersettings-icons > li:hover {
 
 
 
-/* Media Queries */
+
+/*--------------------*\
+		MEDIA QUERIES
+\*--------------------*/
+
 @media only screen and (max-width : 768px) {
 	.title, .title font {
 		font-size: 20px;

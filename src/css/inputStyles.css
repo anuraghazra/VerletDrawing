@@ -12,6 +12,15 @@ input,button {
 	outline: none;
 	border: none;
 }
+input::selection {
+	background-color: lightskyblue;
+}
+textarea {
+	outline: none;
+}
+textarea::selection {
+	background-color: lightskyblue;
+}
 
 /* butttons */
 button {
@@ -30,42 +39,80 @@ button:disabled {
 }
 
 /* selectbox */
-input[type=number],input[type=text], select {
-	transition: 0.2s;
-}
-input[type=number]:focus, input[type=text]:focus, select:focus {
-	box-shadow: 0px -4px 0px 0px  lightskyblue inset;
-	transition: 0.2s;
-}
+
 select {
 	width: 50%;
 	padding: 4px;
 	outline: none;
-	border: none;
 	cursor: pointer;
+	border: 1px solid white;
+	background-color: transparent;
+	color: white;
+}
+select > option {
+	color: black;
+}
+select:focus {
+	color : black;
+	box-shadow: 0px -26px 0px 0px  white inset;
+	transition: 0.3s;
+}
+input[type=number] {
+	position: relative;
+}
+input[type=number]::-webkit-inner-spin-button {
+	display: block;
+	position: absolute;
+	border: none;
+	outline: none;
+	background: transparent;
+	height: 100.5%;
+	right: -20px;
+	top: 0;
+	margin: 0;
+	padding: 0;
+	transition: 0.2s;
+}
+input[type=number]:hover::-webkit-inner-spin-button {
+	right: 0px;
+}
+input[type=number],input[type=text], select {
+	transition: 0.3s;
+	border: 1px solid white;
+	background-color: transparent;
+	color: white;
+}
+input[type=number]:focus, input[type=text]:focus {
+	box-shadow: 0px -31px 0px 0px  white inset;	
+	color : black;
+	/* box-shadow: 0px -26px 0px 0px  white inset; */
+	transition: 0.2s;
 }
 
 /* textinput */
 input::-webkit-input-placeholder {
 	position: relative;
-	left: 35%;
-	color:slategrey;
+	left: 50%;
+	color:white;
+	transform: translate(-15%,0%);	
 	transition: 0.2s;
 }
 input:focus::-webkit-input-placeholder {
 	left: 0%;
 	color:grey;
+	transform: translateX(0%);	
 	transition: 0.2s;
 }
 
 
 /* fileupload */
 input::-webkit-file-upload-button {
+	margin: 0;
 	width : 100%;
 	padding: 3px;
-	border: none;
-	color:gray;
-	background-color: white;
+	border: 1px solid white;
+	color:white;
+	background-color: transparent;
 	cursor: pointer;
 }
 input::-webkit-file-upload-button:hover {

@@ -242,21 +242,12 @@ function verletDrawing() {
 	box.create.onclick = () => {
 		(box.select.value === 'box') ? createBox() : createTri();
 	};
-	rope.create.onclick = () => {
-		createRope();
-	};
-	cloth.create.onclick = () => {
-		createCloth();
-	}
-	hexa.create.onclick = () => {
-		createHexagon();
-	};
-	map.create.onclick = () => {
-		createMap();
-	};
-	beam.create.onclick = () => {
-		createBeam();
-	};
+	rope.create.onclick  = () => createRope();
+	cloth.create.onclick = () => createCloth();
+	hexa.create.onclick  = () => createHexagon();
+	map.create.onclick 	 = () => createMap();
+	beam.create.onclick  = () => createBeam();
+	
 	/*Load And Export*/
 	exportbtn.onclick = () => {
 		const filename = document.getElementById("filename");
@@ -538,8 +529,7 @@ function verletDrawing() {
 			toggle : '#ctrlSaveModal',
 			in : ['top','0%','35%'],
 		},function() {
-			console.log('ok');
-			uiu.toggleStyle(document.body,'pointer-events','all','none');
+			uiu.query('#ctrlSaveModal > input').classList.remove('show');
 		})
 	}
 	toggleModal(false);
@@ -549,14 +539,38 @@ function verletDrawing() {
 
 			let name = uiu.query('#ctrlSaveModal > input');
 			uiu.onkey('enter',function() {
-				console.log(forms)
 				exportModel(points,constrains,forms,name.value);
-				toggleModal(false)
+				toggleModal(false);
+				uiu.query('#ctrlSaveModal > input').classList.add('show');
+				
 			},name)
 	}
 	uiu.onkey('ctrl+s',ctrlSave);
 
-	//Core Logic
+	
+
+
+
+	// Event Subscribers
+	uiu.event.subEvent('toggleCursor',cbkToggle);
+  function cbkToggle(pointers,once) {
+    let bdy = document.body.style
+    if (!once) {
+      if (bdy.cursor === pointers[0]) {
+        bdy.cursor = pointers[1];
+      } else {
+        bdy.cursor = pointers[0];
+      }
+    } else {
+      bdy.cursor = once;
+    }
+  }
+
+
+
+	/*
+	 * ======= Keyboard Functionalities =======
+	 */
 	function initCore() {
 		/* Key Handling */
 		document.body.addEventListener('keydown', keyhandling);
@@ -587,10 +601,10 @@ function verletDrawing() {
 				case 81://Q
 					if (handleArray.length > 0) {
 						let hidden = false;
-						if (states['line-hidden'] == true) {
+						if (initUI.states['line-hidden'] == true) {
 							hidden = true;
 						}
-						if (states['auto-join'] === false) {
+						if (initUI.states['auto-join'] === false) {
 							for (let k = 0; k < handleArray.length; k++) {
 								handleArray[k][2] = hidden;
 								verlet.clamp([handleArray[k]], constrains, points);
@@ -629,6 +643,15 @@ function verletDrawing() {
 						this.style.backgroundColor = shapecolor.value;
 					});
 					canvas.style.cursor = 'alias';
+
+					let fContentShape = _('floating-content-shape');
+					fContentShape.classList.add('show');
+
+					uiu.draggable({
+						parent : '.tooltips',
+						child : '#floating-content-shape',
+						dragger : '.shape'
+					})
 					break;
 					
 				case 65:
@@ -679,6 +702,10 @@ function verletDrawing() {
 					for (let i = 0; i < points.length; i++) {
 						points[i].color = null;
 					}
+					
+					let fContentShape = _('floating-content-shape');
+					fContentShape.classList.remove('show');
+
 					// updateUndoRedo();
 					case 65:
 					createAutoJoin();
@@ -695,8 +722,8 @@ function verletDrawing() {
 		function definePoints(e) {
 			let pinned;
 			let color;
-			pinned = (states['pin-point']) ? true : false;
-			color = (states['pin-point']) ? 'crimson' : null;
+			pinned = (initUI.states['pin-point']) ? true : false;
+			color = (initUI.states['pin-point']) ? 'crimson' : null;
 			let mx = e.offsetX;
 			let my = e.offsetY;
 			if (e.which === 1) {
@@ -790,186 +817,56 @@ function verletDrawing() {
 	}
 	initCore();
 
-	/* Pinning Constrains And Line Visisbility */
-	let states = {
-		'pin-point' : false,
-		'line-hidden' : false,
-		'auto-join' : false
-	}
 
-	//context menu
-	function initContextMenu() {
+	/*
+		Dragging and Drawing
+	*/
+	initDragDrawing();
+	function initDragDrawing() {
+		//drag draw
+		drag.init(verlet.canvas,(x,y,w,h) => drawBox(x,y,w,h));
+		drag.init(verlet.canvas,(x,y,w,h) => drawRope(x,y,w,h));
+		drag.init(verlet.canvas,(x,y,w,h) => drawHexagon(x,y,w,h));
 
-		//show hide context menu
-		let childs = uiu.query('.radialMenu > i',true);
-		uiu.setOn('mousedown','#c',function(e) {
-
-			if(e.which === 3) {
-				uiu.setStyle('.radialMenuCenter',{
-					'left' : e.offsetX - 30 + 'px',
-					'top' : e.offsetY - 31 + 'px',
-				})
-				uiu.radialMenu({
-					parent : '.radialMenu',
-					x : e.offsetX,
-					y : e.offsetY,
-					radius : 75
-				},function() {
-					for (let i = 0; i < childs.length; i++) {
-						uiu.removeClass(childs[i],'noEvent');
-					}
-					//toggle states
-					uiu.linkDOM('.radialMenuCenter',this,function(elm1,elm2){
-						uiu.removeClass(elm1,'noEvent');
-						uiu.removeClass(elm2,'hideRadialMenu');
-					});
-				})
-			}
-			if(e.which === 1) {
-				//toggle states
-				uiu.linkDOM('.radialMenuCenter','.radialMenu',function(elm1,elm2){
-					uiu.addClass(elm1,'noEvent');
-					uiu.addClass(elm2,'hideRadialMenu');
-				});
-				for (let i = 0; i < childs.length; i++) {
-					uiu.addClass(childs[i],'noEvent');
-				}
-			}
-		});
-
-		//Show Info
-		uiu.eventDelegate({
-			parent : '.radialMenu',
-			find : 'i',
-		},function(target) {
-			let attr = target.dataset.uid;
-			let menu = uiu.query('.radialMenuCenter');
-			menu.innerHTML = attr;
-		});
-
-		//toolbar option link
-		uiu.eventDelegate({
-			on : 'mousedown',
-			parent : '.toolbar',
-			find : '[data-tooltip]',
-			noOverwrite : true
-		},function(target) {
-			let maintarget = target.closest('[data-tooltip]')
-			let linkid = maintarget.getAttribute('id');
-
-			uiu.linkDOM(maintarget,'#context-'+linkid,function(e1,e2) {
-				uiu.toggleClass(e1,'button-active');
-				uiu.toggleClass(e2,'button-active');
-
-				//toggle states false||true
-				let stid = linkid.replace('#','');
-				states[stid] = states[stid] ? false : true;
-			});
-
-		});
-
-		//main click handler and DOMLink
-		uiu.eventDelegate({
-			on : 'mousedown',
-			parent : '.radialMenu',
-			find : 'i',
-			noOverwrite : true
-		},function(target) {
-			let linkid = target.dataset.link;
-			let type = target.dataset.type;
-
-			if(type === 'tool') {
-				uiu.linkDOM(target,linkid,function(e1,e2) {
-					uiu.toggleClass(e1,'button-active');
-					uiu.toggleClass(e2,'button-active');
-
-					//toggle states false||true
-					let stid = linkid.replace('#','');
-					states[stid] = states[stid] ? false : true;
-				})
-			} else {
-				uiu.linkDOM(target,linkid,function(e1,e2) {
-					uiu.toggleClass(e1,'button-active');
-
-					//toggle checkbox
-					let checkbox = uiu.query(linkid);
-					checkbox.checked = (checkbox.checked) ? false : true
-
-				});
-			}
-		});
-
-		//checkboxDOMLink
-		uiu.eventDelegate({
-			on : 'change',
-			parent : '#context-link',
-			find : 'input[type="checkbox"]',
-			noOverwrite : true
-		},function(target) {
-			let linkid = target.getAttribute('id');
-
-			uiu.linkDOM(target,'#context-'+linkid,function(e1,e2) {
-				uiu.toggleClass(e2,'button-active');
-			})
-		});
-
-	}
-	initContextMenu();
-
-
-	//drag draw
-	drag.init(verlet.canvas,function(x,y,w,h) {
-		drawBox(x,y,w,h);
-	});
-	drag.init(verlet.canvas,function(x,y,w,h) {
-		drawRope(x,y,w,h);
-	});
-	drag.init(verlet.canvas,function(x,y,w,h) {
-		drawHexagon(x,y,w,h);
-	});
-
-
-	//draw and create with shortcuts
-	box.draw.onchange = function() {
-		if(box.draw.checked == true) {
-			canvas.style.cursor = 'crosshair';
-		} else {
-			canvas.style.cursor = 'default';
+		//draw and create with shortcuts
+		box.draw.onchange = function() {
+			uiu.event.emit('toggleCursor',[['crosshair','default']]);
 		}
+		
+		uiu.onkey('b',function() {
+			box.draw.checked = true;
+			canvas.style.cursor = 'crosshair';
+		});
+
+		uiu.onkey('r',function() {
+			rope.draw.checked = true;
+			canvas.style.cursor = 'crosshair';
+		});
+
+		uiu.onkey('h',function(e) {
+			hexa.draw.checked = true;
+			canvas.style.cursor = 'crosshair';
+			let fContent = _('floating-content');
+			fContent.classList.add('show');
+		});
+		uiu.draggable({
+			parent : '.tooltips',
+			child : '#floating-content',
+			dragger : '.dragger'
+		});
+
+		uiu.on('keyup',document,function(e) {
+			box.draw.checked = false;
+			rope.draw.checked = false;
+			canvas.style.cursor = 'default';
+			
+			if(e.which === 72) {
+			  let fContent = _('floating-content');
+			  hexa.draw.checked = false;
+			  fContent.classList.remove('show');
+			}
+		});
 	}
-	uiu.onkey('b',function() {
-		box.draw.checked = true;
-		canvas.style.cursor = 'crosshair';
-
-	});
-	uiu.onkey('r',function() {
-		rope.draw.checked = true;
-		canvas.style.cursor = 'crosshair';
-	});
-
-	uiu.draggable({
-		parent : '.tooltips',
-		child : '#floating-content',
-		dragger : '.dragger'
-	})
-	// TODO : FIX DRAGGING AND HEXAGON CREATION
-	uiu.onkey('h',function() {
-		hexa.draw.checked = true;
-		canvas.style.cursor = 'crosshair';
-		let fContent = _('floating-content');
-		fContent.style.opacity = 1;
-		fContent.style.pointerEvents = 'all';
-	});
-	uiu.on('keyup',document,function() {
-		let fContent = document.getElementById('floating-content');
-		box.draw.checked = false;
-		rope.draw.checked = false;
-		hexa.draw.checked = false;
-		canvas.style.cursor = 'default';
-		fContent.style.opacity = 0;
-		fContent.style.pointerEvents = 'none';
-	})
-
 	function _drawbox(x,y,w,h) {
 		ctx.beginPath();
 		ctx.strokeStyle = 'gray';
@@ -1008,6 +905,7 @@ function verletDrawing() {
 		ctx.fill();
 		ctx.closePath();
 	}
+
 
 
 	// render toggling variables
