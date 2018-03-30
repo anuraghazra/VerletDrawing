@@ -24,9 +24,9 @@ textarea::selection {
 
 /* butttons */
 button {
-	padding: 5px;
 	margin-top: 5px;
 	cursor: pointer;
+	transition: 0.2s;
 }
 button:hover {
 	background-color: lightskyblue;
@@ -49,9 +49,14 @@ select {
 	background-color: transparent;
 	color: white;
 }
-select > option {
+option {
 	color: black;
+	cursor: pointer;
 }
+option:hover {
+	background-color: white;
+}
+
 select:focus {
 	color : black;
 	box-shadow: 0px -26px 0px 0px  white inset;
@@ -106,10 +111,13 @@ input:focus::-webkit-input-placeholder {
 
 
 /* fileupload */
+input[type=file] {
+	width: 100%;
+}
 input::-webkit-file-upload-button {
-	margin: 0;
+	margin: 0 !important;
 	width : 100%;
-	padding: 3px;
+	padding: 5px;
 	border: 1px solid white;
 	color:white;
 	background-color: transparent;

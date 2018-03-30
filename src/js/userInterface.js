@@ -199,8 +199,14 @@ function initUI() {
 							+ ' | FPS : ' + fps;
 	}
 
+	document.body.onwebkitfullscreenchange = function(e) {
+		console.log(e)
+	}
 	function fullSrc() {
 		const doc = document.body;
+		if (doc.requestFullScreen) {
+			doc.requestFullScreen();
+		}
 		if (doc.webkitRequestFullScreen) {
 			doc.webkitRequestFullScreen();
 		}
