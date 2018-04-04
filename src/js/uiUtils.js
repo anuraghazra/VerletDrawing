@@ -623,9 +623,6 @@ const uiu = (function () {
 				tooltip.setAttribute('class',option.contentClass || '');
 				tooltip.setAttribute('id',option.id || 'uiuTooltip');
 				tooltip.innerHTML = option.content || 'tooltip';
-			
-			const parent_w = parent.offsetWidth;
-			const child_w = tooltip.getBoundingClientRect().width;
 
 			// console.log(append)
 			(append||parent).appendChild(tooltip);
@@ -641,11 +638,13 @@ const uiu = (function () {
 				'pointer-events' : 'none',
 				'transition' : '0.2s',
 				'transition-property' : 'opacity, transform',
-				'z-index' : '5'
+				'z-index' : '5',
+				'left' : '0',
+				'top' : '0'
 			});
 
 			setOn({
-				'mouseover' : function() {
+				'mouseover' : function(e) {
 					setStyle(tooltip,{
 						'opacity' : option.opacity || 1,
 						'transform' : 'scale(1)'
@@ -658,13 +657,36 @@ const uiu = (function () {
 					});
 				}
 			},parent);
+			
 
-			setOn('mousemove',parent,throttle(function(e) {
-				setStyle(tooltip,{
-					left : e.offsetX + offset.x + 'px',
-					top : e.offsetY + offset.y + 'px' 
-				});
-			},option.throttle || 30))
+		let pre_left,
+				pre_right;
+			
+		
+		function posSet(e) {
+			// const body_w = document.body.offsetWidth;
+			// const parent_w = parent.pageX;
+
+			// let child_w = tooltip.offsetWidth;
+			// let child_r = tooltip.getBoundingClientRect().right;
+
+			// let offsetToTest = e.clientX + child_w;
+			
+			// if(body_w > offsetToTest) {
+			// 	pre_left = (e.offsetX + offset.x);
+			// 	console.log(pre_left)
+			// } else {
+			// 	// pre_left = (body_w - parent_w) - child_w;
+			// }
+			// 	// console.log(child_r)
+
+			setStyle(tooltip,{
+				left : e.offsetX + offset.x + 'px',
+				top : e.offsetY + offset.y + 'px' 
+			});
+		}
+
+		setOn('mousemove',parent,throttle(posSet,option.throttle || 30))
 
 		}
 	};

@@ -24,13 +24,43 @@ textarea::selection {
 
 /* butttons */
 button {
+	position: relative;
 	margin-top: 5px;
+	margin-bottom: 5px;
 	cursor: pointer;
-	transition: 0.2s;
+	transition: 0.3s;
+	overflow: hidden;
+	border-radius: 0 0 5px 5px;
+	border: 1px solid white;
+	background-color: transparent;
+	color : white;
+	font-weight: bold;
+	z-index: 1;
+}
+button:before {
+	position: absolute;
+	display: block;
+	content : ' ';
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100px;
+	transform: rotate(45deg);
+	background-color: white;
+	outline: 1px solid white;
+	outline-offset: 5px;
+	transition: 0.3s;
+	z-index: -1;
+}
+button:hover:before {
+	color: black;
+	top: 0;
+	left: 0%;
+	width: 300px;
 }
 button:hover {
-	background-color: lightskyblue;
-	color:white;
+	color: black;
+	transition: 0.3s;
 }
 button:disabled {
 	background-color: #ccc;

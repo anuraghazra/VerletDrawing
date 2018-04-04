@@ -13,6 +13,7 @@
 	box-sizing: border-box;
 	font-family: 'Century Gothic';
 	user-select: none;
+	-webkit-font-smoothing : antialiased;
 }
 
 
@@ -64,7 +65,9 @@ body {
 	background-color: #191919;
 	overflow-x: hidden;
 }
-canvas{
+canvas {
+	transition: 0.2s;
+	/* outline: 1px solid red; */
 	float: left;
 }
 
@@ -216,6 +219,70 @@ canvas::selection {
 }
 
 
+/*--------------------*\
+			SIDE SETTINGS
+\*--------------------*/
+.sidesettings {
+	pointer-events: all;
+	position: absolute;
+	height: inherit;
+	top: 2px;
+	right: -250px;
+	width: 250px;
+	padding: 10px;
+	border: 1px solid white;
+	border-top : none;
+	border-bottom : none;
+	border-right: none;
+	color: white;
+	transition: 0.3s cubic-bezier(0.39, 0.575, 0.1, 1);
+	background-color: rgba(25,25,25,0.8);	
+}
+.sidesettings-active {
+	right: 0px;
+}
+.sidesettings-grabber {
+	position: absolute;
+	left: -30px;
+	top: 50%;
+	padding: 5px;
+	border-radius: 5px 0% 0% 5px;
+	transform: translateY(-50%);
+	background-color: #fff;
+	cursor: pointer;
+}
+.sidesettings-grabber i {
+	color: black;
+	font-size: 20px;
+}
+.sidesettings-grabber:hover i {
+	color : white;
+}
+.sidesettings-grabber:hover {
+	background-color: #5cd6ff;
+}
+.sidegrabber-line {
+	display: block;
+	position: relative;
+	width: 5px;
+	height: 90%;
+	margin: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 15%;
+	text-align: center;
+	background-color: rgb(25,25,25);
+}
+.sidesettings-sliders > .slider-container {
+	flex-basis: 100px;
+}
+.sidesettings-sliders {
+	flex-wrap: wrap;
+}
+
+
+
+
 
 /*------------------------*\
 					SLIDERS
@@ -241,8 +308,12 @@ canvas::selection {
 	border-left: 1px solid white;
 	padding: 8px;
 }
+.slider-container > input {
+	float: left;
+}
 .slider-container:last-of-type,
-.slider-container:nth-child(4) {
+.slider-container:nth-child(2),
+.slider-container:nth-child(5){
 	border-right: 1px solid white;
 }
 .rangeVal {
@@ -280,6 +351,8 @@ ul.rendersettings-icons label {
 
 input:not(:checked) + label[for=dots],
 input:not(:checked) + label[for=lines],
+input:not(:checked) + label[for=dotsasbox],
+input:not(:checked) + label[for=stress],
 input:not(:checked) + label[for=shapes],
 input:not(:checked) + label[for=hiddenlines],
 input:not(:checked) + label[for=gridguid],
@@ -289,6 +362,8 @@ input:not(:checked) + label[for=pointIndex] {
 }
 input:checked + label[for=dots],
 input:checked + label[for=lines],
+input:checked + label[for=dotsasbox],
+input:checked + label[for=stress],
 input:checked + label[for=shapes],
 input:checked + label[for=hiddenlines],
 input:checked + label[for=gridguid],
@@ -428,7 +503,7 @@ ul.rendersettings-icons > li:hover {
 .toolbar-name-file{
 	transition: 0.3s;
 	width: 100px;
-	left: 40%;
+	left: 0%;
 }
 .toolbar-name-creative{
 	transition: 0.3s;

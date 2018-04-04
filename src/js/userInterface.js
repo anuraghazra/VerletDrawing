@@ -22,7 +22,8 @@ function initUI() {
 		let inputs = this.querySelectorAll('input, button');
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].blur();
-		}
+		};
+		uiu.removeClass('.sidesettings','sidesettings-active')
 	});
 	
 	//hide contextmenu when dropdown is clicked
@@ -85,7 +86,7 @@ function initUI() {
 
 	//tooltips
 	const tooltipOffset = {
-		x : - 80,
+		x : -80,
 		y : 22
 	}
 	uiu.tooltip({
@@ -134,20 +135,34 @@ function initUI() {
 		content : `Toggle render shapes`,
 		contentClass : 'uiuTooltip',
 		id : 'li-shapes-tooltip',
-		offset : tooltipOffset
+		offset : {x : -110, y : 22}
 	});
 	uiu.tooltip({
 		parent : '#li-hiddenlines',
 		content : `Toggle render hiddenlines`,
 		contentClass : 'uiuTooltip',
 		id : 'li-hiddenlines-tooltip',
-		offset : tooltipOffset
+		offset : {x : -150, y : 22}
 	});
 	uiu.tooltip({
 		parent : '#li-gridguid',
 		content : `Toggle render gridguid`,
 		contentClass : 'uiuTooltip',
 		id : 'li-gridguid-tooltip',
+		offset : {x : -180, y : 22}
+	});
+	uiu.tooltip({
+		parent : '#li-stress',
+		content : `Toggle render stress`,
+		contentClass : 'uiuTooltip',
+		id : 'li-stress-tooltip',
+		offset : tooltipOffset
+	});
+	uiu.tooltip({
+		parent : '#li-dotsasbox',
+		content : `Toggle render dots as box`,
+		contentClass : 'uiuTooltip',
+		id : 'li-dotsasbox-tooltip',
 		offset : tooltipOffset
 	});
 
@@ -343,6 +358,16 @@ function initUI() {
 	}
 	initContextMenu();
 
+
+
+	// SIDE-SETTINGS
+	let canvas = document.getElementById('c');
+	let cw = canvas.width;
+	uiu.on('click','.sidesettings-grabber',function() {
+		uiu.toggleClass('.sidesettings','sidesettings-active');
+	});
+
+	
 	/*
 		Return To Global namespace 
 	*/

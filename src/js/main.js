@@ -172,6 +172,8 @@ function verletDrawing() {
 				friction 				= _('friction'),
 				dotOpt 					= _('dots'),
 				LineOpt 				= _('lines'),
+				LineStressOpt		= _('stress'),
+				dotsAsBoxOpt		= _('dotsasbox'),
 				LineHiddenOpt 	= _('hiddenlines'),
 				IndexOpt 				= _('pointIndex'),
 				shapeOpt 				= _('shapes'),
@@ -237,6 +239,8 @@ function verletDrawing() {
 		create 	: _('createbeam')
 	}
 
+
+	// verlet.Poly.cloth({},points,constrains);
 
 	/* ======== UI Events ======== */
 	box.create.onclick = () => {
@@ -566,6 +570,7 @@ function verletDrawing() {
     }
   }
 
+	// TODO:  FIX LAGGING ON "W" KEY WITH hexagon floating MENU
 
 
 	/*
@@ -577,7 +582,6 @@ function verletDrawing() {
 		document.body.addEventListener('keyup', removekeyhandling);
 
 		function keyhandling(e) {
-			// console.log(e.which)
 			switch (e.which) {
 				case 16://Shift
 					canvas.addEventListener('mousedown', getPoint);
@@ -654,7 +658,7 @@ function verletDrawing() {
 					})
 					break;
 					
-				case 65:
+				case 87:
 					canvas.addEventListener('mousedown', pushAutoJoinArr);
 					canvas.style.cursor = 'crosshair';					
 			}
@@ -707,7 +711,7 @@ function verletDrawing() {
 					fContentShape.classList.remove('show');
 
 					// updateUndoRedo();
-					case 65:
+					case 87:
 					createAutoJoin();
 					canvas.removeEventListener('mousedown', pushAutoJoinArr);
 					canvas.style.cursor = 'pointer';			
@@ -914,6 +918,8 @@ function verletDrawing() {
 	let isRenderLines;
 	let isRenderHiddenLines;
 	let isRenderPointIndex;
+	let isRenderStress;
+	let isRenderDotsAsBox;
 
 	verlet.Interact.move(points,'white');
 	/* ====== ANIMATE ====== */
@@ -943,14 +949,21 @@ function verletDrawing() {
 		isRenderHiddenLines = LineHiddenOpt.checked;
 		isRenderPointIndex = IndexOpt.checked;
 		isRenderDots = dotOpt.checked;
+		isRenderStress = LineStressOpt.checked;
+		isRenderDotsAsBox = dotsAsBoxOpt.checked;
 
 		verlet.superRender(points,constrains,{
 			renderDots : isRenderDots,
 			renderLines : isRenderLines,
 			renderHiddenLines : isRenderHiddenLines,
 			renderPointIndex : isRenderPointIndex,
+			renderDotsAsBox : isRenderDotsAsBox,
 			preset : 'shadowBlue'
 		});
+
+		if(isRenderStress) {
+			verlet.renderStress(constrains);
+		}
 
 		drawGrid();
 		/* Temp Circles and lines */

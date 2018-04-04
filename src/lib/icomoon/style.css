@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icomoon';
   src:
-    url('fonts/icomoon.ttf?ohiw00') format('truetype'),
-    url('fonts/icomoon.woff?ohiw00') format('woff'),
-    url('fonts/icomoon.svg?ohiw00#icomoon') format('svg');
+    url('fonts/icomoon.ttf?vny2v4') format('truetype'),
+    url('fonts/icomoon.woff?vny2v4') format('woff'),
+    url('fonts/icomoon.svg?vny2v4#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -149,6 +149,9 @@ i {
 .icon-cog3:before {
   content: "\e91b";
 }
+.icon-folder:before {
+  content: "\e929";
+}
 .icon-davidstar:before {
   content: "\e91c";
 }
@@ -203,6 +206,12 @@ i {
 .icon-adjust:before {
   content: "\e39e";
 }
+.icon-arrow_drop_down:before {
+  content: "\e5c5";
+}
+.icon-arrow_drop_up:before {
+  content: "\e5c7";
+}
 .icon-bubble_chart:before {
   content: "\e6dd";
 }
@@ -224,14 +233,14 @@ i {
 .icon-details:before {
   content: "\e3c8";
 }
+.icon-fitness_center:before {
+  content: "\eb43";
+}
 .icon-format_color_fill:before {
   content: "\e23a";
 }
 .icon-format_color_text:before {
   content: "\e23c";
-}
-.icon-format_paint:before {
-  content: "\e243";
 }
 .icon-format_shapes:before {
   content: "\e25e";
@@ -263,6 +272,9 @@ i {
 .icon-more_horiz:before {
   content: "\e5d3";
 }
+.icon-play_arrow:before {
+  content: "\e037";
+}
 .icon-view_comfy:before {
   content: "\e42a";
 }
@@ -280,12 +292,6 @@ i {
 }
 .icon-th-small:before {
   content: "\e928";
-}
-.icon-th-small-outline:before {
-  content: "\e929";
-}
-.icon-weather-snow:before {
-  content: "\e92a";
 }
 .icon-grid3:before {
   content: "\e941";

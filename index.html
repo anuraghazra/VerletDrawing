@@ -90,7 +90,7 @@
 
 			<div class="dd-button" data-name="Load Model">
 				<div class="icon">
-					<i class="icon-download"></i>
+					<i class="icon-folder"></i>
 					
 					<div class="dropdown-content">
 						<span>Load Your Art</span>
@@ -104,110 +104,10 @@
 					
 				</div>
 			</div>
+		</div>	<!-- /titleinfo -->
 
 			
-			<!-- Settings -->
 
-
-			<div class="dd-button" data-name="Settings">
-				<div class="icon">
-					<i class="icon-cog2"></i>
-					<div class="dropdown-content" id="context-link">
-						
-						<span>Tweak Settings</span>
-						<hr>
-
-						<div class="sliders">
-							
-							<div class="slider-container">
-								<p class="optText">Gravity</p>
-								<input type="range" step="0.1" min="-1" max="1" value="0" style="float:left" id="gravity">
-								<span class="rangeVal">0</span>
-							</div>
-
-							<div class="slider-container">
-								<p class="optText">Bounce</p>
-								<input type="range" step="0.01" min="-1" max="1" value="0.9" style="float:left" id="bounce">
-								<span class="rangeVal">0.9</span>
-							</div>
-							
-							<div class="slider-container">
-								<p class="optText">Friction</p>
-								<input type="range" step="0.01" min="0" max="1" value="0.99" style="float:left" id="friction">
-								<span class="rangeVal">1</span>
-							</div>
-							
-							<div class="slider-container">
-								<p class="optText">Stiffness</p>
-								<input type="range" step="0.01" min="0" max="1" value="1" style="float:left" id="stiffness">
-								<span class="rangeVal">1</span>
-							</div>
-
-						</div><!--/sliders-->
-
-						<div class="slider-container phy">
-							<p class="optText" style="margin-bottom: 5px">Physics Accuracy</p>
-							<input type="range" id="Iterrations" value="20" min="1" max="500">
-							<span class="rangeVal rangePhy">20</span>
-						</div>
-
-						<p>Render Options</p>
-
-							<ul class="rendersettings-icons">
-
-								<li id="li-dots">
-										<input type="checkbox" id="dots" checked>
-										<label for="dots">
-												<i class="noEvent icon-flickr2" ></i>
-										</label>
-								</li>
-
-								<li id="li-lines">
-									<input type="checkbox" id="lines" checked>
-									<label for="lines">
-											<i class="noEvent icon-flow-line"></i>
-									</label>
-								</li>
-
-								<li id="li-pointIndex">
-									<input type="checkbox" id="pointIndex">
-									<label for="pointIndex">
-											<i class="noEvent icon-format_color_text"></i>										
-									</label>
-								</li>
-
-								<li id="li-shapes">
-									<input type="checkbox" id="shapes" checked>
-									<label for="shapes">
-											<i class="noEvent icon-palette"></i>										
-									</label>
-								</li>
-
-								<li id="li-hiddenlines">
-									<input type="checkbox" id="hiddenlines">
-									<label for="hiddenlines">
-											<i class="noEvent icon-linear_scale"></i>										
-									</label>
-								</li>
-
-								<li id="li-gridguid">
-									<input type="checkbox" id="gridguid">
-									<label for="gridguid">
-										<i class="noEvent icon-th-small"></i>											
-									</label>
-								</li>
-
-							</ul>
-
-						<div class="slider-container" style="width: 100%;">
-							<input type="range" step="5" min="15" max="100" value="35" style="float:left" id="gridgap">
-							<span class="rangeVal" style="margin-top: 20px;">35</span>
-						</div>
-
-					</div>
-				</div>
-			</div> <!-- /dd-button -->
-		</div>	<!-- /titleinfo -->
 		<div class="dd-split"></div>
 
 		
@@ -495,6 +395,124 @@
 	<!-- <br> -->
 	<div class="tooltips">
 
+			<!-- Settings -->
+				<aside class="sidesettings" id="context-link">
+
+						<div class="sidesettings-grabber">
+							<i class="icon-settings"></i>
+						</div>
+					
+						<span>Tweak Settings</span>
+						<hr>
+
+						<div class="sliders sidesettings-sliders">
+							
+							<div class="slider-container">
+								<p class="optText">Gravity</p>
+								<input type="range" step="0.1" min="-1" max="1" value="0" id="gravity">
+								<span class="rangeVal">0</span>
+							</div>
+
+							<div class="slider-container">
+								<p class="optText">Bounce</p>
+								<input type="range" step="0.01" min="-1" max="1" value="0.9" id="bounce">
+								<span class="rangeVal">0.9</span>
+							</div>
+							
+							<div class="slider-container">
+								<p class="optText">Friction</p>
+								<input type="range" step="0.01" min="0" max="1" value="0.99" id="friction">
+								<span class="rangeVal">1</span>
+							</div>
+							
+							<div class="slider-container">
+								<p class="optText">Stiffness</p>
+								<input type="range" step="0.01" min="0" max="1" value="1" id="stiffness">
+								<span class="rangeVal">1</span>
+							</div>
+
+						</div><!--/sliders-->
+
+						<div class="slider-container">
+							<p class="optText">Physicsa Accuracy</p>
+							<input type="range" id="Iterrations" value="20" min="1" max="500">
+							<span class="rangeVal" style="margin-top: 30px;">20</span>
+						</div>
+
+						<span>Render Options</span>
+
+							<ul class="rendersettings-icons">
+
+								<li id="li-dots">
+										<input type="checkbox" id="dots" checked>
+										<label for="dots">
+												<i class="noEvent icon-flickr2" ></i>
+										</label>
+								</li>
+
+								<li id="li-lines">
+									<input type="checkbox" id="lines" checked>
+									<label for="lines">
+											<i class="noEvent icon-flow-line"></i>
+									</label>
+								</li>
+
+								<li id="li-stress">
+									<input type="checkbox" id="stress">
+									<label for="stress">
+											<i class="noEvent icon-fitness_center"></i>
+									</label>
+								</li>
+
+								<li id="li-dotsasbox">
+									<input type="checkbox" id="dotsasbox">
+									<label for="dotsasbox">
+											<i class="noEvent icon-square"></i>
+									</label>
+								</li>
+
+								<li id="li-pointIndex">
+									<input type="checkbox" id="pointIndex">
+									<label for="pointIndex">
+											<i class="noEvent icon-format_color_text"></i>										
+									</label>
+								</li>
+
+								<li id="li-shapes">
+									<input type="checkbox" id="shapes" checked>
+									<label for="shapes">
+											<i class="noEvent icon-palette"></i>										
+									</label>
+								</li>
+
+								<li id="li-hiddenlines">
+									<input type="checkbox" id="hiddenlines">
+									<label for="hiddenlines">
+											<i class="noEvent icon-linear_scale"></i>										
+									</label>
+								</li>
+
+								<li id="li-gridguid">
+									<input type="checkbox" id="gridguid">
+									<label for="gridguid">
+										<i class="noEvent icon-th-small"></i>											
+									</label>
+								</li>
+
+							</ul>
+
+						<div class="slider-container">
+							<p class="optText">Grid Size</p>
+							
+							<input type="range" step="5" min="15" max="100" value="35" id="gridgap">
+							<span class="rangeVal" style="margin-top: 30px;">35</span>
+						</div>
+
+				</aside>
+
+
+
+
 		<!-- Tooltip for shapecolor -->
 		<div class="tooltip-info" id="colorIndicator"></div>
 
@@ -504,22 +522,6 @@
 
 			<!-- Renders -->
 
-			<i class="noEvent icon-flickr2" style="color : 67f345" 
-				 data-uid="Render dots" 
-				 data-link="#dots"
-				 id="context-dots">
-			</i>
-			<i class="noEvent icon-flow-line" style="color : 67f345" 
-				 data-uid="Render Lines" 
-				 data-link="#lines"
-				 id="context-lines">
-			</i>
-
-			<i class="noEvent icon-format_color_text button-active" 
-				 data-uid="Render index"
-				 data-link="#pointIndex"
-				 id="context-pointIndex">
-			</i>
 			<i class="noEvent icon-palette" style="color : 67f345" 
 				 data-uid="Render shapes"
 				 data-link="#shapes"
@@ -534,6 +536,33 @@
 				 data-uid="Render grid"
 				 data-link="#gridguid"
 				 id="context-gridguid">
+			</i>
+			<i class="noEvent icon-square2 button-active"
+				 data-uid="Render dots as box" 
+				 data-link="#dotsasbox"
+				 id="context-dotsasbox">
+			</i>
+			<i class="noEvent icon-flickr2" style="color : 67f345" 
+				 data-uid="Render dots" 
+				 data-link="#dots"
+				 id="context-dots">
+			</i>
+			<i class="noEvent icon-flow-line" style="color : 67f345" 
+				 data-uid="Render Lines" 
+				 data-link="#lines"
+				 id="context-lines">
+			</i>
+
+			<i class="noEvent icon-fitness_center button-active" 
+				 data-uid="Render Stress"
+				 data-link="#stress"
+				 id="context-stress">
+			</i>
+
+			<i class="noEvent icon-format_color_text button-active" 
+				 data-uid="Render index"
+				 data-link="#pointIndex"
+				 id="context-pointIndex">
 			</i>
 
 
