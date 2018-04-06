@@ -212,6 +212,35 @@ canvas::selection {
 	color : white !important;
 	width: 100%;
 }
+.dd-input-header-container {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	justify-content: space-around;
+}
+.input-headholders {
+	flex-grow: 1;
+	width : 100%;
+	display: flex;
+}
+.dd-input-header-container .input-headholders > p {
+	flex: 1;
+	display : block;
+	padding-left : 8px;
+	/* width: 48%; */
+	float: left;
+	text-align : left;
+}
+.three-inputs {
+	/* flex: 1; */
+	float: left;
+	width: 31% !important;
+}
+.dd-input-header-container > input {
+	width: 48%;
+	margin : 2px;
+}
+
 /*shift last element to little bit left*/ 
 .pushleft {
 	width: 200px;

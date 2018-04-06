@@ -62,7 +62,6 @@
 		
 		<!-- Save -->
 
-
 		<div class="titleinfo-hover">
 			<div class="dd-button" data-name="Save Model">
 				<div class="icon">
@@ -127,14 +126,24 @@
 							<option value="tri">Triangle</option>
 						</select>
 
-						<p>X , Y</p>
-						<input type="number" style="width: 48%" id="boxX" value="100">
-						<input type="number" style="width: 48%" id="boxY" value="100">
+						<div class="dd-input-header-container">
+							<div class="input-headholders">
+								<p>X</p><p>Y</p>
+							</div>
+							<input type="number" id="boxX" value="100">
+							<input type="number" id="boxY" value="100">
+						</div>
 						
-						<p>Width , Height</p>
-						<input type="number" style="width: 48%" id="boxW" value="50">
-						<input type="number" style="width: 48%" id="boxH" value="50">
 						
+						<div class="dd-input-header-container">		
+								<div class="input-headholders">											
+									<p>Width</p><p>Height</p>
+								</div>
+							<input type="number" style="width: 48%" id="boxW" value="50">
+							<input type="number" style="width: 48%" id="boxH" value="50">
+						</div>
+
+
 						<div class="check-container">
 							<div class="checks">
 								<input type="checkbox" id="drawBox">
@@ -155,7 +164,7 @@
 			</div>
 
 
-			<!-- Beam Triangle -->
+			<!-- Beam -->
 
 
 			<div class="dd-button" data-name="Create Beam">
@@ -166,15 +175,23 @@
 						<span>Create Beam</span>
 						<hr>
 						
-						<p>X , Y</p>
-						<input type="number" style="width: 48%" id="beamX" value="100">
-						<input type="number" style="width: 48%" id="beamY" value="100">
-						
-						<p>Width , Height</p>
-						<input type="number" style="width: 48%" id="beamW" value="50">
-						<input type="number" style="width: 48%" id="beamH" value="50">
-						
-						<p>Segments</p>
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>X</p><p>Y</p>
+							</div>
+							<input type="number" style="width: 48%" id="beamX" value="100">
+							<input type="number" style="width: 48%" id="beamY" value="100">
+						</div>
+
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>Width</p><p>Height</p>
+							</div>
+							<input type="number" style="width: 48%" id="beamW" value="50">
+							<input type="number" style="width: 48%" id="beamH" value="50">
+						</div>
+
+						<p style="text-align:left; padding-left : 8px;">Segments</p>
 						<input type="number" style="width: 100%" id="beamSegs" value="8">
 						<button id="createbeam">Creat Beam</button>
 					</div>
@@ -194,18 +211,29 @@
 						<span>Create Hexagon</span>
 						<hr>
 						
-						<p>X , Y</p>
-						<input type="number" style="width: 48%" id="hexaX" value="100">
-						<input type="number" style="width: 48%" id="hexaY" value="100">
-						
-						<p>Sides , radius</p>
-						<input min="1" type="number" style="width: 48%" id="hexaSides" value="8">
-						<input min="1" type="number" style="width: 48%" id="hexaRadius" value="50">
-						
-						<p>Slice1 , Slice2</p>
-						<input min="1" type="number" style="width: 48%" id="hexaSlice1" value="1">
-						<input min="1" type="number" style="width: 48%" id="hexaSlice2" value="2">
-						
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>X</p><p>Y</p>
+							</div>
+							<input type="number" style="width: 48%" id="hexaX" value="100">
+							<input type="number" style="width: 48%" id="hexaY" value="100">
+						</div>
+
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>Sides</p><p>Radius</p>
+							</div>
+							<input min="1" type="number" style="width: 48%" id="hexaSides" value="8">
+							<input min="1" type="number" style="width: 48%" id="hexaRadius" value="50">
+						</div>
+
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>Slice1</p><p>Slice2</p>
+							</div>
+							<input min="1" type="number" style="width: 48%" id="hexaSlice1" value="1">
+							<input min="1" type="number" style="width: 48%" id="hexaSlice2" value="2">
+						</div>
 			
 						<!-- <p>Center</p> -->
 			
@@ -243,14 +271,22 @@
 						<span>Create Rope</span>
 						<hr>
 					
-						<p>X , Y</p>
-						<input type="number" style="width: 48%" id="ropeX" value="50">
-						<input type="number" style="width: 48%" id="ropeY" value="50">
-					
-						<p>Gap ,  Segments</p>
-						<input type="number" style="width: 48%" id="ropeGap" value="10">
-						<input type="number" style="width: 48%" id="ropeSegs" value="15">
-					
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>X</p><p>Y</p>
+							</div>
+							<input type="number" style="width: 48%" id="ropeX" value="50">
+							<input type="number" style="width: 48%" id="ropeY" value="50">
+						</div>
+
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>Gap</p><p>Segments</p>
+							</div>
+							<input type="number" style="width: 48%" id="ropeGap" value="10">
+							<input type="number" style="width: 48%" id="ropeSegs" value="15">
+						</div>
+						
 						<div class="check-container">
 							<div class="checks">
 								<input type="checkbox" id="drawRope">
@@ -278,14 +314,23 @@
 						<span>Create Cloth</span>
 						<hr>
 						
-						<p>X , Y</p>
-						<input type="number" style="width: 48%" id="clothX" value="50">
-						<input type="number" style="width: 48%" id="clothY" value="50">
-						
-						<p>gap ,  segments</p>
-						<input type="number" style="width: 48%" id="clothGap" value="15">
-						<input type="number" style="width: 48%" id="clothSegs" value="15">
-						
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>X</p><p>Y</p>
+							</div>
+							<input type="number" style="width: 48%" id="clothX" value="50">
+							<input type="number" style="width: 48%" id="clothY" value="50">
+						</div>
+
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>GapX</p><p>GapY</p><p>Segments</p>
+							</div>
+							<input class="three-inputs" type="number" id="clothGapX" value="15">
+							<input class="three-inputs" type="number" id="clothGapY" value="15">
+							<input class="three-inputs" type="number" id="clothSegs" value="20">
+						</div>
+
 						<p>Pinning Ratio</p>
 						<input type="number" style="width: 100%" id="clothPinRatio" value="2">
 						<button id="createcloth">Creat Cloth</button>
@@ -306,13 +351,21 @@
 						<span>Charecter Map</span>
 						<hr>
 						
-						<p>X , Y</p>
-						<input type="number" style="width: 48%" id="mapX" value="100">
-						<input type="number" style="width: 48%" id="mapY" value="100">
-						
-						<p>SizeX , SizeY</p>
-						<input type="number" style="width: 48%" id="mapSizeX" value="15">
-						<input type="number" style="width: 48%" id="mapSizeY" value="10">
+						<div class="dd-input-header-container">				
+							<div class="input-headholders">
+								<p>X</p><p>Y</p>
+							</div>
+							<input type="number" style="width: 48%" id="mapX" value="100">
+							<input type="number" style="width: 48%" id="mapY" value="100">
+						</div>
+
+						<div class="dd-input-header-container">						
+							<div class="input-headholders">
+								<p>SizeX</p><p>SizeY</p>
+							</div>
+							<input type="number" style="width: 48%" id="mapSizeX" value="15">
+							<input type="number" style="width: 48%" id="mapSizeY" value="10">
+						</div>
 						
 						<div class="mapcontainer">
 							<textarea id="mapData">********,&NewLine;*      *,&NewLine;********</textarea>
@@ -434,7 +487,7 @@
 						</div><!--/sliders-->
 
 						<div class="slider-container">
-							<p class="optText">Physicsa Accuracy</p>
+							<p class="optText">Simulation Accuracy</p>
 							<input type="range" id="Iterrations" value="20" min="1" max="500">
 							<span class="rangeVal" style="margin-top: 30px;">20</span>
 						</div>

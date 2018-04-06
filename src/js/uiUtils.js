@@ -262,10 +262,12 @@ const uiu = (function () {
 				}
 
 				if( keys[mulKeys[0]] === keyArray[0] &&
-					keys[mulKeys[1]] === keyArray[1] &&
-					keys[mulKeys[2]] === keyArray[2] &&
-					keys[mulKeys[3]] === keyArray[3] &&
-					keys[mulKeys[4]] === keyArray[4] ) {
+						keys[mulKeys[1]] === keyArray[1] &&
+						keys[mulKeys[2]] === keyArray[2] &&
+						keys[mulKeys[3]] === keyArray[3] &&
+						keys[mulKeys[4]] === keyArray[4] &&
+						keys[mulKeys[5]] === keyArray[5]
+					) {
 					isReadyToCall = true;
 				} else {
 					isReadyToCall = false;

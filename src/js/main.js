@@ -206,7 +206,8 @@ function verletDrawing() {
 	const cloth = {
 		X 			: _('clothX'),
 		Y 			: _('clothY'),
-		GAP 		: _('clothGap'),
+		GAPX 		: _('clothGapX'),
+		GAPY 		: _('clothGapY'),
 		SEGS 		: _('clothSegs'),
 		RATIO 	: _('clothPinRatio'),
 		create 	: _('createcloth')
@@ -334,7 +335,8 @@ function verletDrawing() {
 		verlet.Poly.cloth({
 			x : parseInt(cloth.X.value),
 			y : parseInt(cloth.Y.value),
-			gap : parseInt(cloth.GAP.value),
+			gapX : parseInt(cloth.GAPX.value),
+			gapY : parseInt(cloth.GAPY.value),
 			segs :  parseInt(cloth.SEGS.value),
 			pinRatio : parseInt(cloth.RATIO.value),
 			tearable : false
@@ -550,10 +552,9 @@ function verletDrawing() {
 			},name)
 	}
 	uiu.onkey('ctrl+s',ctrlSave);
-
-	
-
-
+	uiu.onkey('q+a+s+w',function() {
+		console.log('ok');
+	});
 
 	// Event Subscribers
 	uiu.event.subEvent('toggleCursor',cbkToggle);
@@ -674,7 +675,7 @@ function verletDrawing() {
 				}
 			}
 			updateUndoRedo();
-		},100))
+		},100));
 
 		function removekeyhandling(e) {
 			switch (e.which) {
@@ -944,6 +945,8 @@ function verletDrawing() {
 		//physics update
 		verlet.superUpdate(points,constrains,PhysicsAccuracy.value,{hoverColor : 'white'});
 
+
+		//render conditions
 		(shapeOpt.checked === true) ? verlet.renderShapes(forms) : false;
 		isRenderLines = LineOpt.checked;
 		isRenderHiddenLines = LineHiddenOpt.checked;
@@ -952,6 +955,7 @@ function verletDrawing() {
 		isRenderStress = LineStressOpt.checked;
 		isRenderDotsAsBox = dotsAsBoxOpt.checked;
 
+		//render loop
 		verlet.superRender(points,constrains,{
 			renderDots : isRenderDots,
 			renderLines : isRenderLines,
@@ -960,16 +964,12 @@ function verletDrawing() {
 			renderDotsAsBox : isRenderDotsAsBox,
 			preset : 'shadowBlue'
 		});
+		if(isRenderStress) { verlet.renderStress(constrains); }
 
-		if(isRenderStress) {
-			verlet.renderStress(constrains);
-		}
-
+		/* Temp Circles and Miscs */
 		drawGrid();
-		/* Temp Circles and lines */
 		drawTmpCir(tmpCir);
 		drawTmpLine(tmpLine);
-
 		getFps = getFrameRate();
 
 		requestAnimationFrame(animate);
