@@ -477,13 +477,13 @@ function verletDrawing() {
 	let frameTime;
 	function getFrameRate() {
 		if(!lastframe) {
-			lastframe = performance.now();
+			lastframe = Date.now();
 			fps = 0;
 			return;
 		}
-		let delta = (performance.now() - lastframe) / 1000;
-		frameTime = (performance.now() - lastframe);
-		lastframe = performance.now();
+		let delta = (Date.now() - lastframe) / 1000;
+		frameTime = (Date.now() - lastframe);
+		lastframe = Date.now();
 		fps = 1/delta;
 		return Math.round(fps);
 	}
