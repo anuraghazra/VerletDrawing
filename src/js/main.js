@@ -125,7 +125,7 @@ function verletDrawing() {
 		forms = [];
 		try {
 			verlet.create(undoArray[zCount][0],points);
-			verlet.clamp(undoArray[zCount][1],constrains,points);
+			verlet.clamp(undoArray[zCount][1],points,constrains);
 			if(forms.length !== 0) {
 				for (let i = 0; i < undoArray[zCount][2].length; i++) {
 					const element = undoArray[zCount][2][i];
@@ -148,7 +148,7 @@ function verletDrawing() {
 		forms = [];
 		try {
 			verlet.create(undoArray[yCount][0],points);
-			verlet.clamp(undoArray[yCount][1],constrains,points);
+			verlet.clamp(undoArray[yCount][1],points,constrains);
 			if(forms.length !== 0) {
 				for (let i = 0; i < undoArray[yCount][2].length; i++) {
 					const element = undoArray[yCount][2][i];
@@ -256,7 +256,8 @@ function verletDrawing() {
 	/*Load And Export*/
 	exportbtn.onclick = () => {
 		const filename = document.getElementById("filename");
-		exportModel(points,constrains,forms,filename.value);
+		verlet.export(filename.value,points,constrains,forms)
+		// exportModel(points,constrains,forms,);
 	};
 
 	//disabled load button if no file is selected
@@ -268,8 +269,7 @@ function verletDrawing() {
 		}
 	});
 	loadModelpoint.onclick = () => {
-		forms = [];
-		loadFile('#loadPoints',points,constrains,forms,verlet);
+		verlet.import('#loadPoints',points,constrains,forms)
 	};
 
 	//create methods
@@ -364,8 +364,8 @@ function verletDrawing() {
 				sides : parseInt(hexa.SIDES.value),
 				slice1 : parseInt(hexa.SLICE1.value),
 				slice2 : parseInt(hexa.SLICE2.value),
-				vx : x,
-				vy : y,
+				vx : x+w,
+				vy : y+h,
 				center : hexa.CENTER.checked
 			},points,constrains);
 			updateUndoRedo();
@@ -517,7 +517,7 @@ function verletDrawing() {
 	uiu.setOn('drop',dragDrop_load,function(e) {
 			window.setTimeout(function() {
 				forms = [];
-				loadFile('#overlaydrag',points,constrains,forms,verlet);
+				verlet.import('#overlaydrag',points,constrains,forms);
 				uiu.setStyle(dragDrop_load,{
 					display : 'none'
 				});
@@ -545,16 +545,14 @@ function verletDrawing() {
 
 			let name = uiu.query('#ctrlSaveModal > input');
 			uiu.onkey('enter',function() {
-				exportModel(points,constrains,forms,name.value);
+				// exportModel(points,constrains,forms,name.value);
+				verlet.export(name.value, points, constrains, forms);
 				toggleModal(false);
 				uiu.query('#ctrlSaveModal > input').classList.add('show');
 				
 			},name)
 	}
 	uiu.onkey('ctrl+s',ctrlSave);
-	uiu.onkey('q+a+s+w',function() {
-		console.log('ok');
-	});
 
 	// Event Subscribers
 	uiu.event.subEvent('toggleCursor',cbkToggle);
@@ -611,8 +609,9 @@ function verletDrawing() {
 						}
 						if (initUI.states['auto-join'] === false) {
 							for (let k = 0; k < handleArray.length; k++) {
-								handleArray[k][2] = hidden;
-								verlet.clamp([handleArray[k]], constrains, points);
+								handleArray[k][2] = {hidden : hidden};
+								console.log(handleArray)
+								verlet.clamp([handleArray[k]],points,constrains);
 							}
 						} else { //Auto Join By Index
 							//Increment And Joint i++
@@ -629,7 +628,7 @@ function verletDrawing() {
 								]);
 							}
 							tmpAuto.pop();
-							verlet.clamp(tmpAuto, constrains, points);
+							verlet.clamp(tmpAuto,points,constrains);
 							tmpAuto.splice(0, tmpAuto.length);
 						}
 						tmpHandleArray = [];

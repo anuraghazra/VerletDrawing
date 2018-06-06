@@ -15,11 +15,19 @@ function exportModel(dots,cons,shapes,unnamed) {
 	}
 
 	//cons
+	//to do fix {hidden : true. stiffness : 0} problems
 	for (let j = 0; j < cons.length; j++) {
 		let tmpPush = [];
 		const c = cons[j];
+		console.log(c)
+		let extraobj = {}
+		if(c.hidden === false) {
+			extraobj = null
+		} else {
+			extraobj = {hidden : c.hidden, stiffness : c.stiffness};
+		}
 		tmpPush = c.id;
-		tmpPush[2] = c.hidden;
+		tmpPush[2] = extraobj
 		tmpPush.length = 3;
 		pushInMe.push(tmpPush);
 	}
@@ -104,8 +112,9 @@ function loadFile(fid,dots,cons,shapes,verlet) {
 		let result = JSON.parse(data[0].result);
 		let arrDots = result[1]; //Points
 		let arrCons = result[2]; //Constrains
+		console.log(arrCons)
 		verlet.create(arrDots,dots); //create
-		verlet.clamp(arrCons,cons,dots); //clamp
+		verlet.clamp(arrCons,dots,cons); //clamp
 
 		if(result[3].length > 1) { // Forms
 			let arrForms = result[3];
