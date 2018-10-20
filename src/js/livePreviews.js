@@ -6,9 +6,6 @@ function initLivePreviews(hexa,map) {
   const isLiveEnabled = uiu.id('hexagon-live');
   const isTrue = isLiveEnabled.parentElement.parentElement;
   const isLiveParentParent = isTrue.parentElement.parentElement;
-  isLiveParentParent.onclick = function(){
-    liveHexagon();
-  };
 
   uiu.eventDelegate({
     on : 'input',
@@ -18,9 +15,10 @@ function initLivePreviews(hexa,map) {
   },function() {
     liveHexagon();
   });
+  liveHexagon();
   function liveHexagon() {
     let livePreview = new Verlet();
-    livePreview.init(200,200,'#hexagon-live',0,0);
+    livePreview.init(200,200,'#hexagon-live',1,1,1);
     let hexaLivePoints = [],
       hexaLiveCons = [];
     livePreview.Poly.hexagon({

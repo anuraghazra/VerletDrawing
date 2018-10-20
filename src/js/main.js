@@ -1,27 +1,26 @@
 /**
  * Verlet Drawing
- * @author Anurag_Hazra
+ * @author AnuragHazra<hazru.anurag@gmail.com>
  * @name VerletDrawing
- * @function verletDrawing
  *
  * // Dependencies (order is important):
  * 1) verlet.js
  * 2) uiUtils.js
  * 3) dragdraw.js
- * 4) fs.js
- * 5) exportsystem.js
+ // // 4) fs.js
+ // // 5) exportsystem.js
  * 6) livePreviews.js
  * 7) userInterface.js
  */
 "use strict";
 window.onload = function() {
-	console.clear();
+	// console.clear();
 	console.time('Startup');
 	verletDrawing();
 	console.timeEnd('Startup');
 };
 function verletDrawing() {
-	const verlet = Verlet();
+	const verlet = new Verlet();
 	verlet.init(1000,500,'#c',0.0,0.99,1);
 
 	const canvas = verlet.canvas,
@@ -59,7 +58,7 @@ function verletDrawing() {
 	 * ========= Redo And Undo System =========
 	 */
 
-	let undoArray = [];
+	let redoUndoData = [];
 	function initUndoRedo() {
 		uiu.onkey('CTRL+Z',doUndo);
 		uiu.onkey('CTRL+Y',doRedo);
@@ -67,100 +66,80 @@ function verletDrawing() {
 
 	//UndoRedo setps and settings
 	const MAX_UNDO_REDO_STEPS = Infinity;
-	const UNDO_REDO_JUMP = 1;
-	let zCount = 0;
-	let yCount = 0;
-	let jump = 0;
+	let ctrlZ = 0;
+	let ctrlY = 0;
+	updateUndoRedo();
 	function updateUndoRedo() {
-		jump++;
-		let newPoints = [];
-		let newCons = [];
-		let newForms = [];
-
-		if(jump === UNDO_REDO_JUMP) {
+		let tmpdots = [];
+		let tmpcons = [];
+		let tmpshapes = [];
+		
+		if(redoUndoData.length < MAX_UNDO_REDO_STEPS) {
+			
 			//dots
-			for (let p = 0; p < points.length; p++) {
-				let po = points[p];
-				newPoints.push([po.x,po.y,po.oldx,po.oldy,po.pinned,po.color]);
-			}
-			//cons
-			for (let c = 0; c < constrains.length; c++) {
-				constrains[c].id.push(constrains[c].hidden);
-				newCons.push(constrains[c].id);
-			}
-			//forms
-			if(forms.length !== 0) {
-				for (let f = 0; f < forms.length; f++) {
-					let ff = forms[f].id;
-					let col = [forms[f].color];
-					let kk = ff.concat(col);
-					newForms.push(kk);
-				}
-				undoArray.push([newPoints,newCons,newForms]);
-			} else {
-				undoArray.push([newPoints,newCons]);
+			for (let i = 0; i < points.length; i++) {
+				const p = points[i];
+				tmpdots.push([p.x,p.y,p.oldx,p.oldy,p.pinned, p.color]);
 			}
 
-			if(undoArray.length > MAX_UNDO_REDO_STEPS) {
-				undoArray.shift();
-				zCount = undoArray.length;
-				yCount = 0;
+			//cons
+			// [0, 2, { "hidden": true, "stiffness": 1 }]
+			for (let j = 0; j < constrains.length; j++) {
+				const c = constrains[j];
+				tmpcons.push([
+					c.id[0],c.id[1],
+					{'hidden' : c.hidden, 'stiffness' : c.stiffness, 'length' : c.len}
+				]);
 			}
-			zCount = undoArray.length;
-			yCount = 0;
-			jump = 0;
+
+			//forms
+			// [4,5,6,7,'yellowgreen']
+			for (let k = 0; k < forms.length; k++) {
+				tmpshapes.push([
+					...forms[k].id, forms[k].color
+				])
+			}
+
+			redoUndoData.push([tmpdots,tmpcons,tmpshapes]);
+			ctrlZ = redoUndoData.length;
+			ctrlY = 0;
 		}
-		newPoints = [];
-		newCons = [];
-		newForms = [];
+		
 	}
 
-	function doUndo() {
-		zCount--;
-		if(zCount < 0) {
-			zCount = 0;
-		}
+	// Just For Removing DRY Code
+	function recoverDataFromRedoUndoArray(value) {
 		points = [];
 		constrains = [];
 		forms = [];
-		try {
-			verlet.create(undoArray[zCount][0],points);
-			verlet.clamp(undoArray[zCount][1],points,constrains);
-			if(forms.length !== 0) {
-				for (let i = 0; i < undoArray[zCount][2].length; i++) {
-					const element = undoArray[zCount][2][i];
-					console.log('redo',element)
-					verlet.shape(element, forms, points);
-				}
-			}
-		} catch (ex) {
-			console.log('Undo Error :' + ex);
+		verlet.create(redoUndoData[value][0],points,constrains);
+		verlet.clamp(redoUndoData[value][1],points,constrains);
+		if(redoUndoData[value][2].length > 0) {
+			verlet.shape(redoUndoData[value][2],forms,points);
 		}
-		verlet.Interact.move(points,'white');
+	}
+	function doUndo() {
+		if(ctrlZ > 0) {
+			--ctrlZ;
+		}
+		recoverDataFromRedoUndoArray(ctrlZ);
+		ctrlY = ctrlZ;
+		verlet.Interact.move(points);
+		verlet.superUpdate(points,constrains,PhysicsAccuracy.value)		
 	}
 	function doRedo() {
-		yCount = zCount++;
-		if(yCount > undoArray.length) {
-			zCount = undoArray.length - 2;
+		if(ctrlY <= redoUndoData.length) {
+			++ctrlY;
 		}
-		points = [];
-		constrains = [];
-		forms = [];
-		try {
-			verlet.create(undoArray[yCount][0],points);
-			verlet.clamp(undoArray[yCount][1],points,constrains);
-			if(forms.length !== 0) {
-				for (let i = 0; i < undoArray[yCount][2].length; i++) {
-					const element = undoArray[yCount][2][i];
-					console.log('redo color',element)
-					verlet.shape(element, forms, points);
-				}
-			}
-		} catch (ex) {
-			console.log('Redo Error :' + ex);
-			zCount = undoArray.length-1;
+		// clamp the value of ctrlY
+		if(ctrlY > redoUndoData.length-1) {
+			ctrlY = redoUndoData.length-1;
 		}
-		verlet.Interact.move(points,'white');
+		recoverDataFromRedoUndoArray(ctrlY);
+		ctrlZ = ctrlY;
+		// ctrlY = ctrlZ;
+		verlet.Interact.move(points);
+		verlet.superUpdate(points,constrains,PhysicsAccuracy.value)
 	}
 	initUndoRedo();
 
@@ -241,7 +220,7 @@ function verletDrawing() {
 	}
 
 
-	// verlet.Poly.cloth({},points,constrains);
+	// verlet.Poly.cloth({x : 0,y : 0,segs : 50},points,constrains);
 
 	/* ======== UI Events ======== */
 	box.create.onclick = () => {
@@ -936,7 +915,7 @@ function verletDrawing() {
 			drawTmpHexa(x,y,w,h);
 		},hexa.draw.checked);
 
-		verlet.gravity 		= parseFloat(grav.value) 			|| 0;
+		verlet.gravity 		= parseFloat(gravity.value) 	|| 0;
 		verlet.bounce 		= parseFloat(bounce.value) 		|| 0;
 		verlet.friction 	= parseFloat(friction.value) 	|| 1;
 		verlet.stiffness 	= parseFloat(stiffness.value) || 1;
@@ -971,6 +950,7 @@ function verletDrawing() {
 		drawTmpLine(tmpLine);
 		getFps = getFrameRate();
 
+		
 		requestAnimationFrame(animate);
 	}
 
