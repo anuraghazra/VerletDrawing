@@ -359,6 +359,11 @@ function initUI() {
 	initContextMenu();
 
 
+	uiu.on('click','#help',function() {
+		uiu.toggleClass('.helpmenu','hide');
+	})
+
+
 
 	// SIDE-SETTINGS
 	let canvas = document.getElementById('c');

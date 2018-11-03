@@ -409,8 +409,18 @@
 			</div>
 		</div>
 
-		<!-- FullScreen -->
 		<div class="dd-split"></div>
+		
+		<!-- Help -->
+
+		<div class="dd-button" data-tooltip="Help" id="help">
+			<div class="icon">
+				<i class="icon-info"></i>
+			</div>
+		</div>
+
+		<!-- FullScreen -->
+
 		<div class="dd-button" data-name="FullScreen" style="float: right" id="fullscreen" onClick="initUI.fullSrc()">
 			<div class="icon">
 				<i class="icon-fullscreen"></i>
@@ -641,6 +651,12 @@
 				 id="context-auto-join" 
 				 data-type="tool">
 			</i>
+			<i class="noEvent icon-fullscreen" 
+				 data-uid="Help" 
+				 data-link="#help" 
+				 id="context-help" 
+				 data-type="tool">
+			</i>
 
 		</div>
 		<div class="radialMenuCenter noEvent">Render dots</div>
@@ -680,6 +696,24 @@
 		</div>
 
 	</div><!-- tooltip -->
+
+	<div class="helpmenu hide">
+		<h3>Keyboard Shortcuts</h3>
+		<hr>
+
+		<ul>
+			<li>hold <span>R</span> and drag to create a Rope</li>
+			<li>hold <span>B</span> and drag to create a Box</li>
+			<li>hold <span>H</span> and drag to create a Hexagon</li>
+			<hr>
+	
+			<li><span>Right Click</span> to open context menu</li>
+			<li>press <span>Space</span> to pin any point and press <span>alt</span> to unpin the point</li>
+			<li>press and hold <span>C</span> and then <span>Left Click</span> to create points</li>
+			<li>while holding <span>Shift</span> select multiple points and press <span>Q</span> to join points</li>	
+		</ul>
+		
+	</div>
 
 
 </div>

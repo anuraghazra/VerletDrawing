@@ -17,7 +17,6 @@
 }
 
 
-
 /*-----------------------*\
 	Electron titile window
 \*-----------------------*/
@@ -63,7 +62,7 @@ body {
     margin: 0 auto;
 	color : #999999;
 	background-color: #191919;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 canvas {
 	transition: 0.2s;
@@ -79,6 +78,11 @@ canvas::selection {
 .show {
 	pointer-events: all !important;
 	opacity: 1 !important;
+}
+
+.hide {
+	pointer-events: none !important;
+	opacity: 0 !important;
 }
 
 
@@ -715,7 +719,29 @@ ul.rendersettings-icons > li:hover {
 }
 
 
+.helpmenu {
+	position: absolute;
+	width: 80%;
+	height: auto;
+	padding: 20px;
+	border: 1px solid white;
+	top: 50px;
+	left: 50%;
+	transform: translateX(-50%);
+	/* text-align: center; */
+	color: white;
+	line-height: 35px;
+	font-size: 15px;
+}
 
+.helpmenu span {
+	margin: 5px;
+	background-color: white;
+	color: black !important;
+	padding: 5px;
+	border-radius: 5px;
+	font-weight: bolder;
+}
 
 
 /*--------------------*\
