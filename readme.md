@@ -1,5 +1,7 @@
 # Verlet Drawing
 
+*Verlet Drawing is outdated, code is not maintainable, I talked about this in [VerletDrawing Case Study](https://anuraghazra.github.io/case-studies/verlet-drawing)* 
+
 ## Powered By **Verlet.js**
 
 Verlet Drawing Is A Physics Based Drawing App Made With Verlet.js
