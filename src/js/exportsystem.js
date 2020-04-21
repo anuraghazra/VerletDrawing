@@ -3,7 +3,7 @@
  *	Export as .json file with file reader api
  */
 "use strict";
-function exportModel(dots,cons,shapes,unnamed) {
+function exportModel(dots, cons, shapes, unnamed) {
 	let tmpP = [];
 	let pushInMe = [];
 	let tmpS = [];
@@ -11,7 +11,7 @@ function exportModel(dots,cons,shapes,unnamed) {
 	//points
 	for (let i = 0; i < dots.length; i++) {
 		const p = dots[i];
-		tmpP.push([p.x,p.y,p.oldx,p.oldy,p.pinned, p.color]);
+		tmpP.push([p.x, p.y, p.oldx, p.oldy, p.pinned, p.color]);
 	}
 
 	//cons
@@ -21,31 +21,31 @@ function exportModel(dots,cons,shapes,unnamed) {
 		const c = cons[j];
 		console.log(c)
 		let extraobj = {}
-		if(c.hidden === false) {
+		if (c.hidden === false) {
 			extraobj = null
 		} else {
-			extraobj = {hidden : c.hidden, stiffness : c.stiffness};
+			extraobj = { hidden: c.hidden, stiffness: c.stiffness };
 		}
 		tmpPush = c.id;
 		tmpPush[2] = extraobj
 		tmpPush.length = 3;
 		pushInMe.push(tmpPush);
 	}
-	
+
 	//forms
 	// TODO: FIX SHAPES MULTIPLE COLOR
 	for (let k = 0; k < shapes.length; k++) {
 		// debugger;
 		let tmpShapePush = [];
 		const c = shapes[k];
-		
-		console.log(typeof shapes[k].id[shapes[k].id.length - 1])		
-		
+
+		console.log(typeof shapes[k].id[shapes[k].id.length - 1])
+
 		let idLen = c.id.length;
 		tmpShapePush = c.id;
-		
+
 		tmpShapePush.push(c.color);
-		tmpShapePush.length = idLen+1;
+		tmpShapePush.length = idLen + 1;
 		tmpS.push(tmpShapePush);
 	}
 
@@ -55,19 +55,19 @@ function exportModel(dots,cons,shapes,unnamed) {
 
 	//file info
 	let info = {
-		file : unnamed,
-		type : 'text/json',
-		hierarchy : '[ {info}, points[[]], constrains[[]], forms[[]] ]',
-		pointsCount : tmpP.length,
-		constrainsCount : pushInMe.length,
-		formsCount : tmpS.length,
-		dateCreated : time,
-		generator : 'VerletDrawing',
-		author : 'Anurag Hazra',
-		email : 'hazru.anurag@gmail.com',
-		poweredBy : 'Verlet.js',
-		repo : 'wwww.github.com/anuraghazra/verlet.js',
-		license : 'MIT'
+		file: unnamed,
+		type: 'text/json',
+		hierarchy: '[ {info}, points[[]], constrains[[]], forms[[]] ]',
+		pointsCount: tmpP.length,
+		constrainsCount: pushInMe.length,
+		formsCount: tmpS.length,
+		dateCreated: time,
+		generator: 'VerletDrawing',
+		author: 'Anurag Hazra',
+		email: 'hazru.anurag@gmail.com',
+		poweredBy: 'Verlet.js',
+		repo: 'wwww.github.com/anuraghazra/verlet.js',
+		license: 'MIT'
 	}
 
 	//Compilation For Verlet.create And Verlet.clamp
@@ -76,22 +76,22 @@ function exportModel(dots,cons,shapes,unnamed) {
 	const strC = pushInMe;
 	const strS = tmpS;
 
-	let compiled = JSON.stringify([strInfo,strP,strC,strS]);
+	let compiled = JSON.stringify([strInfo, strP, strC, strS]);
 	// regExp for triming floating integers for 
 	// low file size
-	compiled = compiled.replace(/\.\d{5,}\,/img,',');
+	compiled = compiled.replace(/\.\d{5,}\,/img, ',');
 
-	if(typeof unnamed === 'string') {
+	if (typeof unnamed === 'string') {
 		name = unnamed + '.vdart';
 	}
-	if(Boolean(unnamed) === false) {
+	if (Boolean(unnamed) === false) {
 		name = time + '.vdart';
 	}
 
 	fs.create({
-		type : 'text/json',
-		name : name,
-		content : compiled
+		type: 'text/json',
+		name: name,
+		content: compiled
 	});
 
 }
@@ -102,28 +102,28 @@ function exportModel(dots,cons,shapes,unnamed) {
  *	update Interact
  *	superUpdate
  */
-function loadFile(fid,dots,cons,shapes,verlet) {
+function loadFile(fid, dots, cons, shapes, verlet) {
 	const PhysicsAccuracy = document.getElementById('Iterrations');
 	let data = fs.read(fid);
-	dots.splice(0,dots.length);
-	cons.splice(0,cons.length);
+	dots.splice(0, dots.length);
+	cons.splice(0, cons.length);
 
-	data[0].onload = function() {
+	data[0].onload = function () {
 		let result = JSON.parse(data[0].result);
 		let arrDots = result[1]; //Points
 		let arrCons = result[2]; //Constrains
 		console.log(arrCons)
-		verlet.create(arrDots,dots); //create
-		verlet.clamp(arrCons,dots,cons); //clamp
+		verlet.create(arrDots, dots); //create
+		verlet.clamp(arrCons, dots, cons); //clamp
 
-		if(result[3].length > 1) { // Forms
+		if (result[3].length > 1) { // Forms
 			let arrForms = result[3];
 			for (let i = 0; i < arrForms.length; i++) {
-				verlet.shape(arrForms[i],shapes,dots);
+				verlet.shape(arrForms[i], shapes, dots);
 			}
 		}
 	};
 	// reinit Interaction and physics
-	verlet.Interact.move(dots,cons,10,'white');
-	verlet.superUpdate(dots,cons,PhysicsAccuracy.value);
+	verlet.Interact.move(dots, cons, 10, 'white');
+	verlet.superUpdate(dots, cons, PhysicsAccuracy.value);
 }

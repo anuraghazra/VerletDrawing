@@ -1,7 +1,7 @@
 //UI utils
 "use strict";
 const uiu = (function () {
-	
+
 	//getElementById
 	function id(id) {
 		return document.getElementById(id);
@@ -36,7 +36,7 @@ const uiu = (function () {
 	}
 
 	//throttle
-	function throttle (callback, limit) {
+	function throttle(callback, limit) {
 		var wait = false;
 		return function () {
 			if (!wait) {
@@ -51,20 +51,20 @@ const uiu = (function () {
 
 	//preventRightClick
 	function preventRightClick() {
-		on('contextmenu',window,function(e){
+		on('contextmenu', window, function (e) {
 			e.preventDefault();
 		})
 	}
 
 	//on listeners
 	function on(evt, id, fun, all) {
-		if(typeof evt === 'object') {
+		if (typeof evt === 'object') {
 			all = fun;
 		}
-		if (typeof id === 'string') id = query(id,all);
+		if (typeof id === 'string') id = query(id, all);
 
-		if(typeof evt === 'object') {
-			if(all) {
+		if (typeof evt === 'object') {
+			if (all) {
 				for (let i in evt) {
 					for (let j = 0; j < id.length; j++) {
 						id[j]['on' + i] = evt[i];
@@ -79,7 +79,7 @@ const uiu = (function () {
 			if (all) {
 				for (let i = 0; i < id.length; i++) {
 					id[i]['on' + evt] = fun;
-				} 
+				}
 			} else {
 				id['on' + evt] = fun;
 			}
@@ -88,13 +88,13 @@ const uiu = (function () {
 
 	//addEvent listener actually
 	function setOn(evt, id, fun, all) {
-		if(typeof evt === 'object') {
+		if (typeof evt === 'object') {
 			all = fun;
 		}
-		if (typeof id === 'string') id = query(id,all);
+		if (typeof id === 'string') id = query(id, all);
 
-		if(typeof evt === 'object') {
-			if(all) {
+		if (typeof evt === 'object') {
+			if (all) {
 				for (let i in evt) {
 					for (let j = 0; j < id.length; j++) {
 						id[j].addEventListener(i, evt[i]);
@@ -109,7 +109,7 @@ const uiu = (function () {
 			if (all) {
 				for (let i = 0; i < id.length; i++) {
 					id[i].addEventListener(evt, fun);
-				} 
+				}
 			} else {
 				id.addEventListener(evt, fun);
 			}
@@ -120,77 +120,77 @@ const uiu = (function () {
 	function eventDelegate(option, func) {
 		let parent = option.parent;
 		let isAll = option.all;
-		let condition = option.condition || function() {return true};
+		let condition = option.condition || function () { return true };
 		let findtarget = option.find;
 		let bubbleTarget = option.findDeeper;
 
-		if(bubbleTarget === undefined) {
+		if (bubbleTarget === undefined) {
 			bubbleTarget = true;
 		}
-		
+
 		if (typeof parent === 'string') parent = uiu.query(parent, isAll);
 
 		let setOnEvt = on;
 		if (option.noOverwrite) { setOnEvt = setOn };
-		
+
 
 		//have to loop and set events because on and setOn only 
 		// dont loop through and set callback in NodeList elements
 		// indipendently
-		if(isAll) {
+		if (isAll) {
 			for (let i = 0; i < parent.length; i++) {
 				setOnEvt(option.on || 'mouseover', parent[i], function (e) {
 					let target = e.target;
 					let find;
-					if(findtarget) {
+					if (findtarget) {
 						find = target.closest(findtarget);
 					} else {
 						find = true;
 					}
-					if(bubbleTarget) {
-						if (find && condition(target,e)) {
+					if (bubbleTarget) {
+						if (find && condition(target, e)) {
 							func(target, parent[i], e);
 						}
 					} else {
-						if (find && condition(find,e)) {
+						if (find && condition(find, e)) {
 							func(find, parent[i], e);
-						} 
+						}
 					}
-				}); 
+				});
 			}
 		} else { //no loop for performance boost
 			setOnEvt(option.on || 'mouseover', parent, function (e) {
 				let target = e.target;
 				let find;
-				if(findtarget) {
+				if (findtarget) {
 					find = target.closest(findtarget);
 				} else {
 					find = true;
 				}
-				if(bubbleTarget) {
-					if (find && condition(target,e)) {
+				if (bubbleTarget) {
+					if (find && condition(target, e)) {
 						func(target, parent, e);
 					}
 				} else {
-					if (find && condition(find,e)) {
+					if (find && condition(find, e)) {
 						func(find, parent, e);
-					} 
+					}
 				}
-			}); 
+			});
 		}
-		
+
 	}
 
 	//multikey handler
-	function onkey(keyStr,callback,elm) {
-		if (typeof elm === 'string') elm = uiu.query(elm);     
-		if (!elm) {elm = document};
+	function onkey(keyStr, callback, elm) {
+		if (typeof elm === 'string') elm = uiu.query(elm);
+		if (!elm) { elm = document };
 
 		keyStr = keyStr.toUpperCase();
 
 		let keys = {
 			///WINDOWS///
-			'13' : 'ENTER',
+			'13': 'ENTER',
 			'16': 'SHIFT',
 			'17': 'CTRL',
 			'18': 'ALT',
@@ -225,17 +225,17 @@ const uiu = (function () {
 			'52': '4', /**/ '53': '5',
 			'54': '6', /**/ '55': '7',
 			'56': '8', /**/ '57': '9',
-			'97':   'NUM1', /**/ '98': 'NUM2',
-			'99':   'NUM3', /**/ '100': 'NUM4',
-			'101':  'NUM5', /**/ '102': 'NUM6',
-			'103':  'NUM7', /**/ '104': 'NUM8',
-			'105':  'NUM9',
+			'97': 'NUM1', /**/ '98': 'NUM2',
+			'99': 'NUM3', /**/ '100': 'NUM4',
+			'101': 'NUM5', /**/ '102': 'NUM6',
+			'103': 'NUM7', /**/ '104': 'NUM8',
+			'105': 'NUM9',
 		}
 
 		let isSingle;
 		let keyArray;
 		let type = 'down';
-		if(keyStr.indexOf('+') !== -1) {
+		if (keyStr.indexOf('+') !== -1) {
 			keyArray = keyStr.split('+');
 			isSingle = false;
 		} else {
@@ -246,53 +246,53 @@ const uiu = (function () {
 		let isReadyToCall = false;
 		let mulKeys = [];
 
-		setOn('key'+type, elm, function(e) {
+		setOn('key' + type, elm, function (e) {
 			let evtKey = e.which || e.keyCode || 0;
 
-			if(!isSingle) {
+			if (!isSingle) {
 
-			mulKeys.push(evtKey);
-			
-				if(mulKeys[0] === mulKeys[1]) {
+				mulKeys.push(evtKey);
+
+				if (mulKeys[0] === mulKeys[1]) {
 					mulKeys.pop();
 				}
 
-				if(mulKeys.length > keyArray.length) {
+				if (mulKeys.length > keyArray.length) {
 					mulKeys.pop();
 				}
 
-				if( keys[mulKeys[0]] === keyArray[0] &&
-						keys[mulKeys[1]] === keyArray[1] &&
-						keys[mulKeys[2]] === keyArray[2] &&
-						keys[mulKeys[3]] === keyArray[3] &&
-						keys[mulKeys[4]] === keyArray[4] &&
-						keys[mulKeys[5]] === keyArray[5]
-					) {
+				if (keys[mulKeys[0]] === keyArray[0] &&
+					keys[mulKeys[1]] === keyArray[1] &&
+					keys[mulKeys[2]] === keyArray[2] &&
+					keys[mulKeys[3]] === keyArray[3] &&
+					keys[mulKeys[4]] === keyArray[4] &&
+					keys[mulKeys[5]] === keyArray[5]
+				) {
 					isReadyToCall = true;
 				} else {
 					isReadyToCall = false;
 				}
-				
+
 			} else {
-				if(keys[e.which] === keyArray) {
+				if (keys[e.which] === keyArray) {
 					isReadyToCall = true;
-					
+
 				} else {
 					isReadyToCall = false;
 				}
 			}
-			
-			if(isReadyToCall) {
+
+			if (isReadyToCall) {
 				callback(e);
 			}
 		});
-		elm.addEventListener('keyup',function(e) {
-			if(!isSingle) {
-			  mulKeys.pop();
+		elm.addEventListener('keyup', function (e) {
+			if (!isSingle) {
+				mulKeys.pop();
 			}
 		});
 	}
-	
+
 
 	//toogleStyles
 	function toggleStyle(elm, stl, prop1, prop2, once) {
@@ -364,15 +364,15 @@ const uiu = (function () {
 	}
 
 	//selectorMatch
-	function selectorMatch(el,selector) {
+	function selectorMatch(el, selector) {
 		let proto = Element.prototype;
-		let func = proto.matches || p.webkitMatchesSelector || p.mozMatchesSelector || p.msMatchesSelector || function() {
-			return [].indexOf.call(document.querySelectorAll(s),this) !== -1;
+		let func = proto.matches || p.webkitMatchesSelector || p.mozMatchesSelector || p.msMatchesSelector || function () {
+			return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
 		}
-		return func.call(el,selector);
+		return func.call(el, selector);
 	}
 
-	
+
 	// dropdown menu
 	function dropdown(option, callback) {
 		let evt = option.on || 'mousedown';
@@ -385,7 +385,7 @@ const uiu = (function () {
 		let dispatch = option.dispatch;
 		let time = option.timer;
 		let effect = option.effect || 'default';
-		let effectAttr = option.effectStyles || {'top' : ['50%', '100%']};
+		let effectAttr = option.effectStyles || { 'top': ['50%', '100%'] };
 		let effectClass = option.effectClass || false;
 
 		if (typeof parent === 'string') parent = query(parent);
@@ -417,66 +417,66 @@ const uiu = (function () {
 						'pointer-events': 'all',
 						'opacity': '1',
 					});
-					toggleStyle(dd, 'display', 'none', 'block');                 
+					toggleStyle(dd, 'display', 'none', 'block');
 				},
 				hide: function (dd) {
 					setStyle(dd, {
 						'display': 'none'
-					});                   
+					});
 				}
 			},
 			fade: {
 				show: function (dd) {
 					toggleStyle(dd, 'opacity', '0', '1');
 					toggleStyle(dd, 'pointerEvents', 'none', 'all');
-					(effectClass) ? addClass(dd,effectClass) : false;
+					(effectClass) ? addClass(dd, effectClass) : false;
 				},
 				hide: function (dd) {
 					setStyle(dd, {
 						'opacity': '0',
 						'pointerEvents': 'none'
 					});
-					(effectClass) ? removeClass(dd,effectClass) : false;                    
+					(effectClass) ? removeClass(dd, effectClass) : false;
 				}
 			},
 			fadeSlide: {
 				show: function (dd) {
-					for(let i in effectAttr) {
+					for (let i in effectAttr) {
 						toggleStyle(dd, [i], effectAttr[i][0], effectAttr[i][1]);
 					}
 					toggleStyle(dd, 'opacity', '0', '1');
 					toggleStyle(dd, 'pointerEvents', 'none', 'all');
-					(effectClass) ? addClass(dd,effectClass) : false;
+					(effectClass) ? addClass(dd, effectClass) : false;
 				},
 				hide: function (dd) {
-					for(let i in effectAttr) {
+					for (let i in effectAttr) {
 						setStyle(dd, {
-							[i] :  effectAttr[i][0]
+							[i]: effectAttr[i][0]
 						});
 					}
 					setStyle(dd, {
 						'opacity': '0',
 						'pointerEvents': 'none'
 					});
-					(effectClass) ? removeClass(dd,effectClass) : false;                    
+					(effectClass) ? removeClass(dd, effectClass) : false;
 				}
 			},
 		};
 
 		eventDelegate({
-			on : evt,
-			parent : parent,
-			find : childsSTR,
-			noOverwrite : true,
-			condition : function(e) {
-				if(isClassMatch(e,childsSTR)) {
+			on: evt,
+			parent: parent,
+			find: childsSTR,
+			noOverwrite: true,
+			condition: function (e) {
+				if (isClassMatch(e, childsSTR)) {
 					return true;
 				}
 			},
-		},function(e,p) {
+		}, function (e, p) {
 			let target = e;
 			let dropdown = target.querySelector(content);
-			
+
 			//hide all first
 			let isDown = true;
 			let dropdownAll = parent.querySelectorAll(content);
@@ -485,7 +485,7 @@ const uiu = (function () {
 			}
 			if (dropdown) { //if dropdown is exist
 				VFX[effect].show(dropdown);
-				
+
 				if (time) {
 					let dropTimer;
 					let parentTimer;
@@ -543,7 +543,7 @@ const uiu = (function () {
 		let extra = option.extra || '.1#';
 		let create = option.create || false;
 		let style = option.style;
-		let offset = option.offset || {x : 0, y : 0};
+		let offset = option.offset || { x: 0, y: 0 };
 		let predefine = {
 			'position': 'absolute',
 			'left': '0',
@@ -579,7 +579,7 @@ const uiu = (function () {
 	}
 
 	//radialMenu
-	function radialMenu(option,callback) {
+	function radialMenu(option, callback) {
 		let center = option.center || false;
 		let radius = option.radius || 100;
 		let offset_x = option.x || 0;
@@ -587,26 +587,26 @@ const uiu = (function () {
 		let parent = option.parent;
 
 		if (typeof parent === 'string') parent = uiu.query(parent);
-		
+
 		let childCount = parent.childElementCount;
-		let slice = Math.PI*2 / childCount;
+		let slice = Math.PI * 2 / childCount;
 
 		for (let i = 0; i < childCount; i++) {
 			let elm = parent.children[i];
 			let angle = i * slice;
-		
+
 			let x = offset_x + Math.cos(angle) * radius;
 			let y = offset_y + Math.sin(angle) * radius;
-			
-			setStyle(elm,{
-				'left' : x + 'px',
-				'top' : y + 'px',
+
+			setStyle(elm, {
+				'left': x + 'px',
+				'top': y + 'px',
 			})
-			
+
 		}
 
-		if(callback) {
-			callback.call(parent,parent.children);
+		if (callback) {
+			callback.call(parent, parent.children);
 		}
 	}
 
@@ -614,152 +614,152 @@ const uiu = (function () {
 	//tooltip
 	function tooltip(option) {
 		let parent = option.parent;
-		let offset = option.offset || {x : 5, y: 10};
+		let offset = option.offset || { x: 5, y: 10 };
 		let append = option.appendTo;
-		
+
 		if (typeof parent === 'string') parent = uiu.query(parent);
 		if (typeof append === 'string') append = uiu.query(append);
-		
-		if(!parent.querySelector('#' + (option.id || 'uiuTooltip'))) {
+
+		if (!parent.querySelector('#' + (option.id || 'uiuTooltip'))) {
 			let tooltip = document.createElement('div');
-				tooltip.setAttribute('class',option.contentClass || '');
-				tooltip.setAttribute('id',option.id || 'uiuTooltip');
-				tooltip.innerHTML = option.content || 'tooltip';
+			tooltip.setAttribute('class', option.contentClass || '');
+			tooltip.setAttribute('id', option.id || 'uiuTooltip');
+			tooltip.innerHTML = option.content || 'tooltip';
 
 			// console.log(append)
-			(append||parent).appendChild(tooltip);
-			
-			setStyle(parent,{
-				'position' : 'relative',
+			(append || parent).appendChild(tooltip);
+
+			setStyle(parent, {
+				'position': 'relative',
 			});
-			setStyle(tooltip,{
-				'min-width' : '90px',
-				'position' : 'absolute',
-				'opacity' : '0',
-				'transform' : 'scale(0.6)',
-				'pointer-events' : 'none',
-				'transition' : '0.2s',
-				'transition-property' : 'opacity, transform',
-				'z-index' : '5',
-				'left' : '0',
-				'top' : '0'
+			setStyle(tooltip, {
+				'min-width': '90px',
+				'position': 'absolute',
+				'opacity': '0',
+				'transform': 'scale(0.6)',
+				'pointer-events': 'none',
+				'transition': '0.2s',
+				'transition-property': 'opacity, transform',
+				'z-index': '5',
+				'left': '0',
+				'top': '0'
 			});
 
 			setOn({
-				'mouseover' : function(e) {
-					setStyle(tooltip,{
-						'opacity' : option.opacity || 1,
-						'transform' : 'scale(1)'
+				'mouseover': function (e) {
+					setStyle(tooltip, {
+						'opacity': option.opacity || 1,
+						'transform': 'scale(1)'
 					});
 				},
-				'mouseleave' : function() {
-					setStyle(tooltip,{
-						'opacity' : '0',
-				    'transform' : 'scale(0.6)',
+				'mouseleave': function () {
+					setStyle(tooltip, {
+						'opacity': '0',
+						'transform': 'scale(0.6)',
 					});
 				}
-			},parent);
-			
+			}, parent);
 
-		let pre_left,
+
+			let pre_left,
 				pre_right;
-			
-		
-		function posSet(e) {
-			// const body_w = document.body.offsetWidth;
-			// const parent_w = parent.pageX;
 
-			// let child_w = tooltip.offsetWidth;
-			// let child_r = tooltip.getBoundingClientRect().right;
 
-			// let offsetToTest = e.clientX + child_w;
-			
-			// if(body_w > offsetToTest) {
-			// 	pre_left = (e.offsetX + offset.x);
-			// 	console.log(pre_left)
-			// } else {
-			// 	// pre_left = (body_w - parent_w) - child_w;
-			// }
-			// 	// console.log(child_r)
+			function posSet(e) {
+				// const body_w = document.body.offsetWidth;
+				// const parent_w = parent.pageX;
 
-			setStyle(tooltip,{
-				left : e.offsetX + offset.x + 'px',
-				top : e.offsetY + offset.y + 'px' 
-			});
-		}
+				// let child_w = tooltip.offsetWidth;
+				// let child_r = tooltip.getBoundingClientRect().right;
 
-		setOn('mousemove',parent,throttle(posSet,option.throttle || 30))
+				// let offsetToTest = e.clientX + child_w;
+
+				// if(body_w > offsetToTest) {
+				// 	pre_left = (e.offsetX + offset.x);
+				// 	console.log(pre_left)
+				// } else {
+				// 	// pre_left = (body_w - parent_w) - child_w;
+				// }
+				// 	// console.log(child_r)
+
+				setStyle(tooltip, {
+					left: e.offsetX + offset.x + 'px',
+					top: e.offsetY + offset.y + 'px'
+				});
+			}
+
+			setOn('mousemove', parent, throttle(posSet, option.throttle || 30))
 
 		}
 	};
 
 	//modal 
-	function modal(option,callback) {
+	function modal(option, callback) {
 		let parent = option.parent;
 		let toggle = option.toggle;
-		let diveIn = option.in || ['top','0%','30%'];
+		let diveIn = option.in || ['top', '0%', '30%'];
 		let diveOut = option.diveOut || 'top';
 		if (typeof parent === 'string') parent = uiu.query(parent);
 		if (typeof toggle === 'string') toggle = uiu.query(toggle);
-		
-		if(!toggle.querySelector('#uiuModalCloseBtn')) {
+
+		if (!toggle.querySelector('#uiuModalCloseBtn')) {
 
 			let close = document.createElement('div');
-			close.setAttribute('id','uiuModalCloseBtn');
+			close.setAttribute('id', 'uiuModalCloseBtn');
 			close.innerHTML = 'x';
 
-			setStyle(close,{
-				'position' : 'absolute',
-				'right' : '-15px',
-				'top' : '-0px',
-				'text-align' : 'center',
-				'width' : '25px',
-				'height' : '25px',
-				'padding' : '5px',
-				'border-radius' : '50%',
-				'line-height' : '14px',
-				'cursor' : 'pointer',
-				'background-color' : 'white',
-				'color' : '#252525',
-				'z-index' : '1'
+			setStyle(close, {
+				'position': 'absolute',
+				'right': '-15px',
+				'top': '-0px',
+				'text-align': 'center',
+				'width': '25px',
+				'height': '25px',
+				'padding': '5px',
+				'border-radius': '50%',
+				'line-height': '14px',
+				'cursor': 'pointer',
+				'background-color': 'white',
+				'color': '#252525',
+				'z-index': '1'
 			});
 
 			toggle.appendChild(close);
 
-			setOn('click',close,toggleModal)
+			setOn('click', close, toggleModal)
 		}
 
-		setStyle(toggle,{
-			'position' : 'absolute',
-			'opacity' : '0',
-			'pointer-events' : 'none',
-			'transition' : '0.2s',
-			[diveIn[0]] : diveIn[1]
+		setStyle(toggle, {
+			'position': 'absolute',
+			'opacity': '0',
+			'pointer-events': 'none',
+			'transition': '0.2s',
+			[diveIn[0]]: diveIn[1]
 		});
-		
-		if(option.shiftBaseline === true) {
-			setStyle(toggle,{
-				'transform' : 'translateY(-50%)'
+
+		if (option.shiftBaseline === true) {
+			setStyle(toggle, {
+				'transform': 'translateY(-50%)'
 			});
 		}
 
 		function toggleModal() {
-			toggleStyle(toggle,'opacity','0','1');
-			toggleStyle(toggle,'pointer-events','none','all');
-			toggleStyle(toggle,diveIn[0],diveIn[1],diveIn[2]);
-			
-			if(callback) {
+			toggleStyle(toggle, 'opacity', '0', '1');
+			toggleStyle(toggle, 'pointer-events', 'none', 'all');
+			toggleStyle(toggle, diveIn[0], diveIn[1], diveIn[2]);
+
+			if (callback) {
 				callback();
 			}
 		}
 
 		let on = option.on;
-		if(typeof on === 'string') {
-			uiu.setOn(option.on,parent,function() {
+		if (typeof on === 'string') {
+			uiu.setOn(option.on, parent, function () {
 				toggleModal();
 			})
 		} else {
-			if(option.on()) {
+			if (option.on()) {
 				toggleModal();
 			}
 		}
@@ -768,33 +768,33 @@ const uiu = (function () {
 
 	// event subscription
 	const event = {
-		events : {},
-		subEvent : function subEvent(eventName,callback) {
+		events: {},
+		subEvent: function subEvent(eventName, callback) {
 			this.events[eventName] = this.events[eventName] || [];
 			this.events[eventName].push(callback);
 		},
-		unsubEvent : function(eventName,callback) {
-			if(this.events[eventName]) {
+		unsubEvent: function (eventName, callback) {
+			if (this.events[eventName]) {
 				for (let i = 0; i < this.events[eventName].length; i++) {
-					if(this.events[eventName][i] === callback) {
-						this.events[eventName].splice(0,1);
+					if (this.events[eventName][i] === callback) {
+						this.events[eventName].splice(0, 1);
 						break;
 					}
 				}
 			}
 		},
-		unsubAll : function() {
+		unsubAll: function () {
 			this.events = {};
 		},
-		emit : function(eventName,value) {
-			if(this.events[eventName]) {
+		emit: function (eventName, value) {
+			if (this.events[eventName]) {
 				for (let i = 0; i < this.events[eventName].length; i++) {
-					this.events[eventName][i].apply(null,value);
+					this.events[eventName][i].apply(null, value);
 				}
 			}
 		}
 	}
-	
+
 
 	function navbar(option) {
 		let parent = option.parent;
@@ -808,94 +808,94 @@ const uiu = (function () {
 		let navHeight = parent.offsetHeight;
 		let height = content.offsetHeight;
 
-		uiu.on('click',toggleIcon,function() {
-			uiu.toggleStyle(parent,'height' ,'50px',height+navHeight+'px');            
+		uiu.on('click', toggleIcon, function () {
+			uiu.toggleStyle(parent, 'height', '50px', height + navHeight + 'px');
 		})
-		
+
 	}
 
-	function _clamp(val,max,min) {
-		return Math.min(Math.max(val,max),min);
+	function _clamp(val, max, min) {
+		return Math.min(Math.max(val, max), min);
 	}
 
 	//draggable
-	function draggable(option,callback) {
+	function draggable(option, callback) {
 		let parent = option.parent;
 		let child = option.child;
 		let dragger = option.dragger;
-		
+
 		if (typeof parent === 'string') parent = uiu.query(parent);
 		if (typeof child === 'string') child = uiu.query(child);
 		if (typeof dragger === 'string') dragger = uiu.query(dragger);
 
 		dragger = dragger || child;
 
-    let isDown = false;
-    let origin = {};
+		let isDown = false;
+		let origin = {};
 		let pos = {};
-		
+
 		let adjust = {
-			width : parent.offsetWidth - child.offsetWidth,
-			height : parent.offsetHeight - child.offsetHeight,
-			x : parent.offsetLeft,
-			y : parent.offsetTop,
+			width: parent.offsetWidth - child.offsetWidth,
+			height: parent.offsetHeight - child.offsetHeight,
+			x: parent.offsetLeft,
+			y: parent.offsetTop,
 		}
 
-    dragger.addEventListener('mousedown',(e) => {
+		dragger.addEventListener('mousedown', (e) => {
 			e.stopPropagation();
-      isDown = true;
-      origin.x = e.offsetX;
+			isDown = true;
+			origin.x = e.offsetX;
 			origin.y = e.offsetY;
-		},false);
+		}, false);
 
-    dragger.addEventListener('mouseup',(e) => isDown = false);
-		document.body.addEventListener('mouseup',(e) => isDown = false);
-		document.body.addEventListener('mouseleave',(e) => isDown = false);
-		
-    document.body.addEventListener('mousemove',throttle((e) => {
+		dragger.addEventListener('mouseup', (e) => isDown = false);
+		document.body.addEventListener('mouseup', (e) => isDown = false);
+		document.body.addEventListener('mouseleave', (e) => isDown = false);
+
+		document.body.addEventListener('mousemove', throttle((e) => {
 			e.stopPropagation();
-			if(isDown) {
+			if (isDown) {
 				pos = {
-					x : _clamp(e.pageX - origin.x - adjust.x, 0, adjust.width),
-					y : _clamp(e.pageY - origin.y - adjust.y, 0, adjust.height)
+					x: _clamp(e.pageX - origin.x - adjust.x, 0, adjust.width),
+					y: _clamp(e.pageY - origin.y - adjust.y, 0, adjust.height)
 				};
 				child.style.left = pos.x + 'px';
 				child.style.top = pos.y + 'px';
-				if(callback) {
+				if (callback) {
 					callback(pos)
 				}
 			}
-    },10),false);
+		}, 10), false);
 
 	}
 
 	return {
 		id: id,
 		query: query,
-		preventRightClick : preventRightClick,
+		preventRightClick: preventRightClick,
 		showTooltip: showTooltip,
 		hideTooltip: hideTooltip,
 		on: on,
 		setOn: setOn,
-		onkey : onkey,
-		throttle : throttle,
+		onkey: onkey,
+		throttle: throttle,
 		toggleClass: toggleClass,
-		removeClass : removeClass,
-		addClass : addClass,
-		toggleStyle : toggleStyle,
+		removeClass: removeClass,
+		addClass: addClass,
+		toggleStyle: toggleStyle,
 		linkDOM: linkDOM,
 		dropdown: dropdown,
 		setStyle: setStyle,
 		wooSlider: wooSlider,
 		eventDelegate: eventDelegate,
 		isClassMatch: isClassMatch,
-		selectorMatch : selectorMatch,
-		radialMenu : radialMenu,
-		tooltip : tooltip,
-		modal : modal,
-		navbar : navbar,
+		selectorMatch: selectorMatch,
+		radialMenu: radialMenu,
+		tooltip: tooltip,
+		modal: modal,
+		navbar: navbar,
 		//event emit
-		event : event,
-		draggable : draggable
+		event: event,
+		draggable: draggable
 	}
 })();

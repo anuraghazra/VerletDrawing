@@ -13,7 +13,7 @@
  * 7) userInterface.js
  */
 "use strict";
-window.onload = function() {
+window.onload = function () {
 	// console.clear();
 	console.time('Startup');
 	verletDrawing();
@@ -21,15 +21,15 @@ window.onload = function() {
 };
 function verletDrawing() {
 	const verlet = new Verlet();
-	verlet.init(1000,500,'#c',0.0,0.99,1);
+	verlet.init(1000, 500, '#c', 0.0, 0.99, 1);
 
-	const canvas = verlet.canvas,
-		  ctx = canvas.getContext('2d'),
-		  container = document.getElementsByClassName('container')[0];
+	const canvas = verlet.canvas;
+	const ctx = canvas.getContext('2d');
+	const container = document.getElementsByClassName('container')[0];
 
 	function resizeCanvas() {
-		let containerHeight = container.getBoundingClientRect().height,
-			containerWidth = container.getBoundingClientRect().width;
+		let containerHeight = container.getBoundingClientRect().height;
+		let containerWidth = container.getBoundingClientRect().width;
 		canvas.height = containerHeight - 50;
 		canvas.width = containerWidth;
 		verlet.osCanvas.width = canvas.width;
@@ -37,22 +37,20 @@ function verletDrawing() {
 	}
 
 	resizeCanvas();
-	window.onresize = () => {
-		resizeCanvas();
-	}
+	window.onresize = () => resizeCanvas();
 
 	//All arrays
-	let points 					= [],
-			constrains 			= [],
-			forms 					= [],
-			trig 						= [],
-			tmpCir 					= [],
-			tmpLine 			  = [],
-			formsArray 			= [],
-			handleArray 		= [],
-			tmpHandleArray 	= [],
-			AutojoinArr 		= [];
-			
+	let points = [];
+	let constrains = [];
+	let forms = [];
+	let trig = [];
+	let tmpCir = [];
+	let tmpLine = [];
+	let formsArray = [];
+	let handleArray = [];
+	let tmpHandleArray = [];
+	let AutojoinArr = [];
+
 
 	/**
 	 * ========= Redo And Undo System =========
@@ -60,8 +58,8 @@ function verletDrawing() {
 
 	let redoUndoData = [];
 	function initUndoRedo() {
-		uiu.onkey('CTRL+Z',doUndo);
-		uiu.onkey('CTRL+Y',doRedo);
+		uiu.onkey('CTRL+Z', doUndo);
+		uiu.onkey('CTRL+Y', doRedo);
 	};
 
 	//UndoRedo setps and settings
@@ -73,13 +71,13 @@ function verletDrawing() {
 		let tmpdots = [];
 		let tmpcons = [];
 		let tmpshapes = [];
-		
-		if(redoUndoData.length < MAX_UNDO_REDO_STEPS) {
-			
+
+		if (redoUndoData.length < MAX_UNDO_REDO_STEPS) {
+
 			//dots
 			for (let i = 0; i < points.length; i++) {
 				const p = points[i];
-				tmpdots.push([p.x,p.y,p.oldx,p.oldy,p.pinned, p.color]);
+				tmpdots.push([p.x, p.y, p.oldx, p.oldy, p.pinned, p.color]);
 			}
 
 			//cons
@@ -87,8 +85,8 @@ function verletDrawing() {
 			for (let j = 0; j < constrains.length; j++) {
 				const c = constrains[j];
 				tmpcons.push([
-					c.id[0],c.id[1],
-					{'hidden' : c.hidden, 'stiffness' : c.stiffness, 'length' : c.len}
+					c.id[0], c.id[1],
+					{ 'hidden': c.hidden, 'stiffness': c.stiffness, 'length': c.len }
 				]);
 			}
 
@@ -100,11 +98,11 @@ function verletDrawing() {
 				])
 			}
 
-			redoUndoData.push([tmpdots,tmpcons,tmpshapes]);
+			redoUndoData.push([tmpdots, tmpcons, tmpshapes]);
 			ctrlZ = redoUndoData.length;
 			ctrlY = 0;
 		}
-		
+
 	}
 
 	// Just For Removing DRY Code
@@ -112,111 +110,111 @@ function verletDrawing() {
 		points = [];
 		constrains = [];
 		forms = [];
-		verlet.create(redoUndoData[value][0],points,constrains);
-		verlet.clamp(redoUndoData[value][1],points,constrains);
-		if(redoUndoData[value][2].length > 0) {
-			verlet.shape(redoUndoData[value][2],forms,points);
+		verlet.create(redoUndoData[value][0], points, constrains);
+		verlet.clamp(redoUndoData[value][1], points, constrains);
+		if (redoUndoData[value][2].length > 0) {
+			verlet.shape(redoUndoData[value][2], forms, points);
 		}
 	}
 	function doUndo() {
-		if(ctrlZ > 0) {
+		if (ctrlZ > 0) {
 			--ctrlZ;
 		}
 		recoverDataFromRedoUndoArray(ctrlZ);
 		ctrlY = ctrlZ;
 		verlet.Interact.move(points);
-		verlet.superUpdate(points,constrains,PhysicsAccuracy.value)		
+		verlet.superUpdate(points, constrains, PhysicsAccuracy.value)
 	}
 	function doRedo() {
-		if(ctrlY <= redoUndoData.length) {
+		if (ctrlY <= redoUndoData.length) {
 			++ctrlY;
 		}
 		// clamp the value of ctrlY
-		if(ctrlY > redoUndoData.length-1) {
-			ctrlY = redoUndoData.length-1;
+		if (ctrlY > redoUndoData.length - 1) {
+			ctrlY = redoUndoData.length - 1;
 		}
 		recoverDataFromRedoUndoArray(ctrlY);
 		ctrlZ = ctrlY;
 		// ctrlY = ctrlZ;
 		verlet.Interact.move(points);
-		verlet.superUpdate(points,constrains,PhysicsAccuracy.value)
+		verlet.superUpdate(points, constrains, PhysicsAccuracy.value)
 	}
 	initUndoRedo();
 
 
 	/* ======== UI Variables ======== */
-	const PhysicsAccuracy = _('Iterrations'),
-				stiffness 			= _('stiffness'),
-				bounce 					= _('bounce'),
-				friction 				= _('friction'),
-				dotOpt 					= _('dots'),
-				LineOpt 				= _('lines'),
-				LineStressOpt		= _('stress'),
-				dotsAsBoxOpt		= _('dotsasbox'),
-				LineHiddenOpt 	= _('hiddenlines'),
-				IndexOpt 				= _('pointIndex'),
-				shapeOpt 				= _('shapes'),
-				gridOpt 				= _('gridguid'),
-				gridGap 				= _('gridgap'),
-				grav 						= _('gravity'),
-				exportbtn 			= _('export'),
-				loadModelpoint 	= _('loadmodelpoint'),
-				dragDrop_load 	= _('overlaydrag'),
-				shapecolor 			= _('shapecolor');
+	const PhysicsAccuracy = id('Iterrations'),
+		stiffness = id('stiffness'),
+		bounce = id('bounce'),
+		friction = id('friction'),
+		dotOpt = id('dots'),
+		LineOpt = id('lines'),
+		LineStressOpt = id('stress'),
+		dotsAsBoxOpt = id('dotsasbox'),
+		LineHiddenOpt = id('hiddenlines'),
+		IndexOpt = id('pointIndex'),
+		shapeOpt = id('shapes'),
+		gridOpt = id('gridguid'),
+		gridGap = id('gridgap'),
+		grav = id('gravity'),
+		exportbtn = id('export'),
+		loadModelpoint = id('loadmodelpoint'),
+		dragDrop_load = id('overlaydrag'),
+		shapecolor = id('shapecolor');
 
 	/*Create Variables*/
 	const box = {
-		X 			: _('boxX'),
-		Y 			: _('boxY'),
-		W 			: _('boxW'),
-		H 			: _('boxH'),
-		create 	: _('createBox'),
-		draw 		: _('drawBox'),
-		select 	: _('selectcreate')
+		X: id('boxX'),
+		Y: id('boxY'),
+		W: id('boxW'),
+		H: id('boxH'),
+		create: id('createBox'),
+		draw: id('drawBox'),
+		select: id('selectcreate')
 	}
 	const rope = {
-		X 			: _('ropeX'),
-		Y 			: _('ropeY'),
-		GAP 		: _('ropeGap'),
-		SEGS 		: _('ropeSegs'),
-		draw 		: _('drawRope'),
-		create 	: _('createrope')
+		X: id('ropeX'),
+		Y: id('ropeY'),
+		GAP: id('ropeGap'),
+		SEGS: id('ropeSegs'),
+		draw: id('drawRope'),
+		create: id('createrope')
 	}
 	const cloth = {
-		X 			: _('clothX'),
-		Y 			: _('clothY'),
-		GAPX 		: _('clothGapX'),
-		GAPY 		: _('clothGapY'),
-		SEGS 		: _('clothSegs'),
-		RATIO 	: _('clothPinRatio'),
-		create 	: _('createcloth')
+		X: id('clothX'),
+		Y: id('clothY'),
+		GAPX: id('clothGapX'),
+		GAPY: id('clothGapY'),
+		SEGS: id('clothSegs'),
+		RATIO: id('clothPinRatio'),
+		create: id('createcloth')
 	}
 	const hexa = {
-		X 			: _('hexaX'),
-		Y 			: _('hexaY'),
-		RADIUS 	: _('hexaRadius'),
-		SIDES 	: _('hexaSides'),
-		SLICE1 	: _('hexaSlice1'),
-		SLICE2 	: _('hexaSlice2'),
-		CENTER  : _('hexaCenter'),
-		create 	: _('createhexa'),
-		draw 		: _('drawhexa')
+		X: id('hexaX'),
+		Y: id('hexaY'),
+		RADIUS: id('hexaRadius'),
+		SIDES: id('hexaSides'),
+		SLICE1: id('hexaSlice1'),
+		SLICE2: id('hexaSlice2'),
+		CENTER: id('hexaCenter'),
+		create: id('createhexa'),
+		draw: id('drawhexa')
 	}
 	const map = {
-		X 			: _('mapX'),
-		Y 			: _('mapY'),
-		SIZEX 	: _('mapSizeX'),
-		SIZEY 	: _('mapSizeY'),
-		DATA 		: _('mapData'),
-		create 	: _('createmap')
+		X: id('mapX'),
+		Y: id('mapY'),
+		SIZEX: id('mapSizeX'),
+		SIZEY: id('mapSizeY'),
+		DATA: id('mapData'),
+		create: id('createmap')
 	}
 	const beam = {
-		X 			: _('beamX'),
-		Y 			: _('beamY'),
-		W 			: _('beamW'),
-		H 			: _('beamH'),
-		SEGS 		: _('beamSegs'),
-		create 	: _('createbeam')
+		X: id('beamX'),
+		Y: id('beamY'),
+		W: id('beamW'),
+		H: id('beamH'),
+		SEGS: id('beamSegs'),
+		create: id('createbeam')
 	}
 
 
@@ -226,157 +224,157 @@ function verletDrawing() {
 	box.create.onclick = () => {
 		(box.select.value === 'box') ? createBox() : createTri();
 	};
-	rope.create.onclick  = () => createRope();
+	rope.create.onclick = () => createRope();
 	cloth.create.onclick = () => createCloth();
-	hexa.create.onclick  = () => createHexagon();
-	map.create.onclick 	 = () => createMap();
-	beam.create.onclick  = () => createBeam();
-	
+	hexa.create.onclick = () => createHexagon();
+	map.create.onclick = () => createMap();
+	beam.create.onclick = () => createBeam();
+
 	/*Load And Export*/
 	exportbtn.onclick = () => {
 		const filename = document.getElementById("filename");
-		verlet.export(filename.value,points,constrains,forms)
+		verlet.export(filename.value, points, constrains, forms)
 		// exportModel(points,constrains,forms,);
 	};
 
 	//disabled load button if no file is selected
-	uiu.on('change','#loadPoints',function() {
-		if(uiu.query('#loadPoints').value) {
+	uiu.on('change', '#loadPoints', function () {
+		if (uiu.query('#loadPoints').value) {
 			loadModelpoint.removeAttribute('disabled');
 		} else {
-			loadModelpoint.setAttribute('disabled',true);
+			loadModelpoint.setAttribute('disabled', true);
 		}
 	});
 	loadModelpoint.onclick = () => {
-		verlet.import('#loadPoints',points,constrains,forms)
+		verlet.import('#loadPoints', points, constrains, forms)
 	};
 
 	//create methods
 	function createBox() {
-			verlet.Poly.box({
-				x : parseInt(box.X.value),
-				y : parseInt(box.Y.value),
-				width : parseInt(box.W.value),
-				height : parseInt(box.H.value)
-			},points,constrains);
+		verlet.Poly.box({
+			x: parseInt(box.X.value),
+			y: parseInt(box.Y.value),
+			width: parseInt(box.W.value),
+			height: parseInt(box.H.value)
+		}, points, constrains);
 		updateUndoRedo();
 	}
-	function drawBox(posx,posy,w,h) {
-		if(box.draw.checked === true) {
+	function drawBox(posx, posy, w, h) {
+		if (box.draw.checked === true) {
 			if (box.select.value !== 'box') {
 				verlet.Poly.triangle({
-					x : posx,
-					y : posy,
-					width : w,
-					height : h
-				},points,constrains);
+					x: posx,
+					y: posy,
+					width: w,
+					height: h
+				}, points, constrains);
 			} else {
 				verlet.Poly.box({
-					x : posx,
-					y : posy,
-					width : w,
-					height : h
-				},points,constrains);
+					x: posx,
+					y: posy,
+					width: w,
+					height: h
+				}, points, constrains);
 			}
 			updateUndoRedo();
 		}
 	}
 	function createTri() {
 		verlet.Poly.triangle({
-			x : parseInt(box.X.value),
-			y : parseInt(box.Y.value),
-			width : parseInt(box.W.value),
-			height : parseInt(box.H.value)
-		},points,constrains);
+			x: parseInt(box.X.value),
+			y: parseInt(box.Y.value),
+			width: parseInt(box.W.value),
+			height: parseInt(box.H.value)
+		}, points, constrains);
 		updateUndoRedo();
 	}
 	function createRope() {
 		verlet.Poly.rope({
-			x : parseInt(rope.X.value),
-			y : parseInt(rope.Y.value),
-			gap : parseInt(rope.GAP.value),
-			segs :  parseInt(rope.SEGS.value),
-		},points,constrains);
+			x: parseInt(rope.X.value),
+			y: parseInt(rope.Y.value),
+			gap: parseInt(rope.GAP.value),
+			segs: parseInt(rope.SEGS.value),
+		}, points, constrains);
 		updateUndoRedo();
 	}
-	function drawRope(posx,posy,w,h) {
-		if(rope.draw.checked === true) {
+	function drawRope(posx, posy, w, h) {
+		if (rope.draw.checked === true) {
 			verlet.Poly.rope({
-				x : (posx+w),
-				y : (posy+h),
-				gap : h,
-				segs : w/12,
-			},points,constrains);
+				x: (posx + w),
+				y: (posy + h),
+				gap: h,
+				segs: w / 12,
+			}, points, constrains);
 			updateUndoRedo();
 		}
 	}
 	function createCloth() {
 		verlet.Poly.cloth({
-			x : parseInt(cloth.X.value),
-			y : parseInt(cloth.Y.value),
-			gapX : parseInt(cloth.GAPX.value),
-			gapY : parseInt(cloth.GAPY.value),
-			segs :  parseInt(cloth.SEGS.value),
-			pinRatio : parseInt(cloth.RATIO.value),
-			tearable : false
-		},points,constrains);
+			x: parseInt(cloth.X.value),
+			y: parseInt(cloth.Y.value),
+			gapX: parseInt(cloth.GAPX.value),
+			gapY: parseInt(cloth.GAPY.value),
+			segs: parseInt(cloth.SEGS.value),
+			pinRatio: parseInt(cloth.RATIO.value),
+			tearable: false
+		}, points, constrains);
 		updateUndoRedo();
 	}
 	function createHexagon() {
 		verlet.Poly.hexagon({
-			x : parseInt(hexa.X.value),
-			y : parseInt(hexa.Y.value),
-			radius : parseInt(hexa.RADIUS.value),
-			sides : parseInt(hexa.SIDES.value),
-			slice1 :  parseInt(hexa.SLICE1.value),
-			slice2 :  parseInt(hexa.SLICE2.value),
-			center : hexa.CENTER.checked
-		},points,constrains);
+			x: parseInt(hexa.X.value),
+			y: parseInt(hexa.Y.value),
+			radius: parseInt(hexa.RADIUS.value),
+			sides: parseInt(hexa.SIDES.value),
+			slice1: parseInt(hexa.SLICE1.value),
+			slice2: parseInt(hexa.SLICE2.value),
+			center: hexa.CENTER.checked
+		}, points, constrains);
 		updateUndoRedo();
 	}
-	function drawHexagon(x,y,w,h) {
-		if(hexa.draw.checked === true) {
+	function drawHexagon(x, y, w, h) {
+		if (hexa.draw.checked === true) {
 			verlet.Poly.hexagon({
-				x : x+w,
-				y : y+h,
-				radius : (h)/2,
-				sides : parseInt(hexa.SIDES.value),
-				slice1 : parseInt(hexa.SLICE1.value),
-				slice2 : parseInt(hexa.SLICE2.value),
-				vx : x+w,
-				vy : y+h,
-				center : hexa.CENTER.checked
-			},points,constrains);
+				x: x + w,
+				y: y + h,
+				radius: (h) / 2,
+				sides: parseInt(hexa.SIDES.value),
+				slice1: parseInt(hexa.SLICE1.value),
+				slice2: parseInt(hexa.SLICE2.value),
+				vx: x + w,
+				vy: y + h,
+				center: hexa.CENTER.checked
+			}, points, constrains);
 			updateUndoRedo();
 		}
 	}
 	function createBeam() {
 		verlet.Poly.beam({
-			x : parseInt(beam.X.value),
-			y : parseInt(beam.Y.value),
-			width : parseInt(beam.W.value),
-			height : parseInt(beam.H.value),
-			segs : parseInt(beam.SEGS.value),
-		},points,constrains);
+			x: parseInt(beam.X.value),
+			y: parseInt(beam.Y.value),
+			width: parseInt(beam.W.value),
+			height: parseInt(beam.H.value),
+			segs: parseInt(beam.SEGS.value),
+		}, points, constrains);
 		updateUndoRedo();
 	}
 	function createMap() {
 		let raw = map.DATA.value;
 		let splitRaw = map.DATA.value.split(",");
 		let parsedRaw = '';
-		for(let i = 0; i < splitRaw.length; i++) {
+		for (let i = 0; i < splitRaw.length; i++) {
 			parsedRaw += "\"" + splitRaw[i] + "\",";
 		}
-		let toBeParsed = "[" + parsedRaw.replace(/,$/,'').replace(/\n/img,'') + "]";
+		let toBeParsed = "[" + parsedRaw.replace(/,$/, '').replace(/\n/img, '') + "]";
 
 		let val = JSON.parse(toBeParsed);
 		verlet.Poly.map({
-			x : parseInt(map.X.value),
-			y : parseInt(map.Y.value),
-			sizeX : parseInt(map.SIZEX.value),
-			sizeY : parseInt(map.SIZEY.value),
-			data : val
-		},points,constrains);
+			x: parseInt(map.X.value),
+			y: parseInt(map.Y.value),
+			sizeX: parseInt(map.SIZEX.value),
+			sizeY: parseInt(map.SIZEY.value),
+			data: val
+		}, points, constrains);
 		updateUndoRedo();
 	}
 
@@ -384,12 +382,12 @@ function verletDrawing() {
 	/* ========= Miscellaneous ========= */
 	uiu.preventRightClick();
 
-	function _(id) {
+	function id(id) {
 		return document.getElementById(id);
 	}
 
-	const mouse = {x : 0, y : 0}
-	canvas.addEventListener('mousemove',function(e) {
+	const mouse = { x: 0, y: 0 }
+	canvas.addEventListener('mousemove', function (e) {
 		mouse.x = e.offsetX;
 		mouse.y = e.offsetY;
 	});
@@ -397,31 +395,31 @@ function verletDrawing() {
 	function distance(p1x, p1y, p2x, p2y) {
 		let dx = p1x - p2x;
 		let dy = p1y - p2y;
-		return Math.sqrt(dx*dx + dy*dy);
+		return Math.sqrt(dx * dx + dy * dy);
 	}
-	function colDetect(x,y,circle) {
+	function colDetect(x, y, circle) {
 		let dx = x - circle.x;
 		let dy = y - circle.y;
-		return Math.sqrt(dx*dx + dy*dy);
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	// DRAW GRID
 	function drawGrid() {
-		if(gridOpt.checked === true) {
+		if (gridOpt.checked === true) {
 			let gap = parseInt(gridGap.value);
 			let gridX = 0;
 			let gridY = 0;
 			ctx.beginPath();
 			ctx.strokeStyle = 'limegreen';
-			for(let i = 0; i < canvas.width; i++) {
+			for (let i = 0; i < canvas.width; i++) {
 				gridX += gap;
-				ctx.moveTo(gridX,canvas.width);
-				ctx.lineTo(gridX,0);
+				ctx.moveTo(gridX, canvas.width);
+				ctx.lineTo(gridX, 0);
 			}
-			for(let i = 0; i < canvas.height; i++) {
+			for (let i = 0; i < canvas.height; i++) {
 				gridY += gap;
-				ctx.moveTo(canvas.width,gridY);
-				ctx.lineTo(0,gridY);
+				ctx.moveTo(canvas.width, gridY);
+				ctx.lineTo(0, gridY);
 			}
 			ctx.stroke();
 			ctx.closePath();
@@ -429,20 +427,20 @@ function verletDrawing() {
 	}
 	//drawTmpCir
 	function drawTmpCir(arr) {
-		if(arr.length > 0) {
+		if (arr.length > 0) {
 			for (let i = 0; i < arr.length; i++) {
-				verlet.Draw.arc(arr[i].x,arr[i].y,5,'gray',1,true);
+				verlet.Draw.arc(arr[i].x, arr[i].y, 5, 'gray', 1, true);
 			}
 		}
 	}
 	function drawTmpLine(arr) {
 		// tmpLine
-		if(arr.length > 0) {
+		if (arr.length > 0) {
 			verlet.ctx.beginPath();
 			verlet.ctx.strokeStyle = 'white';
-			verlet.ctx.moveTo(arr[0].x,arr[0].y);
+			verlet.ctx.moveTo(arr[0].x, arr[0].y);
 			for (let i = 0; i < arr.length; i++) {
-				verlet.ctx.lineTo(arr[i].x,arr[i].y);
+				verlet.ctx.lineTo(arr[i].x, arr[i].y);
 			}
 			verlet.ctx.stroke();
 			verlet.ctx.closePath();
@@ -455,7 +453,7 @@ function verletDrawing() {
 	let getFps;
 	let frameTime;
 	function getFrameRate() {
-		if(!lastframe) {
+		if (!lastframe) {
 			lastframe = Date.now();
 			fps = 0;
 			return;
@@ -463,13 +461,13 @@ function verletDrawing() {
 		let delta = (Date.now() - lastframe) / 1000;
 		frameTime = (Date.now() - lastframe);
 		lastframe = Date.now();
-		fps = 1/delta;
+		fps = 1 / delta;
 		return Math.round(fps);
 	}
 
 	//Get Range Slider Values And Display It
 	function getVal(el) {
-		uiu.setOn('input',el,function() {
+		uiu.setOn('input', el, function () {
 			this.nextElementSibling.innerText = this.value;
 		});
 	}
@@ -481,72 +479,72 @@ function verletDrawing() {
 	getVal(gridGap);
 
 	//dragload file
-	uiu.setOn('dragenter',canvas,function(e) {
-		uiu.setStyle(dragDrop_load,{
-			display : 'block'
+	uiu.setOn('dragenter', canvas, function (e) {
+		uiu.setStyle(dragDrop_load, {
+			display: 'block'
 		})
 	});
-	uiu.setOn('dragleave',dragDrop_load,function(e) {
+	uiu.setOn('dragleave', dragDrop_load, function (e) {
 		e.preventDefault();
-		uiu.setStyle(dragDrop_load,{
-			display : 'none'
+		uiu.setStyle(dragDrop_load, {
+			display: 'none'
 		});
 	});
 
-	uiu.setOn('drop',dragDrop_load,function(e) {
-			window.setTimeout(function() {
-				forms = [];
-				verlet.import('#overlaydrag',points,constrains,forms);
-				uiu.setStyle(dragDrop_load,{
-					display : 'none'
-				});
-				console.log('loaded');
-			},100)
+	uiu.setOn('drop', dragDrop_load, function (e) {
+		window.setTimeout(function () {
+			forms = [];
+			verlet.import('#overlaydrag', points, constrains, forms);
+			uiu.setStyle(dragDrop_load, {
+				display: 'none'
+			});
+			console.log('loaded');
+		}, 100)
 	});
 
 	//save with CTRL+S
-	function toggleModal(e){
+	function toggleModal(e) {
 		uiu.modal({
-			on : function() {
+			on: function () {
 				return e
 			},
-			parent : '.container',
-			toggle : '#ctrlSaveModal',
-			in : ['top','0%','35%'],
-		},function() {
+			parent: '.container',
+			toggle: '#ctrlSaveModal',
+			in: ['top', '0%', '35%'],
+		}, function () {
 			uiu.query('#ctrlSaveModal > input').classList.remove('show');
 		})
 	}
 	toggleModal(false);
 	function ctrlSave(e) {
 		e.preventDefault();
-			toggleModal(true);
+		toggleModal(true);
 
-			let name = uiu.query('#ctrlSaveModal > input');
-			uiu.onkey('enter',function() {
-				// exportModel(points,constrains,forms,name.value);
-				verlet.export(name.value, points, constrains, forms);
-				toggleModal(false);
-				uiu.query('#ctrlSaveModal > input').classList.add('show');
-				
-			},name)
+		let name = uiu.query('#ctrlSaveModal > input');
+		uiu.onkey('enter', function () {
+			// exportModel(points,constrains,forms,name.value);
+			verlet.export(name.value, points, constrains, forms);
+			toggleModal(false);
+			uiu.query('#ctrlSaveModal > input').classList.add('show');
+
+		}, name)
 	}
-	uiu.onkey('ctrl+s',ctrlSave);
+	uiu.onkey('ctrl+s', ctrlSave);
 
 	// Event Subscribers
-	uiu.event.subEvent('toggleCursor',cbkToggle);
-  function cbkToggle(pointers,once) {
-    let bdy = document.body.style
-    if (!once) {
-      if (bdy.cursor === pointers[0]) {
-        bdy.cursor = pointers[1];
-      } else {
-        bdy.cursor = pointers[0];
-      }
-    } else {
-      bdy.cursor = once;
-    }
-  }
+	uiu.event.subEvent('toggleCursor', cbkToggle);
+	function cbkToggle(pointers, once) {
+		let bdy = document.body.style
+		if (!once) {
+			if (bdy.cursor === pointers[0]) {
+				bdy.cursor = pointers[1];
+			} else {
+				bdy.cursor = pointers[0];
+			}
+		} else {
+			bdy.cursor = once;
+		}
+	}
 
 	// TODO:  FIX LAGGING ON "W" KEY WITH hexagon floating MENU
 
@@ -588,9 +586,9 @@ function verletDrawing() {
 						}
 						if (initUI.states['auto-join'] === false) {
 							for (let k = 0; k < handleArray.length; k++) {
-								handleArray[k][2] = {hidden : hidden};
+								handleArray[k][2] = { hidden: hidden };
 								console.log(handleArray)
-								verlet.clamp([handleArray[k]],points,constrains);
+								verlet.clamp([handleArray[k]], points, constrains);
 							}
 						} else { //Auto Join By Index
 							//Increment And Joint i++
@@ -607,7 +605,7 @@ function verletDrawing() {
 								]);
 							}
 							tmpAuto.pop();
-							verlet.clamp(tmpAuto,points,constrains);
+							verlet.clamp(tmpAuto, points, constrains);
 							tmpAuto.splice(0, tmpAuto.length);
 						}
 						tmpHandleArray = [];
@@ -622,30 +620,30 @@ function verletDrawing() {
 					break;
 				case 70://F
 					canvas.addEventListener('mousedown', addToForms);
-					uiu.showTooltip(mouse, '#colorIndicator',{x : 19, y : 30},function(){
+					uiu.showTooltip(mouse, '#colorIndicator', { x: 19, y: 30 }, function () {
 						this.style.backgroundColor = shapecolor.value;
 					});
 					canvas.style.cursor = 'alias';
 
-					let fContentShape = _('floating-content-shape');
+					let fContentShape = id('floating-content-shape');
 					fContentShape.classList.add('show');
 
 					uiu.draggable({
-						parent : '.tooltips',
-						child : '#floating-content-shape',
-						dragger : '.shape'
+						parent: '.tooltips',
+						child: '#floating-content-shape',
+						dragger: '.shape'
 					})
 					break;
-					
+
 				case 87:
 					canvas.addEventListener('mousedown', pushAutoJoinArr);
-					canvas.style.cursor = 'crosshair';					
+					canvas.style.cursor = 'crosshair';
 			}
 		}
 
 		// Delete and update undoredo explicitly to improve performence
 		// and also added uiu.throttle
-		uiu.onkey('DELETE',uiu.throttle(function() {
+		uiu.onkey('DELETE', uiu.throttle(function () {
 			for (let i = 0; i < constrains.length; i++) {
 				while (constrains[i].id.indexOf(verlet.handleIndex) !== -1) {
 					constrains.splice(i, 1);
@@ -653,7 +651,7 @@ function verletDrawing() {
 				}
 			}
 			updateUndoRedo();
-		},100));
+		}, 100));
 
 		function removekeyhandling(e) {
 			switch (e.which) {
@@ -685,15 +683,15 @@ function verletDrawing() {
 					for (let i = 0; i < points.length; i++) {
 						points[i].color = null;
 					}
-					
-					let fContentShape = _('floating-content-shape');
+
+					let fContentShape = id('floating-content-shape');
 					fContentShape.classList.remove('show');
 
-					// updateUndoRedo();
-					case 87:
+				// updateUndoRedo();
+				case 87:
 					createAutoJoin();
 					canvas.removeEventListener('mousedown', pushAutoJoinArr);
-					canvas.style.cursor = 'pointer';			
+					canvas.style.cursor = 'pointer';
 			}
 		}
 
@@ -733,7 +731,7 @@ function verletDrawing() {
 					if (points[i].color !== 'crimson') {
 						points[i].color = 'greenyellow';
 					}
-					
+
 					// tmpLine.push({x : points[i].x,y :  points[i].y})
 				}
 			}
@@ -773,24 +771,24 @@ function verletDrawing() {
 		// Auto Create And JOIN
 		function pushAutoJoinArr(e) {
 			//push to arrays
-			tmpCir.push({x : e.offsetX,y : e.offsetY});
-			tmpLine.push({x : e.offsetX,y : e.offsetY});
-			AutojoinArr.push([e.offsetX,e.offsetY]);
+			tmpCir.push({ x: e.offsetX, y: e.offsetY });
+			tmpLine.push({ x: e.offsetX, y: e.offsetY });
+			AutojoinArr.push([e.offsetX, e.offsetY]);
 		}
 		function createAutoJoin(e) {
-			if(AutojoinArr.length > 1) {
+			if (AutojoinArr.length > 1) {
 				let first = AutojoinArr[0];
-				let last = AutojoinArr[AutojoinArr.length-1]
+				let last = AutojoinArr[AutojoinArr.length - 1]
 				let join = false;
 				//join if last and first point is touching
-				if(distance(first[0],first[1],last[0],last[1]) < 10) {
+				if (distance(first[0], first[1], last[0], last[1]) < 10) {
 					join = true;
-					AutojoinArr.splice(AutojoinArr.length-1,1);
+					AutojoinArr.splice(AutojoinArr.length - 1, 1);
 				}
 				verlet.Poly.line({
-					data : AutojoinArr,
-					joinEnd : join
-				},points,constrains);
+					data: AutojoinArr,
+					joinEnd: join
+				}, points, constrains);
 			}
 			//reset arrays
 			AutojoinArr = [];
@@ -807,84 +805,84 @@ function verletDrawing() {
 	initDragDrawing();
 	function initDragDrawing() {
 		//drag draw
-		drag.init(verlet.canvas,(x,y,w,h) => drawBox(x,y,w,h));
-		drag.init(verlet.canvas,(x,y,w,h) => drawRope(x,y,w,h));
-		drag.init(verlet.canvas,(x,y,w,h) => drawHexagon(x,y,w,h));
+		drag.init(verlet.canvas, (x, y, w, h) => drawBox(x, y, w, h));
+		drag.init(verlet.canvas, (x, y, w, h) => drawRope(x, y, w, h));
+		drag.init(verlet.canvas, (x, y, w, h) => drawHexagon(x, y, w, h));
 
 		//draw and create with shortcuts
-		box.draw.onchange = function() {
-			uiu.event.emit('toggleCursor',[['crosshair','default']]);
+		box.draw.onchange = function () {
+			uiu.event.emit('toggleCursor', [['crosshair', 'default']]);
 		}
-		
-		uiu.onkey('b',function() {
+
+		uiu.onkey('b', function () {
 			box.draw.checked = true;
 			canvas.style.cursor = 'crosshair';
 		});
 
-		uiu.onkey('r',function() {
+		uiu.onkey('r', function () {
 			rope.draw.checked = true;
 			canvas.style.cursor = 'crosshair';
 		});
 
-		uiu.onkey('h',function(e) {
+		uiu.onkey('h', function (e) {
 			hexa.draw.checked = true;
 			canvas.style.cursor = 'crosshair';
-			let fContent = _('floating-content');
+			let fContent = id('floating-content');
 			fContent.classList.add('show');
 		});
 		uiu.draggable({
-			parent : '.tooltips',
-			child : '#floating-content',
-			dragger : '.dragger'
+			parent: '.tooltips',
+			child: '#floating-content',
+			dragger: '.dragger'
 		});
 
-		uiu.on('keyup',document,function(e) {
+		uiu.on('keyup', document, function (e) {
 			box.draw.checked = false;
 			rope.draw.checked = false;
 			canvas.style.cursor = 'default';
-			
-			if(e.which === 72) {
-			  let fContent = _('floating-content');
-			  hexa.draw.checked = false;
-			  fContent.classList.remove('show');
+
+			if (e.which === 72) {
+				let fContent = id('floating-content');
+				hexa.draw.checked = false;
+				fContent.classList.remove('show');
 			}
 		});
 	}
-	function _drawbox(x,y,w,h) {
+	function _drawbox(x, y, w, h) {
 		ctx.beginPath();
 		ctx.strokeStyle = 'gray';
-		ctx.strokeRect(x,y,w,h);
+		ctx.strokeRect(x, y, w, h);
 		ctx.stroke();
 		ctx.closePath();
 	}
-	function drawTmpBox(x,y,w,h) {
-		_drawbox(x,y,w,h);
+	function drawTmpBox(x, y, w, h) {
+		_drawbox(x, y, w, h);
 		ctx.beginPath();
 		ctx.fillStyle = "white";
 		ctx.font = '12px Century Gothic';
-		ctx.fillText('w: ' + w + 'px',w+x+10,h+y-25);
-		ctx.fillText('h: ' + h + 'px',w+x+10,h+y-10);
+		ctx.fillText('w: ' + w + 'px', w + x + 10, h + y - 25);
+		ctx.fillText('h: ' + h + 'px', w + x + 10, h + y - 10);
 		ctx.fill();
 		ctx.closePath();
 	}
 
-	function drawTmpRope(x,y,w,h) {
-		_drawbox(x,y,w,h);
+	function drawTmpRope(x, y, w, h) {
+		_drawbox(x, y, w, h);
 		ctx.beginPath();
 		ctx.fillStyle = "white";
 		ctx.font = '12px Century Gothic';
-		ctx.fillText('gap: ' + h + 'px',x+10,h+y+20);
-		ctx.fillText('parts: ' + Math.round(w/12) + '',w+x+15,y+15);
+		ctx.fillText('gap: ' + h + 'px', x + 10, h + y + 20);
+		ctx.fillText('parts: ' + Math.round(w / 12) + '', w + x + 15, y + 15);
 		ctx.fill();
 		ctx.closePath();
 	}
-	function drawTmpHexa(x,y,w,h) {
-		_drawbox(x,y,w,h);
+	function drawTmpHexa(x, y, w, h) {
+		_drawbox(x, y, w, h);
 		ctx.beginPath();
 		ctx.fillStyle = "white";
 		ctx.font = '12px Century Gothic';
-		ctx.fillText('radius: ' + h/2 + 'px',x+10,h+y+20);
-		ctx.fillText('parts: ' + Math.round(w/12) + '',w+x+15,y+15);
+		ctx.fillText('radius: ' + h / 2 + 'px', x + 10, h + y + 20);
+		ctx.fillText('parts: ' + Math.round(w / 12) + '', w + x + 15, y + 15);
 		ctx.fill();
 		ctx.closePath();
 	}
@@ -900,28 +898,28 @@ function verletDrawing() {
 	let isRenderStress;
 	let isRenderDotsAsBox;
 
-	verlet.Interact.move(points,'white');
+	verlet.Interact.move(points, 'white');
 	/* ====== ANIMATE ====== */
 	function animate() {
 		verlet.clear();
 
-		drag.draw(function(x,y,w,h) {
-			drawTmpBox(x,y,w,h);
-		},box.draw.checked);
-		drag.draw(function(x,y,w,h) {
-			drawTmpRope(x,y,w,h);
-		},rope.draw.checked);
-		drag.draw(function(x,y,w,h) {
-			drawTmpHexa(x,y,w,h);
-		},hexa.draw.checked);
+		drag.draw(function (x, y, w, h) {
+			drawTmpBox(x, y, w, h);
+		}, box.draw.checked);
+		drag.draw(function (x, y, w, h) {
+			drawTmpRope(x, y, w, h);
+		}, rope.draw.checked);
+		drag.draw(function (x, y, w, h) {
+			drawTmpHexa(x, y, w, h);
+		}, hexa.draw.checked);
 
-		verlet.gravity 		= parseFloat(gravity.value) 	|| 0;
-		verlet.bounce 		= parseFloat(bounce.value) 		|| 0;
-		verlet.friction 	= parseFloat(friction.value) 	|| 1;
-		verlet.stiffness 	= parseFloat(stiffness.value) || 1;
+		verlet.gravity = parseFloat(gravity.value) || 0;
+		verlet.bounce = parseFloat(bounce.value) || 0;
+		verlet.friction = parseFloat(friction.value) || 1;
+		verlet.stiffness = parseFloat(stiffness.value) || 1;
 
 		//physics update
-		verlet.superUpdate(points,constrains,PhysicsAccuracy.value,{hoverColor : 'white'});
+		verlet.superUpdate(points, constrains, PhysicsAccuracy.value, { hoverColor: 'white' });
 
 
 		//render conditions
@@ -934,15 +932,15 @@ function verletDrawing() {
 		isRenderDotsAsBox = dotsAsBoxOpt.checked;
 
 		//render loop
-		verlet.superRender(points,constrains,{
-			renderDots : isRenderDots,
-			renderLines : isRenderLines,
-			renderHiddenLines : isRenderHiddenLines,
-			renderPointIndex : isRenderPointIndex,
-			renderDotsAsBox : isRenderDotsAsBox,
-			preset : 'shadowBlue'
+		verlet.superRender(points, constrains, {
+			renderDots: isRenderDots,
+			renderLines: isRenderLines,
+			renderHiddenLines: isRenderHiddenLines,
+			renderPointIndex: isRenderPointIndex,
+			renderDotsAsBox: isRenderDotsAsBox,
+			preset: 'shadowBlue'
 		});
-		if(isRenderStress) { verlet.renderStress(constrains); }
+		if (isRenderStress) { verlet.renderStress(constrains); }
 
 		/* Temp Circles and Miscs */
 		drawGrid();
@@ -950,15 +948,15 @@ function verletDrawing() {
 		drawTmpLine(tmpLine);
 		getFps = getFrameRate();
 
-		
+
 		requestAnimationFrame(animate);
 	}
 
-	window.setInterval(function() {
-		initUI.debug(points,constrains,getFps,verlet);
-	},100);
+	window.setInterval(function () {
+		initUI.debug(points, constrains, getFps, verlet);
+	}, 100);
 	animate();
 
-	initLivePreviews(hexa,map);
+	initLivePreviews(hexa, map);
 
 }//verletDrawing;

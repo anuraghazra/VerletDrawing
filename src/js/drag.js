@@ -1,6 +1,6 @@
 // Drag Create
-const drag = function(verlet,dots,cons) {
-    const self = this;
+class drag {
+  constructor(verlet, dots, cons) {
     this.verlet = verlet;
     this.downX = 0;
     this.downY = 0;
@@ -14,46 +14,44 @@ const drag = function(verlet,dots,cons) {
     this.draw = false;
     this.bool = false;
     this.createFunc = undefined;
+    this.verlet.canvas.addEventListener('mousedown', this.getDownCoord);
+    this.verlet.canvas.addEventListener('mouseup', this.getUpCoord);
+  }
 
-    this.initDrag = function(val) {
-        self.createFunc = val;
+  initDrag(val) {
+    this.createFunc = val;
+  };
+  getDownCoord(e) {
+    this.downX = e.clientX;
+    this.downY = e.clientY;
+    this.verlet.canvas.addEventListener('mousemove', this.getMouseTmp);
+  };
+  getUpCoord(e) {
+    if (this.bool) {
+      this.upX = e.clientX;
+      this.upY = e.clientY;
+      this.dragX = this.upX - this.downX;
+      this.dragY = this.upY - this.downY;
+      let adjustX = this.downX - this.dragX - 20;
+      let adjustY = this.downY - this.dragY - 20;
+      this.createFunc(adjustX, adjustY, this.dragX, this.dragY, dots, cons);
     }
-    this.getDownCoord = function (e) {
-        self.downX = e.clientX;
-        self.downY = e.clientY;
-        self.verlet.canvas.addEventListener('mousemove',self.getMouseTmp);
+    this.verlet.canvas.removeEventListener('mousemove', this.getMouseTmp);
+    this.draw = false;
+  };
+
+  getMouseTmp(e) {
+    this.tmp_dragX = e.clientX;
+    this.tmp_dragY = e.clientY;
+    this.draw = true;
+  };
+  drawTmpBox(bool) {
+    this.bool = bool;
+    if (this.draw && this.bool) {
+      let diffX = this.tmp_dragX - this.downX;
+      let diffY = this.tmp_dragY - this.downY;
+      this.verlet.ctx.strokeStyle = 'black';
+      this.verlet.ctx.strokeRect(this.downX - 20, this.downY - 20, diffX, diffY);
     }
-    this.getUpCoord = function(e) {
-        if(self.bool) {
-            self.upX = e.clientX;
-            self.upY = e.clientY;
-            self.dragX = self.upX - self.downX;
-            self.dragY = self.upY - self.downY;
-            
-            let adjustX = self.downX-self.dragX-20;
-            let adjustY = self.downY-self.dragY-20;
-            
-            self.createFunc(adjustX,adjustY,self.dragX,self.dragY,dots,cons);
-        }
-        self.verlet.canvas.removeEventListener('mousemove',self.getMouseTmp);
-        self.draw = false;
-    }      
-    self.verlet.canvas.addEventListener('mousedown',this.getDownCoord);
-    self.verlet.canvas.addEventListener('mouseup',this.getUpCoord);
-    
-    // ==================
-    this.getMouseTmp = function(e) {
-        self.tmp_dragX = e.clientX;
-        self.tmp_dragY = e.clientY;
-        self.draw = true;
-    }
-    this.drawTmpBox = function (bool) {
-        self.bool = bool;
-        if(self.draw && self.bool) {
-            let diffX = self.tmp_dragX - self.downX;
-            let diffY = self.tmp_dragY - self.downY;
-            self.verlet.ctx.strokeStyle = 'black';
-            self.verlet.ctx.strokeRect(self.downX-20,self.downY-20,diffX,diffY);
-        }
-    }
+  };
 }

@@ -5,758 +5,737 @@
 \*--------------------*/
 
 @font-face {
-	src : url('../lib/fonts/Snickles-webfont.ttf');
-	font-family:  'Snickles';
+  src: url("../lib/fonts/Snickles-webfont.ttf");
+  font-family: "Snickles";
 }
 * {
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	font-family: 'Century Gothic';
-	user-select: none;
-	-webkit-font-smoothing : antialiased;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: "Century Gothic";
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
 }
-
 
 /*-----------------------*\
 	Electron titile window
 \*-----------------------*/
 
 .elc-window {
-	margin: 0;
-	width: 100%;
-	height: 35px;
-	-webkit-app-region : drag;
-	padding: 5px;
+  margin: 0;
+  width: 100%;
+  height: 35px;
+  -webkit-app-region: drag;
+  padding: 5px;
 }
 .elc-btn-wrapper {
-	float: right;
-	-webkit-app-region : no-drag;
-	width: 120px;
-	height: auto;
-	overflow: auto;
-	color : white;
+  float: right;
+  -webkit-app-region: no-drag;
+  width: 120px;
+  height: auto;
+  overflow: auto;
+  color: white;
 }
 .elc-button {
-	font-size: 23px;
-	float: right;
-	margin-left: 10px;
-	cursor: pointer;
+  font-size: 23px;
+  float: right;
+  margin-left: 10px;
+  cursor: pointer;
 }
 .elc-button:hover {
-	color : tomato;
+  color: tomato;
 }
-
 
 /*--------------------*\
 			BASIC TAGS
 \*--------------------*/
 
 html {
-	border: 1px solid white;
-	margin:0;
-	padding:0;
-	border-top: 5px solid lightskyblue;
+  border: 1px solid white;
+  margin: 0;
+  padding: 0;
+  border-top: 5px solid lightskyblue;
 }
 body {
-	border-top:none;
-    margin: 0 auto;
-	color : #999999;
-	background-color: #191919;
-	overflow: hidden;
+  border-top: none;
+  margin: 0 auto;
+  color: #999999;
+  background-color: #191919;
+  overflow: hidden;
 }
 canvas {
-	transition: 0.2s;
-	/* outline: 1px solid red; */
-	float: left;
+  transition: 0.2s;
+  /* outline: 1px solid red; */
+  float: left;
 }
 
 /*hide the text selection in canvas*/
 canvas::selection {
-	background-color : transparent;
+  background-color: transparent;
 }
 
 .show {
-	pointer-events: all !important;
-	opacity: 1 !important;
+  pointer-events: all !important;
+  opacity: 1 !important;
 }
 
 .hide {
-	pointer-events: none !important;
-	opacity: 0 !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
 }
-
 
 /*--------------------*\
 		MAIN CONTAINERS
 \*--------------------*/
 
 .container {
-	/* overflow: hidden; */
-	width: 100%;
-    height: calc(100vh - 43px);
-	margin: 0 auto;
+  /* overflow: hidden; */
+  width: 100%;
+  height: calc(100vh - 43px);
+  margin: 0 auto;
 }
 .title {
-	margin: 5px 10px 0 10px;
-	float: left;
-	font-size: 26px;
-	color : white;
-	font-family: 'Snickles'; 
+  margin: 5px 10px 0 10px;
+  float: left;
+  font-size: 26px;
+  color: white;
+  font-family: "Snickles";
 }
 .title > * {
-	font-size: 26px;
-	font-family: 'Snickles'; 
+  font-size: 26px;
+  font-family: "Snickles";
 }
 .toolbar {
-	position: relative;
-	width: 100%;
-	height: 40px;
-	margin: 0 auto;
-	border-bottom : 1px solid white;
-	background-color: rgb(25,25,25);
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin: 0 auto;
+  border-bottom: 1px solid white;
+  background-color: rgb(25, 25, 25);
 }
 .woo-slider {
-	background-color: lightskyblue;
-	position: absolute;
-	left: 133px;
-	bottom: 0;
-	width : 3.5%;
-	height : 3px;
-	transition: 0.2s;
-	z-index: 2;
+  background-color: lightskyblue;
+  position: absolute;
+  left: 133px;
+  bottom: 0;
+  width: 3.5%;
+  height: 3px;
+  transition: 0.2s;
+  z-index: 2;
 }
 
 /*--------------------*\
 			CHECKBOXES
 \*--------------------*/
 .check-container {
-	display: flex;
-	width: 100%;
-	height: auto;
+  display: flex;
+  width: 100%;
+  height: auto;
   padding: 10px;
-	color : white !important;
-	border: 1px solid white;
-	border-bottom: 2px solid lightskyblue;
-	margin-bottom: 3px;
-	margin-top: 5px;
+  color: white !important;
+  border: 1px solid white;
+  border-bottom: 2px solid lightskyblue;
+  margin-bottom: 3px;
+  margin-top: 5px;
 }
 .checks {
-	flex: 1;
-	font-size : 12px;
+  flex: 1;
+  font-size: 12px;
 }
 
 /* vr */
 .dd-split {
-	width: 1px;
-	height: 40px;
-	margin-left: 2px;
-	margin-right: 2px;
-	background-color: white;
-	float: left;
+  width: 1px;
+  height: 40px;
+  margin-left: 2px;
+  margin-right: 2px;
+  background-color: white;
+  float: left;
 }
-
-
 
 /*--------------------*\
 		DROPDOWN STYLES
 \*--------------------*/
 
 .icon {
-	position: relative;
-	width : 100%;
-	float: left;
-	margin-top: 8px;
-	font-size: 18px;
-	transition: 0.2s;
-	pointer-events: none;
-	cursor: default;	
+  position: relative;
+  width: 100%;
+  float: left;
+  margin-top: 8px;
+  font-size: 18px;
+  transition: 0.2s;
+  pointer-events: none;
+  cursor: default;
 }
 .dd-button {
-	width: 3.5%;
-	height: 40px;
-	color : white;
-	text-align: center;
-	float: left;
-	-webkit-transition: 0.1s;
-	transition: 0.1s;
-	border-bottom : 1px solid white;
-	cursor: pointer;
+  width: 3.5%;
+  height: 40px;
+  color: white;
+  text-align: center;
+  float: left;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
+  border-bottom: 1px solid white;
+  cursor: pointer;
 }
 .dd-button:hover {
-	background-color: white;
-	-webkit-transition: 0.1s;
-	transition: 0.1s;
+  background-color: white;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
 }
 .dd-button:hover .icon {
-	color : lightskyblue;
+  color: lightskyblue;
 }
 .dropdown-content {
-	border-radius: 0px 0px 10px 10px;
-	position: absolute;
-	pointer-events: none;
-	opacity: 0;
-	-webkit-transition: 0.3s;
-	transition: 0.3s;
-	background-color: rgba(25,25,25,0.8);
-	width: 260px; 
-	padding: 10px;
-	border-bottom: 4px solid lightskyblue;
-	border-left: 1px solid white;
-	border-right: 1px solid white;
+  border-radius: 0px 0px 10px 10px;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  background-color: rgba(25, 25, 25, 0.8);
+  width: 260px;
+  padding: 10px;
+  border-bottom: 4px solid lightskyblue;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
 }
-.dropdown-content input,button {
-	font-size : 14px;
-	color : rgb(25,25,25);
-	width: 100%;
-	transition: 0.2s;
+.dropdown-content input,
+button {
+  font-size: 14px;
+  color: rgb(25, 25, 25);
+  width: 100%;
+  transition: 0.2s;
 }
-.dropdown-content p,span {
-	font-size : 14px;
-	line-height: 7px;
-	color : white !important;
-	width: 100%;
+.dropdown-content p,
+span {
+  font-size: 14px;
+  line-height: 7px;
+  color: white !important;
+  width: 100%;
 }
 .dd-input-header-container {
-	display: flex;
-	flex-wrap: wrap;
-	width: 100%;
-	justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-around;
 }
 .input-headholders {
-	flex-grow: 1;
-	width : 100%;
-	display: flex;
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
 }
 .dd-input-header-container .input-headholders > p {
-	flex: 1;
-	display : block;
-	padding-left : 8px;
-	/* width: 48%; */
-	float: left;
-	text-align : left;
+  flex: 1;
+  display: block;
+  padding-left: 8px;
+  /* width: 48%; */
+  float: left;
+  text-align: left;
 }
 .three-inputs {
-	/* flex: 1; */
-	float: left;
-	width: 31% !important;
+  /* flex: 1; */
+  float: left;
+  width: 31% !important;
 }
 .dd-input-header-container > input {
-	width: 48%;
-	margin : 2px;
+  width: 48%;
+  margin: 2px;
 }
 
-/*shift last element to little bit left*/ 
+/*shift last element to little bit left*/
 .pushleft {
-	width: 200px;
-	left : 0px !important;
+  width: 200px;
+  left: 0px !important;
 }
-
 
 /*--------------------*\
 			SIDE SETTINGS
 \*--------------------*/
 .sidesettings {
-	pointer-events: all;
-	position: absolute;
-	height: inherit;
-	top: 2px;
-	right: -250px;
-	width: 250px;
-	padding: 10px;
-	border: 1px solid white;
-	border-top : none;
-	border-bottom : none;
-	border-right: none;
-	color: white;
-	transition: 0.3s cubic-bezier(0.39, 0.575, 0.1, 1);
-	background-color: rgba(25,25,25,0.8);	
+  pointer-events: all;
+  position: absolute;
+  height: inherit;
+  top: 2px;
+  right: -250px;
+  width: 250px;
+  padding: 10px;
+  border: 1px solid white;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  color: white;
+  transition: 0.3s cubic-bezier(0.39, 0.575, 0.1, 1);
+  background-color: rgba(25, 25, 25, 0.8);
 }
 .sidesettings-active {
-	right: 0px;
+  right: 0px;
 }
 .sidesettings-grabber {
-	position: absolute;
-	left: -30px;
-	top: 50%;
-	padding: 5px;
-	border-radius: 5px 0% 0% 5px;
-	transform: translateY(-50%);
-	background-color: #fff;
-	cursor: pointer;
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  padding: 5px;
+  border-radius: 5px 0% 0% 5px;
+  transform: translateY(-50%);
+  background-color: #fff;
+  cursor: pointer;
 }
 .sidesettings-grabber i {
-	color: black;
-	font-size: 20px;
+  color: black;
+  font-size: 20px;
 }
 .sidesettings-grabber:hover i {
-	color : white;
+  color: white;
 }
 .sidesettings-grabber:hover {
-	background-color: #5cd6ff;
+  background-color: #5cd6ff;
 }
 .sidegrabber-line {
-	display: block;
-	position: relative;
-	width: 5px;
-	height: 90%;
-	margin: 0;
-	top: 50%;
-	transform: translateY(-50%);
-	left: 15%;
-	text-align: center;
-	background-color: rgb(25,25,25);
+  display: block;
+  position: relative;
+  width: 5px;
+  height: 90%;
+  margin: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 15%;
+  text-align: center;
+  background-color: rgb(25, 25, 25);
 }
 .sidesettings-sliders > .slider-container {
-	flex-basis: 100px;
+  flex-basis: 100px;
 }
 .sidesettings-sliders {
-	flex-wrap: wrap;
+  flex-wrap: wrap;
 }
-
-
-
-
 
 /*------------------------*\
 					SLIDERS
 \*------------------------*/
 
 .sliders {
-	display: flex;
-	width: 100%;
+  display: flex;
+  width: 100%;
 }
 .slider-container p {
-	font-size: 11px;
-	margin-left: 0;
-	margin-right: 0;
-	margin-top: 0;
-	padding: 0;
+  font-size: 11px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 0;
 }
 .slider-container {
-	flex: 1;
-	margin-bottom: 8px;
-	margin-top: 5px;
-	border-top: 1px solid white;
-	border-bottom: 3px solid lightskyblue;
-	border-left: 1px solid white;
-	padding: 8px;
+  flex: 1;
+  margin-bottom: 8px;
+  margin-top: 5px;
+  border-top: 1px solid white;
+  border-bottom: 3px solid lightskyblue;
+  border-left: 1px solid white;
+  padding: 8px;
 }
 .slider-container > input {
-	float: left;
+  float: left;
 }
 .slider-container:last-of-type,
 .slider-container:nth-child(2),
-.slider-container:nth-child(5){
-	border-right: 1px solid white;
+.slider-container:nth-child(5) {
+  border-right: 1px solid white;
 }
 .rangeVal {
-	display: block;
-	margin-top: 35px;
-	text-align: center;
+  display: block;
+  margin-top: 35px;
+  text-align: center;
 }
 .rangePhy {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 .phy {
-	width: 100%;
+  width: 100%;
 }
-
-
 
 /*------------------------*\
 		SETTINGS CHECKBOXES
 \*------------------------*/
 
 .green {
-	color : #67f345; 
+  color: #67f345;
 }
-ul.rendersettings-icons input[type=checkbox] {
+ul.rendersettings-icons input[type="checkbox"] {
   opacity: 0;
-	pointer-events: none;
-	display: none;
+  pointer-events: none;
+  display: none;
 }
 ul.rendersettings-icons label {
-	display: block;
-	width: 100%;
-	padding: 5px;
-	height: 100%;
+  display: block;
+  width: 100%;
+  padding: 5px;
+  height: 100%;
 }
 
-input:not(:checked) + label[for=dots],
-input:not(:checked) + label[for=lines],
-input:not(:checked) + label[for=dotsasbox],
-input:not(:checked) + label[for=stress],
-input:not(:checked) + label[for=shapes],
-input:not(:checked) + label[for=hiddenlines],
-input:not(:checked) + label[for=gridguid],
-input:not(:checked) + label[for=lines],
-input:not(:checked) + label[for=pointIndex] {
-	color : orangered;
+input:not(:checked) + label[for="dots"],
+input:not(:checked) + label[for="lines"],
+input:not(:checked) + label[for="dotsasbox"],
+input:not(:checked) + label[for="stress"],
+input:not(:checked) + label[for="shapes"],
+input:not(:checked) + label[for="hiddenlines"],
+input:not(:checked) + label[for="gridguid"],
+input:not(:checked) + label[for="lines"],
+input:not(:checked) + label[for="pointIndex"] {
+  color: orangered;
 }
-input:checked + label[for=dots],
-input:checked + label[for=lines],
-input:checked + label[for=dotsasbox],
-input:checked + label[for=stress],
-input:checked + label[for=shapes],
-input:checked + label[for=hiddenlines],
-input:checked + label[for=gridguid],
-input:checked + label[for=lines],
-input:checked + label[for=pointIndex] {
-	color : #3fc71d;
+input:checked + label[for="dots"],
+input:checked + label[for="lines"],
+input:checked + label[for="dotsasbox"],
+input:checked + label[for="stress"],
+input:checked + label[for="shapes"],
+input:checked + label[for="hiddenlines"],
+input:checked + label[for="gridguid"],
+input:checked + label[for="lines"],
+input:checked + label[for="pointIndex"] {
+  color: #3fc71d;
 }
 ul.rendersettings-icons {
-	list-style-type: none;
-	display: flex;
-	justify-content: center; 
-	border: 1px solid white;
-	padding : 0px !important;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  border: 1px solid white;
+  padding: 0px !important;
 }
 ul.rendersettings-icons > li:last-child {
-	border-right: none;
+  border-right: none;
 }
 ul.rendersettings-icons > li {
-	text-align: center;
-	flex: 1;
-	cursor: pointer;
-	border-right: 1px solid white;
+  text-align: center;
+  flex: 1;
+  cursor: pointer;
+  border-right: 1px solid white;
 }
-ul.rendersettings-icons > li, input, label { 
-	cursor: pointer;
+ul.rendersettings-icons > li,
+input,
+label {
+  cursor: pointer;
 }
-ul.rendersettings-icons > li:hover { 
-	background-color: white;
+ul.rendersettings-icons > li:hover {
+  background-color: white;
 }
-
-
 
 /*--------------------*\
 			FILE INFO
 \*--------------------*/
 
 .fileinfo {
-	margin: 0;
-	width: 100%;
-	height: auto;
-	padding:1px;
-	padding-left:5px;
-	border: 1px solid white;
-	border-bottom-color: lightskyblue;
-	border-bottom-width: 2px;
-	text-align: left;
+  margin: 0;
+  width: 100%;
+  height: auto;
+  padding: 1px;
+  padding-left: 5px;
+  border: 1px solid white;
+  border-bottom-color: lightskyblue;
+  border-bottom-width: 2px;
+  text-align: left;
 }
 .fileinfo p {
-	font-size: 12px;
+  font-size: 12px;
 }
 .button-active {
-	color : orangered !important;
+  color: orangered !important;
 }
 .button-active .icon {
-	color : orangered !important;
-	/* border-bottom : 2px solid lightskyblue; */
+  color: orangered !important;
+  /* border-bottom : 2px solid lightskyblue; */
 }
-
-
-
 
 /*--------------------*\
 		LIVE PREVIEWS
 \*--------------------*/
 
 .live-preview {
-	width: 100%;
-	padding: 2px;
-	margin-top: 5px;
-	outline: 1px solid white;
-	overflow: auto;
+  width: 100%;
+  padding: 2px;
+  margin-top: 5px;
+  outline: 1px solid white;
+  overflow: auto;
 }
 #hexagon-live {
-	margin-left: 15%;
-	width: 70%;
+  margin-left: 15%;
+  width: 70%;
 }
 .mapcontainer {
-	width: 100%;
-	height: auto;
-	/* padding: 10px; */
-	margin: 3px;
+  width: 100%;
+  height: auto;
+  /* padding: 10px; */
+  margin: 3px;
 }
 .mapcontainer textarea {
-	float: left;
-	width: 98%;
-	resize: vertical;
-	padding : 15px;
+  float: left;
+  width: 98%;
+  resize: vertical;
+  padding: 15px;
 }
-
-
 
 /*--------------------*\
 			DEBUG PANEL
 \*--------------------*/
 
 .debugpanel {
-	border: 1px solid gray;
-	padding: 0px;
-	padding-left: 5px;
-	float: left;
-	font-size: 14px;
-	width: 100%;
-	height: auto;
-	border-bottom: 1px solid gray;
-	border-left: 1px solid gray;
-	border-right: 1px solid gray;
-	word-break: break-all;
-	-webkit-transition : 0.2s;
-	transition : 0.2s;
+  border: 1px solid gray;
+  padding: 0px;
+  padding-left: 5px;
+  float: left;
+  font-size: 14px;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  word-break: break-all;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
 }
 .debugpanel p {
-	display: inline-block;
+  display: inline-block;
 }
-
-
 
 /*--------------------*\
 			SLIDE POPUP
 \*--------------------*/
 
 .firstmenu {
-	position: relative;
-	transition : 0.2s;
-	z-index: -2;
-	top: 0;
+  position: relative;
+  transition: 0.2s;
+  z-index: -2;
+  top: 0;
 }
-.toolbar-name-file, .toolbar-name-creative, .toolbar-name-tools {
-	transition: 0.3s;
-	position: absolute;
-	text-align: center;
-	border: 1px solid white;
-	border-top:none;
-	top: 0px;
-	border-bottom: 2px solid lightskyblue;
-	pointer-events: none;
+.toolbar-name-file,
+.toolbar-name-creative,
+.toolbar-name-tools {
+  transition: 0.3s;
+  position: absolute;
+  text-align: center;
+  border: 1px solid white;
+  border-top: none;
+  top: 0px;
+  border-bottom: 2px solid lightskyblue;
+  pointer-events: none;
 }
-.toolbar-name-file{
-	transition: 0.3s;
-	width: 100px;
-	left: 0%;
+.toolbar-name-file {
+  transition: 0.3s;
+  width: 100px;
+  left: 0%;
 }
-.toolbar-name-creative{
-	transition: 0.3s;
-	width: 115px;
-	left: 130%;
+.toolbar-name-creative {
+  transition: 0.3s;
+  width: 115px;
+  left: 130%;
 }
-.toolbar-name-tools{
-	transition: 0.3s;
-	width: 110px;
-	left: 80%;
+.toolbar-name-tools {
+  transition: 0.3s;
+  width: 110px;
+  left: 80%;
 }
-
-
 
 /*--------------------*\
 				TOOLTIPS
 \*--------------------*/
 
 .tooltips {
-	position: relative;
-	width: 100%;
-	height: calc(100vh - 100px);
-	margin: 0;
-	left: 0;
-	/* top: 45px; */
-	pointer-events: none;
-	opacity: 1;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 100px);
+  margin: 0;
+  left: 0;
+  /* top: 45px; */
+  pointer-events: none;
+  opacity: 1;
 }
-#colorIndicator{
-	pointer-events: none;
+#colorIndicator {
+  pointer-events: none;
 }
 .tooltip-info {
-	pointer-events: none;
-	opacity: 0;
-	transition:  0.1s;
-	position: absolute;
-	left: 0;
-	top: 0;
-	font-size: 12px;
-	text-align: left;
-	width: 20px;
-	height: 20px;
-	border: 1px solid lightskyblue;
-	padding: 10px;
-	color:white;
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.1s;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 12px;
+  text-align: left;
+  width: 20px;
+  height: 20px;
+  border: 1px solid lightskyblue;
+  padding: 10px;
+  color: white;
 }
 .uiuTooltip {
-	min-width: 200px !important;
-	padding: 5px;
-	border-radius: 5px;
-	background-color: white;
-	font-size: 14px;
-	color: #333;
-	box-shadow: 0px 0px 15px 5px rgb(0, 0, 0, 0.5);
+  min-width: 200px !important;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: white;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0px 0px 15px 5px rgb(0, 0, 0, 0.5);
 }
-
-
 
 /*--------------------*\
 			CONTEXT MENU
 \*--------------------*/
 
 .radialMenu {
-	position: relative;
-	transition: 0.2s;
+  position: relative;
+  transition: 0.2s;
 }
 .hideRadialMenu {
-	opacity: 0;
-	pointer-events: none !important;
+  opacity: 0;
+  pointer-events: none !important;
 }
 .radialMenu > i {
-	border: 1px solid white;
-	display: block;
-	position: absolute;
-	pointer-events: all;
-	width: 35px;
-	height: 35px;
-	background-color: rgba(25,25,25,1);
-	color: #67f345;
-	border-radius: 50%;
-	text-align: center;
-	line-height: 32px;
-	cursor: pointer;
-	transition: 0.2s cubic-bezier(0.68, 0.25, 0.265, 1.25) transform;
-	transform: scale(1);
+  border: 1px solid white;
+  display: block;
+  position: absolute;
+  pointer-events: all;
+  width: 35px;
+  height: 35px;
+  background-color: rgba(25, 25, 25, 1);
+  color: #67f345;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 32px;
+  cursor: pointer;
+  transition: 0.2s cubic-bezier(0.68, 0.25, 0.265, 1.25) transform;
+  transform: scale(1);
 }
 .radialMenu > i:hover {
-	background-color: white;
-	color: #67f345;
+  background-color: white;
+  color: #67f345;
 }
 .radialMenuCenter {
-	position: absolute;
-	pointer-events: none;
-	width: 95px;
-	height: 95px;
-	/* background-color: white; */
-	color: white;
-	border-radius: 50%;
-	text-align: center;
-	padding: 20px;
-	padding-top: 15px;
-	line-height: 20px;
-	font-size: 15px;
-	cursor: pointer;
-	border: 1px solid white;
-	transform : scale(1);
-	transition: 0.2s cubic-bezier(0.68, 0.25, 0.265, 1.25) transform;	
+  position: absolute;
+  pointer-events: none;
+  width: 95px;
+  height: 95px;
+  /* background-color: white; */
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  padding: 20px;
+  padding-top: 15px;
+  line-height: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1px solid white;
+  transform: scale(1);
+  transition: 0.2s cubic-bezier(0.68, 0.25, 0.265, 1.25) transform;
 }
 .noEvent {
-	pointer-events: none;
-	transform: scale(0) !important;
+  pointer-events: none;
+  transform: scale(0) !important;
 }
-
-
 
 /*--------------------*\
 			SAVE MODAL
 \*--------------------*/
 #ctrlSaveModal {
-	position: relative;
-	width: 25%;
-	top: -100%;
-	height: auto;
-	padding: 8px;
-	/* background-color : #252525; */
-	border: 1px solid white;
-	right: 50%;
-	transform: translateX(50%);
-	opacity: 0;
+  position: relative;
+  width: 25%;
+  top: -100%;
+  height: auto;
+  padding: 8px;
+  /* background-color : #252525; */
+  border: 1px solid white;
+  right: 50%;
+  transform: translateX(50%);
+  opacity: 0;
 }
 #ctrlSaveModal > input {
-	margin-top: 0px;
+  margin-top: 0px;
 }
-
-
 
 /*--------------------*\
 		FLOATING MENU
 \*--------------------*/
 
 .floating-content {
-	width: 200px;
-	position: absolute;
-	left : calc(98% - 200px);
-	top : 5%;
-	pointer-events: none;
-	border-radius: 0px 0px 10px 10px;
-	opacity: 0;
-	background-color: rgba(25,25,25,0.8);
-	height: auto;
-	padding: 10px;
-	border-bottom: 4px solid lightskyblue;
-	border: 1px solid white;
-	transition : 0.2s opacity;
-	padding-top: 25px;
+  width: 200px;
+  position: absolute;
+  left: calc(98% - 200px);
+  top: 5%;
+  pointer-events: none;
+  border-radius: 0px 0px 10px 10px;
+  opacity: 0;
+  background-color: rgba(25, 25, 25, 0.8);
+  height: auto;
+  padding: 10px;
+  border-bottom: 4px solid lightskyblue;
+  border: 1px solid white;
+  transition: 0.2s opacity;
+  padding-top: 25px;
 }
-.floating-content p,span,hr {
-	pointer-events: none;
+.floating-content p,
+span,
+hr {
+  pointer-events: none;
 }
 .floating-content p {
-	font-size: 14px;
-	color : white;
-	margin-bottom: 10px;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 10px;
 }
 .floating-content .dragger {
-	cursor: move;
-	width: 100%;
-	height: 20px;
-	background-color: lightskyblue;
-	position: absolute;
-	left: 0;
-	top: 0;
+  cursor: move;
+  width: 100%;
+  height: 20px;
+  background-color: lightskyblue;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .floating-content .input-container {
-	display: flex;	
+  display: flex;
 }
 .floating-content .input-container input {
-	flex:1;	
-	margin-left : 1px;
+  flex: 1;
+  margin-left: 1px;
 }
 
-
 .helpmenu {
-	position: absolute;
-	width: 80%;
-	height: auto;
-	padding: 20px;
-	border: 1px solid white;
-	top: 50px;
-	left: 50%;
-	transform: translateX(-50%);
-	/* text-align: center; */
-	color: white;
-	line-height: 35px;
-	font-size: 15px;
+  position: absolute;
+  width: 80%;
+  height: auto;
+  padding: 20px;
+  border: 1px solid white;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* text-align: center; */
+  color: white;
+  line-height: 35px;
+  font-size: 15px;
 }
 
 .helpmenu span {
-	margin: 5px;
-	background-color: white;
-	color: black !important;
-	padding: 5px;
-	border-radius: 5px;
-	font-weight: bolder;
+  margin: 5px;
+  background-color: white;
+  color: black !important;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: bolder;
 }
-
 
 /*--------------------*\
 		MEDIA QUERIES
 \*--------------------*/
 
-@media only screen and (max-width : 768px) {
-	.title, .title font {
-		font-size: 20px;
-	}
-	.dd-button, .woo-slider {
-		width: 5%;
-	}
-	.icon {
-		margin-top: 8px;
-		font-size: 16px;
-	}
+@media only screen and (max-width: 768px) {
+  .title,
+  .title font {
+    font-size: 20px;
+  }
+  .dd-button,
+  .woo-slider {
+    width: 5%;
+  }
+  .icon {
+    margin-top: 8px;
+    font-size: 16px;
+  }
 }
