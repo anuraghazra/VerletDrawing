@@ -1,6 +1,6 @@
 # Verlet Drawing
 
-*Verlet Drawing is outdated, code is not maintainable, I talked about this in [VerletDrawing Case Study](https://anuraghazra.github.io/case-studies/verlet-drawing)* 
+*Verlet Drawing is outdated, code is not maintainable, I talked about this in [VerletDrawing Case Study](https://github.com/anuraghazra/anuraghazra.github.io/blob/develop/content/case-studies/__006-verlet-drawing.txt)* 
 
 ## Powered By **Verlet.js**
 
